@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+* {
+  /* margin: 0;
+  padding: 0; */
+  box-sizing: border-box;
+  
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+body{
+  height: 100vh;
+  width: 100%;
+}
+
+input{
+  border: 1.5px solid black;
+}
+
+input:focus{
+  outline: none;
+}
+
+/* Hide the arrows in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Hide the arrows in WebKit browsers */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+abbr{
+  color: #00000088
+}
