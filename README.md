@@ -1,7 +1,7 @@
 
 Steps to Run:
   1. Add an .env file in th eroot level of the project with the following variables: 
-    - PORT, 
+     - PORT, 
     - VITE_PORT
     - MONGO_URI
     - MAIL_ID
