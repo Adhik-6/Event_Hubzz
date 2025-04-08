@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import ngrok from "ngrok";
+// import ngrok from "ngrok";
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import { connectDB } from "./utils/index.utils.js";
@@ -14,7 +14,7 @@ dotenv.config();
 app.use(express.json({ limit: "50mb" })); 
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true, // Includes cookies in requests
     methods: "GET, POST, PATCH, DELETE",
   })
