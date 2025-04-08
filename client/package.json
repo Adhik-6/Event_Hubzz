@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.7",
     "@mui/x-date-pickers": "^7.27.3",
+    "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
