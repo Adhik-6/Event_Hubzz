@@ -34,6 +34,7 @@ export const postUserDetails = async (req, res) => {
 }
 
 export const verifyDetails = async (req, res) => {
+  console.log("Verifying user details");
   const [resId, eventId, userId] = req.body.qrData.split("-")
   const dbRes = await User.find({
     _id: resId,
