@@ -76,7 +76,7 @@ function App() {
     },
   })
 
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   
   return (
     <>
@@ -85,7 +85,8 @@ function App() {
     <CssBaseline />
     <NavBar/>
     <Routes>
-      { useScrollToTop() }  
+      { useScrollToTop() }
+      { console.log(isAuthenticated, "||", user) }
       <Route path="/" element={ <Home/> } />
       <Route path='/login' element={ isAuthenticated?<Navigate to="/"/>:<Login/> } />
       <Route path='/signup' element={ isAuthenticated?<Navigate to="/"/>:<Signup/> } />

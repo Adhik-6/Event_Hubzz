@@ -1,6 +1,6 @@
 import { Box, Button, Container, Divider, Grid, IconButton, Typography } from "@mui/material"
 import { Twitter, Facebook, Instagram, LinkedIn } from "@mui/icons-material"
-import reactSvg from './../assets/react.svg'
+import eventHubzzLogo from './../assets/event_hubzz_logo.jpg'
 
 export const Footer = () => {
   return (
@@ -13,7 +13,7 @@ export const Footer = () => {
           <Grid item xs={12} md={4}>
 
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <Box component="img" src={reactSvg} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
+              <Box component="img" src={eventHubzzLogo} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
               <Typography variant="h6">Event Hubzz</Typography>
             </Box>
 
@@ -98,7 +98,7 @@ export const Footer = () => {
           <Grid item xs={12} md={4}>
 
             <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <Box component="img" src={reactSvg} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
+              <Box component="img" src={eventHubzzLogo} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
               <Typography variant="h6">Event Hubzz</Typography>
             </Box>
 

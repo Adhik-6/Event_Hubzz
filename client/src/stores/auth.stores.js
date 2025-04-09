@@ -44,6 +44,7 @@ export const useAuthStore = create( persist( set => ({
     try {
       let res = await axiosInstance.post('/auth/logout');
       if(res.data?.success){
+      // if(true){
         set({ isAuthenticated: false, user: null });
         toast.success("Logout successful")
         return res.data
@@ -65,6 +66,7 @@ export const useAuthStore = create( persist( set => ({
       } else {
         set({ isAuthenticated: false, user: null });
       }
+      console.log("SS")
     } catch (err) {
       console.log('Check auth failed', err);
       // toast.error(`${err.response.data.message}`)

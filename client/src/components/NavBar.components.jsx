@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Divider, IconButton, Toolbar, Typography, Avatar, Menu, MenuItem, useMediaQuery, ListItemIcon, ListItemText } from "@mui/material"
 import { Menu as MenuIcon, ExitToApp as LogoutIcon, AddCircleOutlineRounded } from "@mui/icons-material"
-import reactSvg from './../assets/react.svg'
+import eventHubzzLogo from './../assets/event_hubzz_logo.jpg'
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import { mockUserProfile } from "../assets/mockUserProfile.js"
@@ -53,7 +53,7 @@ export const NavBar = () => {
       <Toolbar>
 
         <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
-          <Box component="img" src={reactSvg} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
+          <Box component="img" src={eventHubzzLogo} alt="EventHub Logo" sx={{ height: 32, mr: 1 }}/>
           Event Hubzz
         </Typography>
 

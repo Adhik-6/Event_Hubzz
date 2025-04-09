@@ -105,7 +105,7 @@ export const Login = () => {
         console.log(`Something went wrong: ${x?.message}`)
       }
     } catch (err) {
-      loginError(err.response.data.message)
+      // loginError(err.response.data?.message)
       console.error("Registration error:", err)
     } finally {
       setIsLoading(false)
