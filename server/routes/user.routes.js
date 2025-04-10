@@ -6,6 +6,6 @@ import { authMiddleware } from '../middlewares/index.middlewares.js';
 const userRouter = express.Router()
 
 userRouter.post("/register/:id", authMiddleware , asyncWrapper(postUserDetails))
-userRouter.get("/verify", asyncWrapper(verifyDetails))
+userRouter.post("/verify", asyncWrapper(verifyDetails))
 
 export { userRouter }

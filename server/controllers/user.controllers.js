@@ -3,6 +3,7 @@ import nodeMailer from 'nodemailer';
 import { User } from './../models/index.models.js'
 import { customAPIError } from '../utils/index.utils.js'
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 dotenv.config()
 
 // export const postUserDetails = async (req, res) => {
@@ -36,28 +37,27 @@ export const postUserDetails = async (req, res) => {
 export const verifyDetails = async (req, res) => {
   console.log("Verifying user details");
   const [resId, eventId, userId] = req.body.qrData.split("-")
-  const dbRes = await User.find({
-    _id: resId,
-    eventId,
-    userId
-  }).populate({
-    path: "eventId",
-    select: "title"
-  }).populate({
-    path: "userId",
-    select: "fullName"
-  }).select("-responses -_id")
+
+  if(!(mongoose.Types.ObjectId.isValid(userId) && mongoose.Types.ObjectId.isValid(eventId) && mongoose.Types.ObjectId.isValid(resId)))
+    return res.status(400).json({ success: false, message: "Invalid QR code" })
+
+  const dbRes = await User.findOne(
+    { _id: resId, eventId, userId }, 
+    { responses: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+  )
+  .populate({ path: "eventId", select: "title -_id" })
+  .populate({ path: "userId", select: "fullName -_id" })
+  .lean();
+  console.log("res:- ", dbRes);
 
   // if(!dbRes) throw customAPIError(404, "Invalid QR code", 'verifyDetails')
   // if(dbRes.checkedIn) throw customAPIError(400, "User already checked in", 'verifyDetails')
-
-  if(!dbRes) res.status(404).json({ success: false, message: "User not registered" })
-  if(dbRes.checkedIn) res.status(400).json({ success: false, message: "User already checked In" })
   
-  dbRes.checkedIn = true
-  await dbRes.save();
-  res.status(200).json({success: true, message: "Valid ID", userDetails: dbRes })
-  // console.log("Error while verifying user details:", err.message)  
+  if(!dbRes) return res.status(404).json({ success: false, message: "User not registered" })
+  if(dbRes.checkedIn) return res.status(400).json({ success: false, message: "User already checked In" })
+      
+  await User.updateOne({ _id: resId }, { $set: { checkedIn: true } });
+  res.status(200).json({success: true, message: "Valid ID", userDetails: dbRes }) 
 }
 
 async function sendEmail(mail, qrCode) {
