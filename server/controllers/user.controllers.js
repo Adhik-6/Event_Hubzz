@@ -43,7 +43,7 @@ export const verifyDetails = async (req, res) => {
 
   const dbRes = await User.findOne(
     { _id: resId, eventId, userId }, 
-    { responses: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+    { _id:0, responses: 0, createdAt: 0, updatedAt: 0, __v: 0 }
   )
   .populate({ path: "eventId", select: "title -_id" })
   .populate({ path: "userId", select: "fullName -_id" })
