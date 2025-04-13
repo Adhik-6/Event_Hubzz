@@ -119,13 +119,12 @@ export const RegistrationForm = () => {
               onChange={(e) => handleFieldChange(field.label, e.target.value)}
             >
               {field.options.map((option) => (
-                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.label} />
+                <FormControlLabel key={option.value} value={option.value} control={<Radio />} label={option.value} />
               ))}
             </RadioGroup>
             {errors[field.id] && <FormHelperText>{errors[field.id]}</FormHelperText>}
           </FormControl>
         )
-
       case "checkbox":
         return (
           <FormControl component="fieldset" margin="normal" error={!!errors[field.id]} required={field.required}>
@@ -138,16 +137,16 @@ export const RegistrationForm = () => {
                     <Checkbox
                       checked={responseData[field.label]?.includes(option.value) || false}
                       onChange={(e) => {
-                        const currentValues = responseData[field.id] || []
+                        const currentValues = responseData[field.label] || []
                         const newValues = e.target.checked
                           ? [...currentValues, option.value]
                           : currentValues.filter((value) => value !== option.value)
-                        onChange(field.label, newValues)
+                        handleFieldChange(field.label, newValues)
                       }}
-                      name={option.value}
+                      name={option.id}
                     />
                   }
-                  label={option.label}
+                  label={option.value}
                 />
               ))}
             </FormGroup>
@@ -161,12 +160,14 @@ export const RegistrationForm = () => {
             <Typography variant="subtitle1" gutterBottom>{field.label}{field.required && <span> *</span>}
             </Typography>
             <DatePicker
-              value={responseData[field.label] || ""}
-              // selected={null}
-              onChange={() => handleFieldChange(field.label, e.target.value)}
+              // value={responseData[field.label] || ""}
+              selected={responseData[field.label] || ""}
+              onChange={(date) => handleFieldChange(field.label, date.toISOString())}
               placeholderText="DD/MM/YYYY"
+              dateFormat="dd/MM/yyyy"
               customInput={<TextField fullWidth required={field.required} />}
             />
+            {/* <DatePicker selected={eventDetails.startDate} onChange={(date) => setEventDetails("startDate", date)} dateFormat="dd/MM/yyyy" placeholderText="DD/MM/YYYY" customInput={<TextField fullWidth label="Start Date *" helperText="When does your event start?" InputLabelProps={{ shrink: true }} />}/> */}
           </Box>
         )
         
@@ -176,13 +177,16 @@ export const RegistrationForm = () => {
             <Typography variant="subtitle1" gutterBottom>{field.label}{field.required && <span> *</span>}
             </Typography>
             <DatePicker
-              showTimeSelect showTimeSelectOnly timeCaption="Time" dateFormat="hh:mm aa"
-              // selected={null}
-              value={responseData[field.label] || ""}
-              onChange={() => handleFieldChange(field.label, e.target.value)}
+              showTimeSelect showTimeSelectOnly timeCaption="Time" 
+              selected={responseData[field.label] || ""}
+              // value={}
+              onChange={(time) => handleFieldChange(field.label, time.toISOString())}
+              timeIntervals={15}
+              dateFormat="hh:mm aa"
               placeholderText="HH:MM PM"
               customInput={<TextField fullWidth required={field.required} />}
             />
+            {/* <DatePicker selected={eventDetails.startTime} onChange={(date) => setEventDetails('startTime', date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" placeholderText="HH:MM PM"  dateFormat="hh:mm aa" customInput={ <TextField fullWidth label="Start Time *" helperText="What time does your event start?" InputLabelProps={{ shrink: true }} /> }/> */}
           </Box>
         )
 

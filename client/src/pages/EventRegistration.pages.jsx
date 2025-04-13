@@ -13,7 +13,7 @@ export const EventRegistration = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
-  const { setResFormFields, currentEvent, setCurrentEvent, registrationError, setRegistrationError, responseData } = useResponseStore();
+  const { setResFormFields, currentEvent, setCurrentEvent, registrationError, setRegistrationError, responseData, responseFormFields } = useResponseStore();
 
   const { id } = useParams();
   const [qrCode, setQrCode] = useState("")
@@ -35,6 +35,7 @@ export const EventRegistration = () => {
       setIsLoading(true)
       try {
         const res = await axiosInstance(`/events/${id}`)
+        // console.log("res: ", res.data.eventDetails )
         setCurrentEvent(res.data.eventDetails)
         setResFormFields(res.data.eventDetails.formFields)
         // console.log("event details: ", res.data.eventDetails)
@@ -70,45 +71,27 @@ export const EventRegistration = () => {
   // }
 
   // Validate form
-  // const validateForm = () => {
-  //   const newErrors = {}
-
-  //   responseFormFields.forEach((field) => {
-  //     // Skip validation for conditional fields that aren't shown
-  //     if (field.conditionalField && formData[field.conditionalField] !== field.conditionalValue) {
-  //       return
-  //     }
-
-  //     if (field.required && !formData[field.id]) {
-  //       newErrors[field.id] = `${field.label} is required`
-  //     }
-
-  //     // Email validation
-  //     if (field.type === "email" && formData[field.id] && !/\S+@\S+\.\S+/.test(formData[field.id])) {
-  //       newErrors[field.id] = "Please enter a valid email address"
-  //     }
-
-  //     // Phone validation
-  //     if (field.type === "tel" && formData[field.id] && !/^\+?[0-9\s-()]{8,}$/.test(formData[field.id])) {
-  //       newErrors[field.id] = "Please enter a valid phone number"
-  //     }
-  //   })
-
-  //   setErrors(newErrors)
-  //   return Object.keys(newErrors).length === 0
-  // }
+  const validateForm = () => {
+    // console.log("responseData:", responseData);
+    // console.log("responseFormFields:", responseFormFields);
+    responseFormFields.forEach(item => {
+      if(item.required && ( !(item.label in responseData) || responseData[item.label] === "" )){
+        toast.error(`${item.label} is required`)
+        return;
+      }
+    });
+    return true
+  }
 
   // Handle next step
   const handleNext = () => {
-    if (activeStep === 1) {
-      // Validate form before proceeding to confirmation
-      if (!validateForm()) {
-        return
-      }
-    }
-
+    // if (activeStep === 1) {
+    //   // Validate form before proceeding to confirmation
+    //   if (!validateForm()) {
+    //     return
+    //   }
+    // }
     setActiveStep((prevStep) => prevStep + 1)
-
     // Scroll to top when changing steps
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -123,9 +106,9 @@ export const EventRegistration = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
-    // if (!validateForm()) {
-    //   return
-    // }
+    if (!validateForm()) {
+      return
+    }
 
     setIsLoading(true)
 
@@ -151,7 +134,7 @@ export const EventRegistration = () => {
     try {
       let res = await axiosInstance.post(`/user/register/${id}`, responseData)
       if(!res.data.success) throw new Error(res.data.message)
-      console.log("res: ", res)
+      // console.log("res: ", res)
       setQrCode(res.data.qrCode)
       setRegistrationComplete(true)
       setActiveStep(2)

@@ -24,3 +24,5 @@ createRoot(document.getElementById('root')).render(
 // test with external URL for user event registration
 // default image value is not working for event's model
 // update the sender's mail ID & password
+// update mail's HTML format
+// when verifying the qr code, make sure it shows error for past or future events.

@@ -48,15 +48,18 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
   const formatFieldValue = (fieldId, value) => {
     if (value === undefined || value === null || value === "") return "Not provided"
 
-    const field = responseFormFields.find((f) => f.id === fieldId)
+    const field = responseFormFields.find((f) => f.label === fieldId)
+    console.log("field:", field)
+    console.log("fieldId:", fieldId)
+    console.log("value:", value)
     if (!field) return value
 
-    if (field.type === "checkbox-group" && Array.isArray(value)) {
+    if (field.type === "checkbox" && Array.isArray(value)) {
       if (value.length === 0) return "None selected"
       return value.map((v) => getOptionLabel(fieldId, v)).join(", ")
     }
 
-    if (field.type === "radio-group" || field.type === "dropdown") {
+    if (field.type === "multiple_choice" || field.type === "dropdown") {
       return getOptionLabel(fieldId, value)
     }
 
@@ -194,14 +197,14 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
                 )
               })}
 
-              <ListItem disableGutters>
+              {/* <ListItem disableGutters>
                 <ListItemText
                   primary="Confirmation Number"
                   secondary={confirmationNumber}
                   primaryTypographyProps={{ color: "text.secondary", variant: "body2" }}
                   secondaryTypographyProps={{ color: "text.primary", variant: "body1", fontWeight: "medium" }}
                 />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Paper>
         </Grid>

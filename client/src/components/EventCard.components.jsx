@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardMedia, Typography, Box, Chip, Button, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, CardActionArea, CardActions } from "@mui/material"
 import { CalendarMonth as CalendarIcon, LocationOn as LocationIcon, MoreVert as MoreVertIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, ContentCopy as DuplicateIcon, QrCode as QrCodeIcon } from "@mui/icons-material"
 import { Link } from "react-router-dom"
+import { getStatus } from './../utils/index.utils.js'
 
 // Helper function to format date
 const formatDate = (dateString) => {
@@ -54,17 +55,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
   // }, [event])
 
   useEffect(() => {
-    const getStatus = () => {
-      const currentDate = new Date();
-      const start = new Date(`${startDate}T${startTime}`); // ✅ No need to split
-      const end = new Date(`${endDate}T${endTime}`);
-
-      if (currentDate >= start && currentDate <= end) return "ongoing";
-      else if (currentDate > end) return "past";
-      else return "upcoming";
-    };
-
-    setStatus(getStatus()); // ✅ Call function directly
+    setStatus(getStatus(startDate, startTime, endDate, endTime));
   }, [event]);
   // console.log(event)
   // console.log(status)
@@ -125,7 +116,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
 
   return (
     <Card elevation={2}>
-      <CardActionArea>
+      {/* <CardActionArea> */}
         <CardMedia component="img" height="160" image={eventImage || "/placeholder.svg?height=160&width=300"} alt={title} />
         <Box sx={{ position: "absolute", top: 12, right: 12 }}>
           <Chip
@@ -219,11 +210,11 @@ export const EventCard = ({ event, isOrganizer = false }) => {
               Registrations
             </Typography>
             <Typography variant="body2" fontWeight="bold">
-              {registrations} / {capacity}
+              {registrations} {capacity?`/ ${capacity}`:``}
             </Typography>
           </Box>
         </CardContent>
-      </CardActionArea>
+      {/* </CardActionArea> */}
       <CardActions>
         {isOrganizer ? (
           <Button component={Link} to="/profile/analytics" size="small" color="primary" fullWidth onClick={handleManageRegistrations}>

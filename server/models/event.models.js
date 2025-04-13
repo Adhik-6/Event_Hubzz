@@ -55,6 +55,7 @@ const eventSchema = new mongoose.Schema(
     },
     eventImage: { 
       type: String,
+      // set: val => (val == null) ? undefined : val ,
       default: "https://th.bing.com/th?id=OIP.380uvanDzyz9M3X90_EQbwHaEK&w=333&h=187&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
     },
     externalUrl: {

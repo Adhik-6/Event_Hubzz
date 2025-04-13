@@ -24,7 +24,7 @@ export const postUserDetails = async (req, res) => {
     responses: req.body
   }
   delete data.responses.Email
-  console.log("Data: ", data);
+  // console.log("Data: ", data);
   const dbRes = await User.create(data)
   const qrCode = await QRCode.toDataURL(`${dbRes._id}-${dbRes.eventId}-${dbRes.userId}`) // response_ID-event_ID-user_ID
 

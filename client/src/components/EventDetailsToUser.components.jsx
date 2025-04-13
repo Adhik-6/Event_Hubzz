@@ -95,7 +95,7 @@ export const EventDetailsToUser = () => {
             <Box>
               <PersonIcon sx={{ mr: 1, color: "secondary.main" }} />
               <Typography variant="caption" color="text.secondary">Organized by</Typography>
-              <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{currentEvent.organiser}</Typography>
+              <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{currentEvent.organiser?.organization}</Typography>
             </Box>
 
             {/* registration */}

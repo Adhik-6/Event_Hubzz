@@ -4,7 +4,18 @@ import { Search as SearchIcon, FilterList as FilterListIcon, Close as CloseIcon,
 import { EventCard } from "./../components/index.components.js"
 import { mockEvents } from "../assets/mockEvents.js"
 import toast from 'react-hot-toast'
-import { axiosInstance } from "../utils/index.utils.js"
+import { axiosInstance, getStatus } from "../utils/index.utils.js"
+
+const useMemoizedStatus = (events, getStatus) => {
+  return useMemo(() => {
+    const statusMap = {};
+    events.forEach(event => {
+      const key = `${event._id}-${event.startDate}-${event.startTime}-${event.endDate}-${event.endTime}`;
+      statusMap[event._id] = getStatus(event.startDate, event.startTime, event.endDate, event.endTime);
+    });
+    return statusMap;
+  }, [events]);
+};
 
 export const Events = () => {
   const [events, setEvents] = useState([])
@@ -44,10 +55,9 @@ export const Events = () => {
 
     // Apply status filter
     if (filterStatus !== "all") {
-      result = result.filter((event) => event.status === filterStatus)
+      result = result.filter((event) => getStatus(event.startDate, event.startTime, event.endDate, event.endTime) === filterStatus)
     }
 
-    // Apply search
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       result = result.filter(

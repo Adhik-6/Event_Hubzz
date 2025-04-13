@@ -66,7 +66,7 @@ export const useAuthStore = create( persist( set => ({
       } else {
         set({ isAuthenticated: false, user: null });
       }
-      console.log("SS")
+      // console.log("SS")
     } catch (err) {
       console.log('Check auth failed', err);
       // toast.error(`${err.response.data.message}`)

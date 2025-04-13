@@ -8,11 +8,12 @@ import {
   CategoryOutlined as CategoryIcon,
   Info as InfoIcon,
 } from "@mui/icons-material"
-import { EventDetails, RegistrationTypeSelector, FormBuilder, FormPreview } from "./../components/index.components.js"
+import { EventDetails, RegistrationTypeSelector, FormBuilder, FormPreview } from "./../components/index.components.js";
 import { useNavigate } from 'react-router-dom';
 import { useEventStore } from "../stores/index.stores.js";
 import { axiosInstance, formatDateTime } from './../utils/index.utils.js'
 import { useState } from "react";
+import placeHolderImage from "./../assets/placeHolderImage.jpeg"
 import toast from "react-hot-toast";
 
 const steps = ["Event Details", "Registration Setup", "Review & Create"]
@@ -111,10 +112,10 @@ export const CreateEvent = () => {
   // Handle form submission
   const handleSubmit = async () => {
     // In a real application, you would send the data to your backend here
-    console.log("Event Details:", eventDetails)
-    console.log("Registration Type:", registrationType)
-    console.log("External URL:", externalUrl)
-    console.log("Form Fields:", formFields)
+    // console.log("Event Details:", eventDetails)
+    // console.log("Registration Type:", registrationType)
+    // console.log("External URL:", externalUrl)
+    // console.log("Form Fields:", formFields)
 
     // try implementing a circular progress, try-catch, error handling, backend
     setIsLoading(true)
@@ -215,9 +216,9 @@ export const CreateEvent = () => {
 
               <Box sx={{ mt: 2, mb: 2, maxHeight: 200, overflow: "hidden", borderRadius: 1 }}>
                 <img
-                  src={eventDetails.eventImage || "/placeholder.svg"}
+                  src={eventDetails.eventImage || placeHolderImage}
                   alt="Event"
-                  style={{ width: "100%", objectFit: "cover" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "0% auto" }}
                 />
               </Box>
 
@@ -310,7 +311,7 @@ export const CreateEvent = () => {
                 <Box>
                   <PeopleIcon sx={{ mr: 1, color: "secondary.main" }} />
                   <Typography variant="caption" color="text.secondary">Registrations</Typography>
-                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{`0 / ${eventDetails.capacity}`}</Typography>
+                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{ eventDetails.capacity?`0 / ${eventDetails.capacity}`:"No registration limits"}</Typography>
                 </Box>
               </Box>
 
