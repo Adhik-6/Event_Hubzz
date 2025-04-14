@@ -3,7 +3,9 @@ import { Box, Container, Typography, Tabs, Tab, Fab, useMediaQuery, useTheme, Av
 import { Add as AddIcon } from "@mui/icons-material"
 import { ProfileForm, MyEventsList, NotificationsTab, SettingsTab } from "./../components/index.components.js"
 import { mockEvents } from "../assets/mockEvents.js"
+import  placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
 import { mockUserProfile } from "../assets/mockUserProfile.js"
+import { useAuthStore } from "../stores/index.stores.js"
 
 export const Profile = () => {
   const theme = useTheme()
@@ -11,7 +13,8 @@ export const Profile = () => {
   const [activeTab, setActiveTab] = useState(0)
   const [userProfile, setUserProfile] = useState(mockUserProfile)
   const [events, setEvents] = useState([])
-
+  const { user } = useAuthStore()
+  
   // Fetch user events
   useEffect(() => {
     // In a real app, you would fetch the user's events from an API
@@ -23,17 +26,6 @@ export const Profile = () => {
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
-  }
-
-  // Handle profile update
-  const handleProfileUpdate = (updatedProfile) => {
-    setUserProfile({
-      ...userProfile,
-      ...updatedProfile,
-    })
-
-    // In a real app, you would send the updated profile to your backend
-    console.log("Profile updated:", updatedProfile)
   }
 
   // Handle create event click
@@ -48,8 +40,6 @@ export const Profile = () => {
   // Render tab content
   const renderTabContent = () => {
     switch (activeTab) {
-      case 0:
-        return <ProfileForm profile={userProfile} onUpdate={handleProfileUpdate} />
       case 1:
         return <MyEventsList events={events} />
       case 2:
@@ -57,7 +47,7 @@ export const Profile = () => {
       case 3:
         return <SettingsTab />
       default:
-        return <ProfileForm profile={userProfile} onUpdate={handleProfileUpdate} />
+        return <ProfileForm profile={user} />
     }
   }
 
@@ -67,19 +57,18 @@ export const Profile = () => {
       {/* Profile Header */}
       <Box sx={{ bgcolor: "primary.main", color: "primary.contrastText", py: 6, position: "relative" }}>
         <Container maxWidth="lg">
-
           <Box
             sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "flex-end", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex",flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "flex-end", mb: isMobile ? 3 : 0 }}>
-              <Avatar src={userProfile.profilePicture} alt={userProfile.name} sx={{ width: 120, height: 120, border: "4px solid white", mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 3 }}/>
+              <Avatar src={user.profilePic || placeHolderAvatar} alt={user.fullName} sx={{ width: 120, height: 120, border: "4px solid white", mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 3 }}/>
 
               <Box sx={{ textAlign: isMobile ? "center" : "left" }}>
                 <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
-                  {userProfile.name}
+                  {user.userName}
                 </Typography>
-                <Typography variant="subtitle1">{userProfile.organization}</Typography>
+                <Typography variant="subtitle1">{user.organization}</Typography>
                 <Typography variant="body2" sx={{ mt: 1, opacity: 0.8 }}>
-                  {userProfile.bio}
+                  {user.bio}
                 </Typography>
               </Box>
             </Box>

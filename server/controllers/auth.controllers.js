@@ -11,7 +11,6 @@ export const signup = async (req, res) => {
 
   const existingUser = await Organiser.findOne({ $or: [{ mail }, { userName }] });
 
-  console.log("Signup")
   if (existingUser) {
     throw customAPIError(400, 'User already exists with that mail or username', 'signup');
   }
@@ -36,7 +35,7 @@ export const signup = async (req, res) => {
   });
 
   setAuthCookies(req, res, newUser._id);
-  req.user = user.toObject();
+  req.user = newUser.toObject();
   delete req.user.password;
 
   res.status(200).json({ success: true, message: "Signup successfull", user: req.user });
@@ -62,10 +61,30 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-  console.log("Logout")
   if (!req.cookies.token) throw customAPIError(400, "User not logged in", "logout")
   
   res.clearCookie('token')
 
   res.status(200).json({ success: true, message: "Logout successful" })
+}
+
+export const updateProfile = async (req, res) => {
+  const { userProfile } = req.body;
+  // console.log("user porfile: ", userProfile)   
+
+  // let imgUrl
+  if(userProfile.profilePic){
+    const {secure_url} = (await cloudinary.uploader.upload(userProfile.profilePic, {folder: 'profile_pics'}));
+    console.log("secure url", secure_url)
+    userProfile.profilePic = secure_url;
+  }
+  // console.log("user porfile: ", userProfile)
+  
+  const updatedProfile = await Organiser.findOneAndUpdate({ _id: userProfile._id}, {$set: userProfile}, { new: true }).lean()
+  delete updatedProfile.password
+
+  // console.log("updated porfile: ", updatedProfile)
+  if (!updatedProfile) return res.status(404).json({ success: false, message: "Profile not found" });
+
+  res.status(201).json({ success: true, message: "Updated successfully", updatedProfile })
 }

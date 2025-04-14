@@ -1,9 +1,10 @@
 import { AppBar, Box, Button, Divider, IconButton, Toolbar, Typography, Avatar, Menu, MenuItem, useMediaQuery, ListItemIcon, ListItemText } from "@mui/material"
 import { Menu as MenuIcon, ExitToApp as LogoutIcon, AddCircleOutlineRounded } from "@mui/icons-material"
 import eventHubzzLogo from './../assets/event_hubzz_logo.jpg'
+import placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
 import { Link, useLocation } from "react-router-dom"
 import { useState, useEffect } from 'react'
-import { mockUserProfile } from "../assets/mockUserProfile.js"
+// import { mockUserProfile } from "../assets/mockUserProfile.js"
 import { useAuthStore } from "../stores/index.stores.js"
 
 export const NavBar = () => {
@@ -16,8 +17,8 @@ export const NavBar = () => {
   const isMobile = useMediaQuery("(max-width:900px)")
   const location = useLocation();
 
-  const [userProfile, setUserProfile] = useState(mockUserProfile);
-  const { isAuthenticated,  logout } = useAuthStore();
+  // const [user, setUserProfile] = useState(mockUserProfile);
+  const { isAuthenticated,  logout, user } = useAuthStore();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -75,7 +76,7 @@ export const NavBar = () => {
           )}
           { isAuthenticated ? (
             <IconButton onClick={handleUserMenuOpen} sx={{ ml: 1 }}>
-              <Avatar src={userProfile.profilePicture} alt={userProfile.name} sx={{ width: 37, height: 37 }} />
+              <Avatar src={user.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 37, height: 37 }} />
             </IconButton>
           ) : (
             <Button component={Link} to="/login" variant="outlined" sx={{ ml: 2, "&:hover": { background: "linear-gradient(90deg, #0062cc, #00a3cc)", borderColor: "transparent" }}}>
@@ -100,9 +101,9 @@ export const NavBar = () => {
     <Menu anchorEl={userMenuAnchorEl} open={isUserMenuOpen} onClose={handleUserMenuClose} sx={{ mt: "45px" }}>
       <MenuItem component={Link} to="/profile" onClick={handleUserMenuClose}>
         <ListItemIcon>
-          <Avatar src={userProfile.profilePicture} alt={userProfile.name} sx={{ width: 24, height: 24 }} />
+          <Avatar src={user.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 24, height: 24 }} />
         </ListItemIcon>
-        <ListItemText primary={userProfile.name} secondary={userProfile.email} />
+        <ListItemText primary={user.userName} secondary={user.mail} />
       </MenuItem>
       <MenuItem component={Link} to="/create-event" onClick={handleUserMenuClose}>
         <ListItemIcon>

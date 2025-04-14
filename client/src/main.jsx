@@ -26,3 +26,9 @@ createRoot(document.getElementById('root')).render(
 // update the sender's mail ID & password
 // update mail's HTML format
 // when verifying the qr code, make sure it shows error for past or future events.
+// In profile updation component, add a cancel button to revert back to previous state
+// select only necessary fields from db when retrieveing the docuemnts
+// Make profileForm component more efficient by removing duplicate variables that store user details
+// A seperate page to display user profile to other users
+// When updating user profiles in Claudinary remove the previous one
+// Also remove events that are one month older

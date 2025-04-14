@@ -27,6 +27,7 @@ export const Events = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
+  let dateComparison;
   const eventsPerPage = 6
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"))
 
@@ -67,14 +68,36 @@ export const Events = () => {
           event.venue.toLowerCase().includes(query),
       )
     }
-
+    // console.log("result: ", result)
     // Apply sorting
     switch (sortBy) {
       case "date-asc":
-        result.sort((a, b) => new Date(a.date) - new Date(b.date))
+        result.sort((a, b) => {
+          dateComparison = new Date(a.startDate) - new Date(b.startDate)
+          if(dateComparison === 0){
+            if(a.startTime < b.startTime)
+              return -1
+            else if(a.startTime > b.startTime)
+              return 1
+            else
+              return 0
+          }
+          return dateComparison;
+        } )
         break
       case "date-desc":
-        result.sort((a, b) => new Date(b.date) - new Date(a.date))
+        result.sort((a, b) => {
+          dateComparison = new Date(b.startDate) - new Date(a.startDate)
+          if(dateComparison === 0){
+            if(b.startTime < a.startTime)
+              return -1
+            else if(b.startTime > a.startTime)
+              return 1
+            else
+              return 0
+          }
+          return dateComparison;
+        } )
         break
       case "title-asc":
         result.sort((a, b) => a.title.localeCompare(b.title))

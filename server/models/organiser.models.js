@@ -7,7 +7,7 @@ const organiserSchema = new mongoose.Schema({
   },
   profilePic: {
     type: String,
-    default: 'https://www.bing.com/th?id=OIP.-JC2gfimk9rHT01TDDQJYgHaHa&w=115&h=104&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2'
+    // default: 'https://www.bing.com/th?id=OIP.-JC2gfimk9rHT01TDDQJYgHaHa&w=115&h=104&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=3.1&rm=2'
   },
   userName: {
     type: String,
@@ -39,17 +39,11 @@ const organiserSchema = new mongoose.Schema({
     type: String,
     match: [/^https:\/\/.+\..+$/, 'Please fill a valid website URL']
   },
-  facebook: {
-    type: String,
-  },
-  instagram: {
-    type: String,
-  },
-  linkedIn: {
-    type: String,
-  },
-  Twitter: {
-    type: String,
+  socialMedia: {
+    facebook: String,
+    twitter: String,
+    linkedIn: String,
+    instagram: String
   }
 }, 
 {

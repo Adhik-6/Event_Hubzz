@@ -1,7 +1,5 @@
-"use client"
-
 import { useState } from "react"
-import { Box, Grid, TextField, Typography, Button, Avatar, Paper, Divider, InputAdornment } from "@mui/material"
+import { Box, Grid, TextField, Typography, Button, Avatar, Paper, Divider, InputAdornment, CircularProgress } from "@mui/material"
 import {
   CloudUpload as CloudUploadIcon,
   Facebook as FacebookIcon,
@@ -9,14 +7,23 @@ import {
   Instagram as InstagramIcon,
   LinkedIn as LinkedInIcon,
   Save as SaveIcon,
+  Edit as EditIcon
 } from "@mui/icons-material"
+import placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
+import { axiosInstance } from "../utils/index.utils.js"
+import { useAuthStore } from "../stores/index.stores.js"
+import toast from "react-hot-toast"
 
-export const ProfileForm = ({ profile, onUpdate }) => {
+export const ProfileForm = ({ profile }) => {
+
+  const { setUser } = useAuthStore();
+
   const [formData, setFormData] = useState({
-    name: profile.name || "",
-    username: profile.username || "",
-    email: profile.email || "",
-    phone: profile.phone || "",
+    _id: profile._id,
+    name: profile.fullName || "",
+    username: profile.userName || "",
+    email: profile.mail || "",
+    phone: profile.phoneNumber || "",
     organization: profile.organization || "",
     bio: profile.bio || "",
     website: profile.website || "",
@@ -24,9 +31,11 @@ export const ProfileForm = ({ profile, onUpdate }) => {
     twitter: profile.socialMedia?.twitter || "",
     instagram: profile.socialMedia?.instagram || "",
     linkedin: profile.socialMedia?.linkedin || "",
-    profilePicture: profile.profilePicture || null,
-    profilePicturePreview: profile.profilePicture || null,
+    profilePicture: profile.profilePic || null,
+    // profilePicturePreview: profile.profilePicture || null,
   })
+  const [isEditing, setEditing] = useState(false)
+  const [isLoading, setLoading] = useState(false)
 
   const [errors, setErrors] = useState({})
 
@@ -55,8 +64,8 @@ export const ProfileForm = ({ profile, onUpdate }) => {
       reader.onloadend = () => {
         setFormData({
           ...formData,
-          profilePicture: file,
-          profilePicturePreview: reader.result,
+          profilePicture: reader.result,
+          // profilePicturePreview: reader.result,
         })
       }
       reader.readAsDataURL(file)
@@ -65,59 +74,99 @@ export const ProfileForm = ({ profile, onUpdate }) => {
 
   // Validate form
   const validateForm = () => {
-    const newErrors = {}
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
-    }
-
-    if (!formData.username.trim()) {
-      newErrors.username = "Username is required"
-    }
-
+    // Validate email
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
+      toast.error("Email is required")
+      return false
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
+      toast.error("Email is invalid")
+      return false
     }
 
+    // Validate fullName
+    if (!formData.name.trim()) {
+      toast.error("Full name is required")
+      return false
+    }
+
+    // Validate userName
+    if (!formData.username.trim()) {
+      toast.error("Username is required")
+      return false
+    }
+
+    // Validate organisation
+    if (!formData.organization.trim()) {
+      toast.error("Organisation is required")
+      return false
+    }
+
+    // Validate phoneNumber
+    if(formData.phone && !/^\+?[0-9\s-()]{8,}$/.test(formData.phone.trim())) {
+      toast.error("Please enter a valid phone number")
+      return false
+    }
+
+    // Validate website if provided
     if (formData.website && !/^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/.test(formData.website)) {
-      newErrors.website = "Website URL is invalid"
+      toast.error("Please enter a valid website URL")
+      return false
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return true
   }
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault()
 
-    if (validateForm()) {
-      const updatedProfile = {
-        name: formData.name,
-        username: formData.username,
-        email: formData.email,
-        phone: formData.phone,
-        organization: formData.organization,
-        bio: formData.bio,
-        website: formData.website,
-        socialMedia: {
-          facebook: formData.facebook,
-          twitter: formData.twitter,
-          instagram: formData.instagram,
-          linkedin: formData.linkedin,
-        },
-        profilePicture: formData.profilePicturePreview,
-      }
+    if (!validateForm()){
+      setLoading(false)
+      return
+    }
 
-      onUpdate(updatedProfile)
+    const userProfile = {
+      _id: formData._id,
+      fullName: formData.name,
+      userName: formData.username,
+      mail: formData.email,
+      phoneNumber: formData.phone,
+      organization: formData.organization,
+      bio: formData.bio,
+      website: formData.website,
+      profilePic: formData.profilePicture,
+      socialMedia: {
+        facebook: formData.facebook,
+        twitter: formData.twitter,
+        instagram: formData.instagram,
+        linkedin: formData.linkedin,
+      },
+    }
+
+    try {
+      const res = await axiosInstance.patch("/auth/update-profile", { userProfile })
+      if(res.data?.success){
+        console.log("is ", res.data.updatedProfile)
+        setUser(res.data.updatedProfile)
+        // not assigned right after updating
+        toast.success(res.data.message)
+        setEditing(prev => !prev)
+      } else
+        toast.error(res.data.message)
+    } catch (err) {
+      console.log("Error when updating", err)
+      toast.error(err.response.data.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <Box component="form">
       <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+
         <Typography variant="h6" gutterBottom>
           Profile Information
         </Typography>
@@ -125,7 +174,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Avatar src={formData.profilePicturePreview} alt={formData.name} sx={{ width: 150, height: 150, mb: 2 }} />
+            <Avatar src={formData.profilePicture || placeHolderAvatar} alt={formData.name} sx={{ width: 150, height: 150, mb: 2 }} />
 
             <input
               accept="image/*"
@@ -135,7 +184,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
               onChange={handleProfilePictureUpload}
             />
             <label htmlFor="profile-picture-upload">
-              <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />} size="small">
+              <Button variant="outlined" component="span" disabled={!isEditing} startIcon={<CloudUploadIcon />} size="small">
                 Change Photo
               </Button>
             </label>
@@ -147,15 +196,15 @@ export const ProfileForm = ({ profile, onUpdate }) => {
 
           <Grid item xs={12} md={8}>
             <Grid container spacing={2}>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Full Name"
                   name="name"
+                  disabled={!isEditing}
                   value={formData.name}
                   onChange={handleChange}
-                  error={!!errors.name}
-                  helperText={errors.name}
                   required
                 />
               </Grid>
@@ -165,10 +214,9 @@ export const ProfileForm = ({ profile, onUpdate }) => {
                   fullWidth
                   label="Username"
                   name="username"
+                  disabled={!isEditing}
                   value={formData.username}
                   onChange={handleChange}
-                  error={!!errors.username}
-                  helperText={errors.username}
                   required
                 />
               </Grid>
@@ -178,17 +226,24 @@ export const ProfileForm = ({ profile, onUpdate }) => {
                   fullWidth
                   label="Email"
                   name="email"
+                  disabled={!isEditing}
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  error={!!errors.email}
-                  helperText={errors.email}
                   required
                 />
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} />
+                <TextField 
+                  fullWidth 
+                  disabled={!isEditing} 
+                  label="Phone Number" 
+                  name="phone" 
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="1234567890"
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -196,6 +251,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
                   fullWidth
                   label="Organization"
                   name="organization"
+                  disabled={!isEditing}
                   value={formData.organization}
                   onChange={handleChange}
                   placeholder="Company or organization name"
@@ -208,6 +264,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
                   fullWidth
                   label="Bio"
                   name="bio"
+                  disabled={!isEditing}
                   value={formData.bio}
                   onChange={handleChange}
                   multiline
@@ -221,10 +278,9 @@ export const ProfileForm = ({ profile, onUpdate }) => {
                   fullWidth
                   label="Website"
                   name="website"
+                  disabled={!isEditing}
                   value={formData.website}
                   onChange={handleChange}
-                  error={!!errors.website}
-                  helperText={errors.website}
                   placeholder="https://example.com"
                 />
               </Grid>
@@ -245,6 +301,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
               fullWidth
               label="Facebook"
               name="facebook"
+              disabled={!isEditing}
               value={formData.facebook}
               onChange={handleChange}
               placeholder="Username or profile URL"
@@ -263,6 +320,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
               fullWidth
               label="Twitter"
               name="twitter"
+              disabled={!isEditing}
               value={formData.twitter}
               onChange={handleChange}
               placeholder="Username without @"
@@ -281,6 +339,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
               fullWidth
               label="Instagram"
               name="instagram"
+              disabled={!isEditing}
               value={formData.instagram}
               onChange={handleChange}
               placeholder="Username without @"
@@ -299,6 +358,7 @@ export const ProfileForm = ({ profile, onUpdate }) => {
               fullWidth
               label="LinkedIn"
               name="linkedin"
+              disabled={!isEditing}
               value={formData.linkedin}
               onChange={handleChange}
               placeholder="Username or profile URL"
@@ -315,10 +375,19 @@ export const ProfileForm = ({ profile, onUpdate }) => {
       </Paper>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button type="submit" variant="contained" startIcon={<SaveIcon />} size="large">
-          Save Changes
+        <Button type="submit" variant="contained" onClick={(e) => {
+          if(isEditing)
+            handleSubmit(e)
+          else{
+            e.preventDefault()
+            setEditing(prev => !prev)
+          }}}
+          disabled={isLoading}
+          startIcon={ isEditing?(isLoading?"":<SaveIcon/>):<EditIcon/> } size="large">
+          { isEditing?(isLoading?<CircularProgress size={24}/>:"Save Changes"):"Edit Profile" }
         </Button>
       </Box>
+
     </Box>
   )
 }

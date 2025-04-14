@@ -19,7 +19,7 @@ app.use(cookieParser())
 app.use(cors({
     origin: frontEndUrl,
     credentials: true, // Includes cookies in requests
-    methods: "GET, POST, PATCH, DELETE",
+    methods: "GET, POST, PATCH, DELETE, PUT",
   })
 );
 

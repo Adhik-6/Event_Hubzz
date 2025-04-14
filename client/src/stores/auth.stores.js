@@ -6,6 +6,8 @@ import { axiosInstance } from './../utils/index.utils.js'
 export const useAuthStore = create( persist( set => ({
   isAuthenticated: false,
   user: null, // this contains the current user's data. make sure to replace the mockUserProfile with this.
+
+  setUser: (updatedProfile) => set({ user: updatedProfile}),
   signUp: async (userData) => {
     try {
       const res = await axiosInstance.post('/auth/signup', userData);
