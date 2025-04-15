@@ -86,7 +86,7 @@ function App() {
     <NavBar/>
     <Routes>
       { useScrollToTop() }
-      {/* { console.log(isAuthenticated, "||", user) } */}
+      { console.log("user: ", user) }
       <Route path="/" element={ <Home/> } />
       <Route path='/login' element={ isAuthenticated?<Navigate to="/"/>:<Login/> } />
       <Route path='/signup' element={ isAuthenticated?<Navigate to="/"/>:<Signup/> } />

@@ -101,7 +101,7 @@ export const NavBar = () => {
     <Menu anchorEl={userMenuAnchorEl} open={isUserMenuOpen} onClose={handleUserMenuClose} sx={{ mt: "45px" }}>
       <MenuItem component={Link} to="/profile" onClick={handleUserMenuClose}>
         <ListItemIcon>
-          <Avatar src={user?.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 24, height: 24 }} />
+          <Avatar src={user?.profilePic || placeHolderAvatar } alt={user?.userName} sx={{ width: 24, height: 24 }} />
         </ListItemIcon>
         <ListItemText primary={user.userName} secondary={user.mail} />
       </MenuItem>
