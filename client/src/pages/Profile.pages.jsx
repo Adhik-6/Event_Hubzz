@@ -52,7 +52,7 @@ export const Profile = () => {
           <Box
             sx={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "flex-end", justifyContent: "space-between" }}>
             <Box sx={{ display: "flex",flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "flex-end", mb: isMobile ? 3 : 0 }}>
-              <Avatar src={user.profilePic || placeHolderAvatar} alt={user.fullName} sx={{ width: 120, height: 120, border: "4px solid white", mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 3 }}/>
+              <Avatar src={user?.profilePic || placeHolderAvatar} alt={user.fullName} sx={{ width: 120, height: 120, border: "4px solid white", mb: isMobile ? 2 : 0, mr: isMobile ? 0 : 3 }}/>
 
               <Box sx={{ textAlign: isMobile ? "center" : "left" }}>
                 <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>

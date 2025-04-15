@@ -49,7 +49,7 @@ export const Signup = () => {
     bio: "",
     website: "",
     profilePic: null,
-    profilePicPreview: null,
+    // profilePicPreview: null,
   })
   const [errors, setErrors] = useState({})
   const [signupError, setSignupError] = useState("")
@@ -88,7 +88,7 @@ export const Signup = () => {
         setFormData({
           ...formData,
           profilePic: file,
-          profilePicPreview: reader.result,
+          // profilePicPreview: reader.result,
         })
       }
       reader.readAsDataURL(file)
@@ -163,7 +163,7 @@ export const Signup = () => {
       let x = await signUp(formData)
       if(x?.success){
         setSignupSuccess(true)
-        console.log("Registration successful")
+        toast.success("Registration successful")
         navigate('/')
       } else {
         console.log(`Something went wrong: ${x?.message}`)
@@ -202,7 +202,7 @@ export const Signup = () => {
         <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
           <Box sx={{ position: "relative" }}>
             <Avatar
-              src={formData.profilePicPreview}
+              src={formData.profilePic}
               alt="Profile Preview"
               sx={{
                 width: 100,

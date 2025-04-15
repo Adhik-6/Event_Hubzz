@@ -76,7 +76,7 @@ export const NavBar = () => {
           )}
           { isAuthenticated ? (
             <IconButton onClick={handleUserMenuOpen} sx={{ ml: 1 }}>
-              <Avatar src={user.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 37, height: 37 }} />
+              <Avatar src={user?.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 37, height: 37 }} />
             </IconButton>
           ) : (
             <Button component={Link} to="/login" variant="outlined" sx={{ ml: 2, "&:hover": { background: "linear-gradient(90deg, #0062cc, #00a3cc)", borderColor: "transparent" }}}>
@@ -101,7 +101,7 @@ export const NavBar = () => {
     <Menu anchorEl={userMenuAnchorEl} open={isUserMenuOpen} onClose={handleUserMenuClose} sx={{ mt: "45px" }}>
       <MenuItem component={Link} to="/profile" onClick={handleUserMenuClose}>
         <ListItemIcon>
-          <Avatar src={user.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 24, height: 24 }} />
+          <Avatar src={user?.profilePic || placeHolderAvatar } alt={user.userName} sx={{ width: 24, height: 24 }} />
         </ListItemIcon>
         <ListItemText primary={user.userName} secondary={user.mail} />
       </MenuItem>
