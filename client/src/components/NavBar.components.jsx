@@ -98,30 +98,32 @@ export const NavBar = () => {
     </Menu>
 
     {/* User Menu */}
-    <Menu anchorEl={userMenuAnchorEl} open={isUserMenuOpen} onClose={handleUserMenuClose} sx={{ mt: "45px" }}>
-      <MenuItem component={Link} to="/profile" onClick={handleUserMenuClose}>
-        <ListItemIcon>
-          <Avatar src={user?.profilePic || placeHolderAvatar } alt={user?.userName} sx={{ width: 24, height: 24 }} />
-        </ListItemIcon>
-        <ListItemText primary={user.userName} secondary={user.mail} />
-      </MenuItem>
-      <MenuItem component={Link} to="/create-event" onClick={handleUserMenuClose}>
-        <ListItemIcon>
-          <AddCircleOutlineRounded/>
-        </ListItemIcon>
-        <ListItemText primary="Create Event"/>
-      </MenuItem>
-      <Divider />
-      <MenuItem onClick={() => {
-        handleUserMenuClose();
-        logout()
-        }}>
-        <ListItemIcon>
-          <LogoutIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </MenuItem>
-    </Menu>
+    { isAuthenticated && (
+      <Menu anchorEl={userMenuAnchorEl} open={isUserMenuOpen} onClose={handleUserMenuClose} sx={{ mt: "45px" }}>
+        <MenuItem component={Link} to="/profile" onClick={handleUserMenuClose}>
+          <ListItemIcon>
+            <Avatar src={user?.profilePic || placeHolderAvatar } alt={user?.userName} sx={{ width: 24, height: 24 }} />
+          </ListItemIcon>
+          <ListItemText primary={user?.userName} secondary={user.mail} />
+        </MenuItem>
+        <MenuItem component={Link} to="/create-event" onClick={handleUserMenuClose}>
+          <ListItemIcon>
+            <AddCircleOutlineRounded/>
+          </ListItemIcon>
+          <ListItemText primary="Create Event"/>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={() => {
+          handleUserMenuClose();
+          logout()
+          }}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </MenuItem>
+      </Menu>
+    ) }
     </>
   )
 }

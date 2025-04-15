@@ -115,10 +115,10 @@ export const EventCard = ({ event, isOrganizer = false }) => {
   }
 
   return (
-    <Card elevation={2}>
+    <Card elevation={2} sx={{ position: "relative" }}>
       {/* <CardActionArea> */}
         <CardMedia component="img" height="160" image={eventImage || "/placeholder.svg?height=160&width=300"} alt={title} />
-        <Box sx={{ position: "absolute", top: 12, right: 12 }}>
+        <Box sx={{ position: "absolute", top: 9, right: 9 }}>
           <Chip
             label={status.charAt(0).toUpperCase() + status.slice(1)}
             color={getStatusColor(status)}

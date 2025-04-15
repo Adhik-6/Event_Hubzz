@@ -140,7 +140,7 @@ export const Events = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4, mt: 7 }}>
+    <Container maxWidth="lg" sx={{ py: 4, mt: 10 }}>
 
       <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Typography variant="h4" component="h1" fontWeight="bold"> Discover Events </Typography>
