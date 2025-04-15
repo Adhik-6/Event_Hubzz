@@ -10,8 +10,8 @@ import { authRouter, eventRouter, userRouter } from "./routes/index.routes.js";
 const app = express();
 dotenv.config();
 
-const frontEndUrl = (process.env.NODE_ENV==="production ")?process.env.CLIENT_URL:process.env.CLIENT_URL_DEV
-const backEndUrl = (process.env.NODE_ENV==="production ")?process.env.SERVER_URL:process.env.SERVER_URL_DEV
+const frontEndUrl = (process.env.NODE_ENV==="production")?process.env.CLIENT_URL:process.env.CLIENT_URL_DEV
+const backEndUrl = (process.env.NODE_ENV==="production")?process.env.SERVER_URL:process.env.SERVER_URL_DEV
 
 // app.use(express.json());
 app.use(express.json({ limit: "50mb" })); 
