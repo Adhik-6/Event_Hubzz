@@ -1,27 +1,19 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Box, Container, Typography, Tabs, Tab, Fab, useMediaQuery, useTheme, Avatar} from "@mui/material"
 import { Add as AddIcon } from "@mui/icons-material"
 import { ProfileForm, MyEventsList, NotificationsTab, SettingsTab } from "./../components/index.components.js"
-import { mockEvents } from "../assets/mockEvents.js"
+// import { mockEvents } from "../assets/mockEvents.js"
+// import { mockUserProfile } from "../assets/mockUserProfile.js"
 import  placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
-import { mockUserProfile } from "../assets/mockUserProfile.js"
 import { useAuthStore } from "../stores/index.stores.js"
 
 export const Profile = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [activeTab, setActiveTab] = useState(0)
-  const [userProfile, setUserProfile] = useState(mockUserProfile)
-  const [events, setEvents] = useState([])
+  // const [userProfile, setUserProfile] = useState(mockUserProfile)
   const { user } = useAuthStore()
-  
-  // Fetch user events
-  useEffect(() => {
-    // In a real app, you would fetch the user's events from an API
-    // Filter events where the organizer ID matches the current user ID
-    const userEvents = mockEvents.filter((event) => event.organizerId === userProfile.id)
-    setEvents(userEvents)
-  }, [userProfile.id])
+
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -41,7 +33,7 @@ export const Profile = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        return <MyEventsList events={events} />
+        return <MyEventsList />
       case 2:
         return <NotificationsTab />
       case 3:

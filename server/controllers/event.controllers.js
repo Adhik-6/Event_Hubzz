@@ -37,3 +37,12 @@ export const getEventDetails = async (req, res) => {
   if(!eventDetails) throw customAPIError(404, "Event doesn't exist")
   res.status(200).json({ success: true, message: "Event details fetched successfully", eventDetails })
 }
+
+export const getCurrentUserEvents = async (req, res) => {
+  const { _id } = req.user
+  // console.log("req.user: ", req.user)
+  const events = await Event.find({ organiser: _id })
+  // console.log("fetched Events: ", events)
+  if(!events) throw customAPIError(404, "No events found")
+  res.status(200).json({ success: true, message: "Events fetched", currentUserEvents: events })
+}

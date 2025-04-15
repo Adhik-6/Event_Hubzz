@@ -1,87 +1,109 @@
-import { useState } from "react"
-import { Box, Typography, Grid, TextField, InputAdornment, FormControl, InputLabel, Select, MenuItem, Button, Tabs, Tab, Divider, useMediaQuery, useTheme } from "@mui/material"
+import { useState, useEffect } from "react"
+import { Box, Typography, Grid, TextField, Container, CircularProgress, InputAdornment, FormControl, InputLabel, Select, MenuItem, Button, Tabs, Tab, Divider, useMediaQuery, useTheme } from "@mui/material"
 import { Search as SearchIcon, Add as AddIcon } from "@mui/icons-material"
 import { EventCard } from "./index.components.js"
+import { axiosInstance, getStatus } from "../utils/index.utils.js"
+import { useAuthStore } from "../stores/index.stores.js"
+import toast from "react-hot-toast"
+import { Link } from "react-router-dom"
 
-export const MyEventsList = ({ events }) => {
+
+export const MyEventsList = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+  const [isLoading, setLoding] = useState(false)
+  const [events, setEvents] = useState([])
+  const [filteredEvents, setFilteredEvents] = useState([])
+  const [statusFilter, setStatusFilter] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("date-desc")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [filteredEvents, setFilteredEvents] = useState(events)
+  const { user } = useAuthStore()
+  let dateComparison;
+
+  // Fetch user events
+  useEffect(() => {
+    async function getCurrentUserEvents(){
+      setLoding(true)
+      try {
+        const res = await axiosInstance.get("/events/organiser/user-event")
+        // const res = await axiosInstance.get("/events")
+        if(res.data?.success)
+          // toast.success(res.data.message)
+          // setEvents(res.data.events)
+          // setFilteredEvents(res.data.events)
+          setEvents(res.data.currentUserEvents)
+          setFilteredEvents(res.data.currentUserEvents)
+      } catch (err) {
+        console.log("Error fetching current user's events: ", err)
+        toast.error(err.response?.data?.message)
+      } finally {
+        setLoding(false)
+      }
+    }
+    getCurrentUserEvents()
+  }, [user._id])
 
   // Handle search
-  const handleSearch = (e) => {
-    const query = e.target.value
-    setSearchQuery(query)
+  useEffect(() => {
+    let result = [...events]
 
-    filterEvents(query, statusFilter, sortBy)
-  }
+    // Apply status filter
+    if (statusFilter !== "all") {
+      result = result.filter((event) => getStatus(event.startDate, event.startTime, event.endDate, event.endTime) === statusFilter)
+    }
 
-  // Handle sort change
-  const handleSortChange = (e) => {
-    const value = e.target.value
-    setSortBy(value)
-
-    filterEvents(searchQuery, statusFilter, value)
-  }
-
-  // Handle status filter change
-  const handleStatusFilterChange = (e, newValue) => {
-    setStatusFilter(newValue)
-
-    filterEvents(searchQuery, newValue, sortBy)
-  }
-
-  // Filter events based on search, status, and sort
-  const filterEvents = (query, status, sort) => {
-    let filtered = [...events]
-
-    // Apply search filter
-    if (query) {
-      const lowercaseQuery = query.toLowerCase()
-      filtered = filtered.filter(
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      result = result.filter(
         (event) =>
-          event.title.toLowerCase().includes(lowercaseQuery) ||
-          event.description.toLowerCase().includes(lowercaseQuery),
+          event.title.toLowerCase().includes(query) ||
+          event.description.toLowerCase().includes(query) ||
+          event.venue.toLowerCase().includes(query),
       )
     }
 
-    // Apply status filter
-    if (status !== "all") {
-      filtered = filtered.filter((event) => event.status === status)
-    }
-
     // Apply sorting
-    switch (sort) {
+    switch (sortBy) {
       case "date-asc":
-        filtered.sort((a, b) => new Date(a.date) - new Date(b.date))
+        result.sort((a, b) => {
+          dateComparison = new Date(a.startDate) - new Date(b.startDate)
+          if(dateComparison === 0){
+            if(a.startTime < b.startTime)
+              return -1
+            else if(a.startTime > b.startTime)
+              return 1
+            else
+              return 0
+          }
+          return dateComparison;
+        } )
         break
       case "date-desc":
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date))
+        result.sort((a, b) => {
+          dateComparison = new Date(b.startDate) - new Date(a.startDate)
+          if(dateComparison === 0){
+            if(b.startTime < a.startTime)
+              return -1
+            else if(b.startTime > a.startTime)
+              return 1
+            else
+              return 0
+          }
+          return dateComparison;
+        } )
         break
       case "title-asc":
-        filtered.sort((a, b) => a.title.localeCompare(b.title))
+        result.sort((a, b) => a.title.localeCompare(b.title))
         break
       case "title-desc":
-        filtered.sort((a, b) => b.title.localeCompare(a.title))
+        result.sort((a, b) => b.title.localeCompare(a.title))
         break
       default:
         break
     }
 
-    setFilteredEvents(filtered)
-  }
-
-  // Handle create event click
-  const handleCreateEventClick = () => {
-    // In a real app, you would use a router to navigate
-    console.log("Navigating to /create-event")
-    alert("Navigating to /create-event")
-    // Example with react-router:
-    // navigate('/create-event');
-  }
+    setFilteredEvents(result)
+  }, [events, statusFilter, searchQuery, sortBy])
 
   return (
     <Box>
@@ -99,7 +121,7 @@ export const MyEventsList = ({ events }) => {
           My Events
         </Typography>
 
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreateEventClick}>
+        <Button component={Link} to="/create-event" variant="contained" startIcon={<AddIcon />}>
           Create Event
         </Button>
       </Box>
@@ -117,7 +139,7 @@ export const MyEventsList = ({ events }) => {
         <TextField
           placeholder="Search events..."
           value={searchQuery}
-          onChange={handleSearch}
+          onChange={(e) => setSearchQuery(e.target.value)}
           sx={{ flexGrow: 1 }}
           InputProps={{
             startAdornment: (
@@ -130,7 +152,7 @@ export const MyEventsList = ({ events }) => {
 
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Sort By</InputLabel>
-          <Select value={sortBy} label="Sort By" onChange={handleSortChange}>
+          <Select value={sortBy} label="Sort By" onChange={(e) => setSortBy(e.target.value)}>
             <MenuItem value="date-desc">Newest First</MenuItem>
             <MenuItem value="date-asc">Oldest First</MenuItem>
             <MenuItem value="title-asc">Title (A-Z)</MenuItem>
@@ -141,7 +163,7 @@ export const MyEventsList = ({ events }) => {
 
       <Tabs
         value={statusFilter}
-        onChange={handleStatusFilterChange}
+        onChange={(e, newValue) => setStatusFilter(newValue)}
         variant={isMobile ? "scrollable" : "standard"}
         scrollButtons={isMobile ? "auto" : false}
         allowScrollButtonsMobile
@@ -154,30 +176,33 @@ export const MyEventsList = ({ events }) => {
       </Tabs>
 
       <Divider sx={{ mb: 3 }} />
+      {/* {console.log("filteredEvents: ", filteredEvents)} */}
 
-      {filteredEvents.length > 0 ? (
-        <Grid container spacing={3}>
-          {filteredEvents.map((event) => (
-            <Grid item xs={12} sm={6} md={4} key={event.id}>
-              <EventCard event={event} isOrganizer={true} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            No events found
-          </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            {events.length === 0 ? "You haven't created any events yet." : "No events match your search criteria."}
-          </Typography>
-          {events.length === 0 && (
-            <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreateEventClick} sx={{ mt: 2 }}>
-              Create Your First Event
-            </Button>
-          )}
+      {isLoading? (
+        <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+          <CircularProgress />
         </Box>
-      )}
+      </Container>
+      ) :
+      filteredEvents && filteredEvents.length > 0 ? (
+          <Grid container spacing={3}>
+            {filteredEvents.map((event) => (
+              <Grid item xs={12} sm={6} md={4} key={event._id}>
+                <EventCard event={event} isOrganizer={true} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ textAlign: "center", py: 8 }}>
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              No events found
+            </Typography>
+            <Typography variant="body2" color="text.secondary" paragraph>
+              {events && events.length === 0 ? "You haven't created any events yet." : "No events match your search criteria."}
+            </Typography>
+          </Box>
+        )}
     </Box>
   )
 }

@@ -68,7 +68,7 @@ export const Events = () => {
           event.venue.toLowerCase().includes(query),
       )
     }
-    // console.log("result: ", result)
+
     // Apply sorting
     switch (sortBy) {
       case "date-asc":
@@ -137,16 +137,6 @@ export const Events = () => {
   // Toggle filter drawer for mobile
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen)
-  }
-
-  if (isLoading) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
-          <CircularProgress />
-        </Box>
-      </Container>
-    )
   }
 
   return (
@@ -260,28 +250,34 @@ export const Events = () => {
       </Box>
 
       {/* Events grid */}
-      {currentEvents.length > 0 ? (
-        <Grid container spacing={3}>
-          {currentEvents.map((event) => (
-            <Grid item xs={12} sm={6} md={4} key={event._id}>
-              <EventCard event={event} onClick={() => handleEventClick(event.id)} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Box sx={{ py: 8, textAlign: "center" }}>
-          <Typography variant="h6" color="text.secondary"> No events found matching your criteria </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}> Try adjusting your search or filters </Typography>
-          <Button variant="outlined" sx={{ mt: 2 }} onClick={() => {
-              setSearchQuery("")
-              setFilterStatus("all")
-              setSortBy("date-asc")
-            }}
-          >
-            Clear all filters
-          </Button>
+      {isLoading ? (
+        <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+          <CircularProgress />
         </Box>
-      )}
+      </Container>
+      ) : currentEvents.length > 0 ? (
+          <Grid container spacing={3}>
+            {currentEvents.map((event) => (
+              <Grid item xs={12} sm={6} md={4} key={event._id}>
+                <EventCard event={event} onClick={() => handleEventClick(event.id)} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box sx={{ py: 8, textAlign: "center" }}>
+            <Typography variant="h6" color="text.secondary"> No events found matching your criteria </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}> Try adjusting your search or filters </Typography>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={() => {
+                setSearchQuery("")
+                setFilterStatus("all")
+                setSortBy("date-asc")
+              }}
+            >
+              Clear all filters
+            </Button>
+          </Box>
+        )}
 
       {/* Pagination */}
       {totalPages > 1 && (
