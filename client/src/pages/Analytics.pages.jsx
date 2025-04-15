@@ -18,11 +18,12 @@ import { Download as DownloadIcon, Edit as EditIcon } from "@mui/icons-material"
 import { RegistrationsTable, DownloadModal, AnalyticsSummary } from "./../components/index.components.js"
 import { mockRegistrations } from "./../assets/mockRegistrations.js"
 import { mockEvents } from "./../assets/mockEvents.js"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export const Analytics = () => {
   const theme = useTheme()
   const navigate = useNavigate();
+  const { id } = useParams();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [activeTab, setActiveTab] = useState(0)
   const [isLoading, setIsLoading] = useState(true)

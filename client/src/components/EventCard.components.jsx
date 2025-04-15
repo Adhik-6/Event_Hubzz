@@ -111,7 +111,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
     handleMenuClose()
     // In a real app, you would navigate to the registrations page
     console.log("Managing registrations for event:", id)
-    alert(`Managing registrations for event: ${id}`)
+    // alert(`Managing registrations for event: ${id}`)
   }
 
   return (
@@ -217,7 +217,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
       {/* </CardActionArea> */}
       <CardActions>
         {isOrganizer ? (
-          <Button component={Link} to="/profile/analytics" size="small" color="primary" fullWidth onClick={handleManageRegistrations}>
+          <Button component={Link} to={`/profile/analytics/${id}`} size="small" color="primary" fullWidth onClick={handleManageRegistrations}>
             Manage Event
           </Button>
         ) : (

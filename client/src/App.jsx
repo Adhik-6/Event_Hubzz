@@ -86,7 +86,7 @@ function App() {
     <NavBar/>
     <Routes>
       { useScrollToTop() }
-      { console.log("user: ", user) }
+      {/* { console.log("user: ", user) } */}
       <Route path="/" element={ <Home/> } />
       <Route path='/login' element={ isAuthenticated?<Navigate to="/"/>:<Login/> } />
       <Route path='/signup' element={ isAuthenticated?<Navigate to="/"/>:<Signup/> } />
@@ -95,7 +95,7 @@ function App() {
       <Route path='/events/:id/register' element={ isAuthenticated?<EventRegistration/>:<Navigate to="/login"/> } />
       <Route path="/create-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
       <Route path="/profile" element={ isAuthenticated?<Profile/>:<Navigate to="/login"/> } />
-      <Route path="/profile/analytics" element={ isAuthenticated?<Analytics/>:<Navigate to="/login"/> } />
+      <Route path="/profile/analytics/:id" element={ isAuthenticated?<Analytics/>:<Navigate to="/login"/> } />
       <Route path="*" element={ <PageNotFound/> } />
     </Routes>
     <Footer/>

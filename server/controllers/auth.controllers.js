@@ -50,7 +50,7 @@ export const login = async (req, res) => {
     
   const isMatch = await bcrypt.compare(password, user.password)
   if(!isMatch) throw customAPIError(403, "Invalid password", "login")
-  console.log("passwords correct")
+  // console.log("passwords correct")
       
   setAuthCookies(req, res, user._id);
   req.user = user.toObject();

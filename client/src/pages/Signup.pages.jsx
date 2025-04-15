@@ -163,7 +163,7 @@ export const Signup = () => {
       let x = await signUp(formData)
       if(x?.success){
         setSignupSuccess(true)
-        toast.success("Registration successful")
+        // toast.success("Registration successful")
         navigate('/')
       } else {
         console.log(`Something went wrong: ${x?.message}`)
