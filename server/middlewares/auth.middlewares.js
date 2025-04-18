@@ -5,6 +5,7 @@ import { Organiser } from '../models/index.models.js';
 dotenv.config();
 
 export const authMiddleware = async (req, res, next) => {
+  if (req.method === 'OPTIONS') return next() // Let preflight request through without auth
   const token = req.cookies.token;
   if(!token) throw customAPIError(403, "User not logged in", "authMiddleware");
 

@@ -23,6 +23,7 @@ app.use(cors({
     methods: "GET, POST, PATCH, DELETE",
   })
 );
+app.options('*', cors()); // handle preflight
 
 app.get("/", (req, res) => {
   res.send("This is Home Page");
