@@ -10,7 +10,7 @@ import { authRouter, eventRouter, userRouter, analyticsRouter } from "./routes/i
 const app = express();
 dotenv.config();
 
-const frontEndUrl = (process.env.NODE_ENV==="production")?process.env.CLIENT_URL:process.env.CLIENT_URL_DEV
+const frontEndUrl = (process.env.NODE_ENV==="production")?(process.env.CLIENT_URL).trim():process.env.CLIENT_URL_DEV
 const backEndUrl = (process.env.NODE_ENV==="production")?process.env.SERVER_URL:process.env.SERVER_URL_DEV
 console.log("frontend url:", frontEndUrl)
 
