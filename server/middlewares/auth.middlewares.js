@@ -7,13 +7,13 @@ dotenv.config();
 export const authMiddleware = async (req, res, next) => {
   if (req.method === 'OPTIONS') return next() // Let preflight request through without auth
   const token = req.cookies.token;
-  if(!token) throw customAPIError(403, "User not logged in", "authMiddleware");
+  if (!token) return res.status(403).json({ success: true,  message: "User not logged in" });
 
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await Organiser.findById(userId).select('-password');
   } catch (err) {
-    throw customAPIError(403, "Invalid token", "authMiddleware");
+    return res.status(403).json({success: false, message: "Invalid token at authMiddleware"});
   }
   next()
 }
