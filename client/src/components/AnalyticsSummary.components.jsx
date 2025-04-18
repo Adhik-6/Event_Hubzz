@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react"
 import { Box, Grid, Paper, Typography, LinearProgress, useTheme, useMediaQuery } from "@mui/material"
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { useAnalyticsStore } from "../stores/index.stores.js";
+import toast from "react-hot-toast";
+import { axiosInstance } from './../utils/index.utils.js'
+import { useParams } from "react-router-dom";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -25,78 +29,101 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export const AnalyticsSummary = ({ registrations, formFields, event }) => {
+export const AnalyticsSummary = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-  const [summaryData, setSummaryData] = useState({
-    registrationsByDay: [],
-    questionSummaries: [],
-  })
+  // const [summaryData, setSummaryData] = useState({
+  //   registrationsByDay: [],
+  //   questionSummaries: [],
+  // })
 
   // Process data for charts and summaries
-  useEffect(() => {
-    if (registrations.length === 0 || formFields.length === 0) return
+  // useEffect(() => {
+  //   if (registrations.length === 0 || formFields.length === 0) return
 
-    // Process registrations by day
-    const registrationDates = {}
-    registrations.forEach((reg) => {
-      const date = new Date(reg.registrationDate).toLocaleDateString()
-      registrationDates[date] = (registrationDates[date] || 0) + 1
-    })
+  //   // Process registrations by day
+  //   const registrationDates = {}
+  //   registrations.forEach((reg) => {
+  //     const date = new Date(reg.registrationDate).toLocaleDateString()
+  //     registrationDates[date] = (registrationDates[date] || 0) + 1
+  //   })
 
-    const registrationsByDay = Object.keys(registrationDates)
-      .map((date) => ({
-        date,
-        count: registrationDates[date],
-      }))
-      .sort((a, b) => new Date(a.date) - new Date(b.date))
+  //   const registrationsByDay = Object.keys(registrationDates)
+  //     .map((date) => ({
+  //       date,
+  //       count: registrationDates[date],
+  //     }))
+  //     .sort((a, b) => new Date(a.date) - new Date(b.date))
 
-    // Process question summaries
-    const questionSummaries = formFields.map((field) => {
-      const responses = registrations.map((reg) => reg.formResponses[field.id])
+  //   // Process question summaries
+  //   const questionSummaries = formFields.map((field) => {
+  //     const responses = registrations.map((reg) => reg.formResponses[field.id])
 
-      // Count frequency of each response
-      const counts = {}
-      responses.forEach((response) => {
-        if (response === undefined || response === null) return
+  //     // Count frequency of each response
+  //     const counts = {}
+  //     responses.forEach((response) => {
+  //       if (response === undefined || response === null) return
 
-        if (Array.isArray(response)) {
-          response.forEach((item) => {
-            counts[item] = (counts[item] || 0) + 1
-          })
-        } else {
-          const value = response.toString()
-          counts[value] = (counts[value] || 0) + 1
-        }
-      })
+  //       if (Array.isArray(response)) {
+  //         response.forEach((item) => {
+  //           counts[item] = (counts[item] || 0) + 1
+  //         })
+  //       } else {
+  //         const value = response.toString()
+  //         counts[value] = (counts[value] || 0) + 1
+  //       }
+  //     })
 
-      // Convert to array for charts
-      const data = Object.keys(counts)
-        .map((key) => ({
-          name: key,
-          value: counts[key],
-        }))
-        .sort((a, b) => b.value - a.value)
+  //     // Convert to array for charts
+  //     const data = Object.keys(counts)
+  //       .map((key) => ({
+  //         name: key,
+  //         value: counts[key],
+  //       }))
+  //       .sort((a, b) => b.value - a.value)
 
-      return {
-        field,
-        data,
-        total: responses.filter((r) => r !== undefined && r !== null).length,
-      }
-    })
+  //     return {
+  //       field,
+  //       data,
+  //       total: responses.filter((r) => r !== undefined && r !== null).length,
+  //     }
+  //   })
 
-    setSummaryData({
-      registrationsByDay,
-      questionSummaries,
-    })
-  }, [registrations, formFields])
+  //   setSummaryData({
+  //     registrationsByDay,
+  //     questionSummaries,
+  //   })
+  // }, [registrations, formFields])
 
   // COLORS for charts
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"]
+  const { summaryData, registrationsOverTime, setRegistrationsOverTime, questionSummaries, setQuestionSummaries } = useAnalyticsStore();
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const [ res1, res2 ] = await Promise.all([
+          axiosInstance.get(`/analytics/registrations-over-time/${id}`),
+          axiosInstance.get(`/analytics/pie-chart-data/${id}`)
+        ])
+
+        if(!res1.data.success || !res2.data.success) throw new Error("Error fetching summary")
+        setRegistrationsOverTime(res1.data.dbRes)
+        setQuestionSummaries(res2.data.dbRes)
+        // console.log("registrationsOverTime: ", res.data.dbRes)
+      } catch (err) {
+        console.log("Error fetching Summary", err)
+        toast.error(err.message)
+      }
+    }
+    getData()
+  },[])
 
   return (
     <Box>
-      {/* Registration Progress */}
+
+      {/* Linear Registration Progress */}
       <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" gutterBottom>
           Registration Progress
@@ -104,12 +131,13 @@ export const AnalyticsSummary = ({ registrations, formFields, event }) => {
 
         <Box sx={{ mt: 2, mb: 1 }}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="body2">{registrations.length} registered</Typography>
-            <Typography variant="body2">Capacity: {event?.capacity || 0}</Typography>
+            <Typography variant="body2">{summaryData?.registrations} registered</Typography>
+            <Typography variant="body2">Capacity: {summaryData?.capacity || "None"}</Typography>
           </Box>
           <LinearProgress
             variant="determinate"
-            value={event?.capacity ? Math.min((registrations.length / event.capacity) * 100, 100) : 0}
+            color="secondary"
+            value={summaryData?.capacity ? Number(((summaryData?.registrations / summaryData?.capacity)*100).toFixed(2)) : 100}
             sx={{ mt: 1, height: 10, borderRadius: 5 }}
           />
         </Box>
@@ -122,13 +150,13 @@ export const AnalyticsSummary = ({ registrations, formFields, event }) => {
         </Typography>
 
         <Box sx={{ height: 300, mt: 2, color: "black" }}>
-          {summaryData.registrationsByDay.length > 0 ? (
+          {registrationsOverTime.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={summaryData.registrationsByDay} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <BarChart data={registrationsOverTime} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <XAxis dataKey="date" />
                 <YAxis allowDecimals={false} />
                 <Tooltip content={<CustomTooltip/>}/>
-                <Bar dataKey="count" name="Registrations" fill={theme.palette.primary.main} />
+                <Bar dataKey="count" name="Registrations" fill={theme.palette.secondary.main} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
@@ -146,8 +174,11 @@ export const AnalyticsSummary = ({ registrations, formFields, event }) => {
         Response Summaries
       </Typography>
 
+      {/* {console.log("Array.isArray(questionSummaries) :", Array.isArray(questionSummaries))}
+      {console.log("questionSummaries", questionSummaries)} */}
+
       <Grid container spacing={3}>
-        {summaryData.questionSummaries.map((summary, index) => (
+        {Array.isArray(questionSummaries) && questionSummaries.map((summary, index) => (
           <Grid item xs={12} md={6} key={summary.field.id}>
             <Paper elevation={1} sx={{ p: 3, height: "100%" }}>
               <Typography variant="subtitle1" fontWeight="medium" gutterBottom>

@@ -46,6 +46,7 @@ export const RegistrationForm = () => {
   // Render a form field based on its type
   const renderField = (field) => {
     // if (!shouldShowField(field)) return null
+    // console.log("field: ", field)
 
     switch (field.type) {
       case "text":
@@ -93,7 +94,6 @@ export const RegistrationForm = () => {
             <InputLabel id={`${field.id}-label`}>{field.label}</InputLabel>
             <Select
               labelId={`${field.id}-label`}
-              id={field.id}
               name={field.id}
               value={responseData[field.label] || ""}
               onChange={(e) => handleFieldChange(field.label, e.target.value)}
@@ -101,7 +101,7 @@ export const RegistrationForm = () => {
             >
               {field.options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                  {option.value}
                 </MenuItem>
               ))}
             </Select>

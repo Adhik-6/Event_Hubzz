@@ -62,9 +62,12 @@ export const FormPreview = () => {
           {field.type === "dropdown" && (
             <FormControl sx={{ minWidth: "210px"}} required={field.required}>
               <InputLabel>{field.label}</InputLabel>
-              <Select label={field.label} disabled>
+              <Select value={''} label={field.label} disabled>
+                <MenuItem key="0" value="">
+                  {""}
+                </MenuItem>
                 {field.options.map((option) => (
-                  <MenuItem key={option.id} value={option.value}>
+                  <MenuItem key={option.value} value={option.value}>
                     {option.value}
                   </MenuItem>
                 ))}

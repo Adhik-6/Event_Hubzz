@@ -48,6 +48,8 @@ const useEventStore = create((set, get) => {
       set(state => ({ eventDetails: { ...state.eventDetails, [field]: value } }));
     },
 
+    setEventDetailsAll: (newValue) => set( state => ({...state, eventDetails: newValue})),
+
     handleImageUpload: (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -123,7 +125,8 @@ const useEventStore = create((set, get) => {
     setRegistrationType: (type) => set(() => ({ registrationType: type })),
     setExternalUrl: (url) => set(() => ({ externalUrl: url })),
 
-    setFormFields: (newFields) => set(() => ({ formFields: newFields }))
+    setFormFields: (newFields) => set(() => ({ formFields: newFields })),
+    setFormFieldsAll: (newFields) => set(state => ({ ...state, formFields: newFields }))
   }
 });
 

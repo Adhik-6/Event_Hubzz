@@ -49,9 +49,9 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
     if (value === undefined || value === null || value === "") return "Not provided"
 
     const field = responseFormFields.find((f) => f.label === fieldId)
-    console.log("field:", field)
-    console.log("fieldId:", fieldId)
-    console.log("value:", value)
+    // console.log("field:", field)
+    // console.log("fieldId:", fieldId)
+    // console.log("value:", value)
     if (!field) return value
 
     if (field.type === "checkbox" && Array.isArray(value)) {

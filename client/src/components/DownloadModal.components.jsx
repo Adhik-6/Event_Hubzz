@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Typography } from "@mui/material"
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Typography, CircularProgress } from "@mui/material"
 import { Download as DownloadIcon } from "@mui/icons-material"
 
-export const DownloadModal = ({ open, onClose, onDownload, defaultFilename }) => {
+export const DownloadModal = ({ open, onClose, onDownload, defaultFilename, isDownloading}) => {
   const [filename, setFilename] = useState(defaultFilename || "event_registrations")
   const [error, setError] = useState("")
 
@@ -52,7 +52,7 @@ export const DownloadModal = ({ open, onClose, onDownload, defaultFilename }) =>
             value={filename}
             onChange={handleFilenameChange}
             error={!!error}
-            helperText={error || "The file will be downloaded as [filename].xlsx"}
+            helperText={error || `The file will be downloaded as ${filename}.xlsx`}
             autoFocus
             InputProps={{
               endAdornment: (
@@ -62,12 +62,13 @@ export const DownloadModal = ({ open, onClose, onDownload, defaultFilename }) =>
               ),
             }}
           />
+          
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" startIcon={<DownloadIcon />} onClick={handleDownloadClick} disabled={!!error}>
-          Download
+        <Button variant="contained" startIcon={isDownloading?"":<DownloadIcon />} onClick={handleDownloadClick} disabled={!!error || isDownloading}>
+          {isDownloading?<CircularProgress/>:"Download"}
         </Button>
       </DialogActions>
     </Dialog>

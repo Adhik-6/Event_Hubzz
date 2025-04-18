@@ -96,6 +96,7 @@ function App() {
       <Route path="/create-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
       <Route path="/profile" element={ isAuthenticated?<Profile/>:<Navigate to="/login"/> } />
       <Route path="/profile/analytics/:id" element={ isAuthenticated?<Analytics/>:<Navigate to="/login"/> } />
+      <Route path="/profile/analytics/:id/edit-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
       <Route path="*" element={ <PageNotFound/> } />
     </Routes>
     <Footer/>

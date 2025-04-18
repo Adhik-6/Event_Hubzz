@@ -1,6 +1,6 @@
 import QRCode from 'qrcode';
 import nodeMailer from 'nodemailer';
-import { User } from './../models/index.models.js'
+import { User, Event } from './../models/index.models.js'
 import { customAPIError } from '../utils/index.utils.js'
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -16,7 +16,7 @@ dotenv.config()
 // }
 
 export const postUserDetails = async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   const data = {
     eventId: req.params.id,
     userId: req.user._id,
@@ -31,7 +31,10 @@ export const postUserDetails = async (req, res) => {
   sendEmail(dbRes.mail, qrCode);
 
   res.status(201).json({success: true, message: "Registered Successfully", qrCode})
+  
+  await Event.findByIdAndUpdate(req.params.id, { $inc: { registrations: 1 } })
   // res.status(201).json({success: true, message: "Registered Successfully"})
+
 }
 
 export const verifyDetails = async (req, res) => {

@@ -46,8 +46,15 @@ const eventSchema = new mongoose.Schema(
       type: Date, 
       required: true,
     },
-    capacity: { 
+    capacity: {
       type: Number,
+      default: null,
+      validate: {
+        validator: function (value) {
+          return value === null || value > 0;
+        },
+        message: "Capacity must be greater than 0 if provided."
+      }
     },
     registrations: {
       type: Number,

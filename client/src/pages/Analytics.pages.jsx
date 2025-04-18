@@ -18,7 +18,11 @@ import { Download as DownloadIcon, Edit as EditIcon } from "@mui/icons-material"
 import { RegistrationsTable, DownloadModal, AnalyticsSummary } from "./../components/index.components.js"
 import { mockRegistrations } from "./../assets/mockRegistrations.js"
 import { mockEvents } from "./../assets/mockEvents.js"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useAnalyticsStore } from "../stores/index.stores.js"
+import toast from "react-hot-toast"
+import { axiosInstance, formatDateForTable } from './../utils/index.utils.js'
+import * as XLSX from 'xlsx'
 
 export const Analytics = () => {
   const theme = useTheme()
@@ -27,9 +31,10 @@ export const Analytics = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [activeTab, setActiveTab] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isDownloading, setIsDownloading] = useState(false)
   const [event, setEvent] = useState(null)
   const [registrations, setRegistrations] = useState([])
-  const [formFields, setFormFields] = useState([])
+  // const [formFields, setFormFields] = useState([])
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false)
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -37,30 +42,56 @@ export const Analytics = () => {
     severity: "success",
   })
 
-  // Fetch event data and registrations
+  const { analytics_currentEvent, summaryData, setAnalyticsEvent, setSummaryData, filteredRegistrations, setFilteredRegistrations } = useAnalyticsStore();
+
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      // Get the first event from mock data
-      const eventData = mockEvents.find((e) => e.id === 1)
-      setEvent(eventData)
-
-      // Get registrations for this event
-      const eventRegistrations = mockRegistrations.filter((reg) => reg.eventId === eventData.id)
-      setRegistrations(eventRegistrations)
-
-      // Extract form fields from the first registration (assuming all registrations have the same fields)
-      if (eventRegistrations.length > 0) {
-        const fields = Object.keys(eventRegistrations[0].formResponses).map((key) => ({
-          id: key,
-          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1"),
-        }))
-        setFormFields(fields)
+    setIsLoading(true)
+    // console.log("useEffect is running")
+    async function getAnalytics() {
+      // console.log("getAnalytics is running")
+      try {
+        const res1 = axiosInstance.get(`/events/${id}`)
+        const res2 = axiosInstance.get(`/analytics/event-summary/${id}`)
+        const [resEvents, resSummary] = await Promise.all([res1, res2])
+        if(!resEvents.data.success || !resSummary.data.success) throw new Error("Something went wrong")
+        setAnalyticsEvent(resEvents.data.eventDetails)
+        setSummaryData(resSummary.data.dbRes)
+        // console.log("resEvents:", resEvents.data.eventDetails)
+        // console.log("resSummary:", resSummary.data.dbRes)
+      } catch (err) {
+        console.log("Error fetching analysis", err)
+        toast.error(err.message)
+      } finally {
+        setIsLoading(false)
       }
-
-      setIsLoading(false)
-    }, 1000)
+    }
+    getAnalytics()
   }, [])
+
+  // Fetch event data and registrations
+  // useEffect(() => {
+  //   // Simulate API call
+  //   setTimeout(() => {
+  //     // Get the first event from mock data
+  //     const eventData = mockEvents.find((e) => e.id === 1)
+  //     setEvent(eventData)
+
+  //     // Get registrations for this event
+  //     const eventRegistrations = mockRegistrations.filter((reg) => reg.eventId === eventData.id)
+  //     setRegistrations(eventRegistrations)
+
+  //     // Extract form fields from the first registration (assuming all registrations have the same fields)
+  //     if (eventRegistrations.length > 0) {
+  //       const fields = Object.keys(eventRegistrations[0].formResponses).map((key) => ({
+  //         id: key,
+  //         label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1"),
+  //       }))
+  //       setFormFields(fields)
+  //     }
+
+  //     setIsLoading(false)
+  //   }, 1000)
+  // }, [])
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -80,21 +111,58 @@ export const Analytics = () => {
   // Handle download with filename
   const handleDownload = (filename) => {
     // In a real app, this would generate and download an Excel file
-    console.log(`Downloading registrations as ${filename}.xlsx`)
+    setIsDownloading(true)
+    // console.log(`Downloading registrations as ${filename}.xlsx`)
 
-    setSnackbar({
-      open: true,
-      message: `File "${filename}.xlsx" downloaded successfully`,
-      severity: "success",
-    })
+    if(!filteredRegistrations || filteredRegistrations.length === 0){
+      toast.error("No data available to download")
+      return
+    }
 
-    setIsDownloadModalOpen(false)
+    try {
+      // 1.prepare headers
+      const staticHeaders = ['#', "Email", "Registration Date"]
+      const dynamicFields = analytics_currentEvent.formFields.filter(field => field.label.toLowerCase() !== "email" && field.label.toLowerCase() !== "mail")
+      const dynamicHeaders = dynamicFields.map(field => field.label)
+      const headers = [...staticHeaders, ...dynamicHeaders]
+
+      // 2. prepare data rows
+      const data = filteredRegistrations.map((registration, index) => {
+        const row = [index +1, registration.mail, formatDateForTable(registration.createdAt)]
+        dynamicFields.forEach(field => {
+          const cellValue = renderCellContentForXls(registration.responses[field.label], field.type);
+          row.push(cellValue??'')
+        });
+        return row
+      });
+
+      // 3. Create worksheet and workbook
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Registrations")
+
+      // 4. Trigger Download
+      // const filename = `event_registrations_${analytics_currentEvent?.name || 'data'}.xlsx`
+      XLSX.writeFile(wb, `${filename}.xlsx`)
+
+      setSnackbar({
+        open: true,
+        message: `File "${filename}.xlsx" downloaded successfully`,
+        severity: "success",
+      })
+      setIsDownloadModalOpen(false)
+    } catch (err) {
+      console.log("Error downloading Excel file", err)
+      toast.error(err.message)
+    } finally {
+      setIsDownloading(false)
+    }
   }
 
   // Handle edit button click
-  const handleEditClick = () => {
-    navigate("/create-event");
-  }
+  // const handleEditClick = () => {
+  //   navigate("/create-event", { state: { isEditMode: true } });
+  // }
 
   // Handle snackbar close
   const handleSnackbarClose = () => {
@@ -119,21 +187,21 @@ export const Analytics = () => {
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
             <Box>
               <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
-                {event?.title || "Event Analytics"}
+                {analytics_currentEvent?.title || "Event Analytics"}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary">
-                {event?.date
-                  ? new Date(event.date).toLocaleDateString("en-US", {
+                {analytics_currentEvent?.startDate
+                  ? new Date(analytics_currentEvent.startDate).toLocaleDateString("en-US", {
                       weekday: "long",
                       year: "numeric",
                       month: "long",
                       day: "numeric",
                     })
                   : ""}
-                {event?.location ? ` • ${event.location}` : ""}
+                {analytics_currentEvent?.venue ? ` • ${analytics_currentEvent.venue}` : ""}
               </Typography>
             </Box>
-            <Button variant="outlined" startIcon={<EditIcon />} onClick={handleEditClick}>
+            <Button variant="outlined" component={Link} to={`/profile/analytics/${id}/edit-event`} startIcon={<EditIcon />}>
               Edit Event
             </Button>
           </Box>
@@ -149,7 +217,7 @@ export const Analytics = () => {
           >
             <Paper elevation={1} sx={{ p: 2, minWidth: 120, textAlign: "center" }}>
               <Typography variant="h5" fontWeight="bold" color="primary">
-                {registrations.length}
+                {summaryData?.registrations || 0}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Registrations
@@ -158,21 +226,23 @@ export const Analytics = () => {
 
             <Paper elevation={1} sx={{ p: 2, minWidth: 120, textAlign: "center" }}>
               <Typography variant="h5" fontWeight="bold" color="primary">
-                {event?.capacity || 0}
+                {summaryData?.capacity || "None"}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Capacity
               </Typography>
             </Paper>
 
-            <Paper elevation={1} sx={{ p: 2, minWidth: 120, textAlign: "center" }}>
-              <Typography variant="h5" fontWeight="bold" color="primary">
-                {event?.capacity ? Math.round((registrations.length / event.capacity) * 100) : 0}%
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Filled
-              </Typography>
+            {summaryData?.capacity && (
+              <Paper elevation={1} sx={{ p: 2, minWidth: 120, textAlign: "center" }}>
+                <Typography variant="h5" fontWeight="bold" color="primary">
+                  {((summaryData.registrations / summaryData.capacity)*100).toFixed(2)}%
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Filled
+                </Typography>
             </Paper>
+            )}
           </Box>
         </Box>
 
@@ -196,7 +266,7 @@ export const Analytics = () => {
         {/* Tab Content */}
         <Box sx={{ mb: 4 }}>
           {activeTab === 0 && (
-            <AnalyticsSummary registrations={registrations} formFields={formFields} event={event} />
+            <AnalyticsSummary />
           )}
 
           {activeTab === 1 && (
@@ -207,7 +277,8 @@ export const Analytics = () => {
                 </Button>
               </Box>
 
-              <RegistrationsTable registrations={registrations} formFields={formFields} />
+              {/* <RegistrationsTable registrations={registrations}/> */}
+              <RegistrationsTable/>
             </Box>
           )}
 
@@ -217,7 +288,7 @@ export const Analytics = () => {
                 Registration Form Questions
               </Typography>
 
-              {formFields.map((field, index) => (
+              {analytics_currentEvent.formFields.map((field, index) => (
                 <Paper key={field.id} elevation={1} sx={{ p: 2, mb: 2 }}>
                   <Typography variant="subtitle1" fontWeight="medium">
                     {index + 1}. {field.label}
@@ -234,7 +305,8 @@ export const Analytics = () => {
         open={isDownloadModalOpen}
         onClose={handleDownloadModalClose}
         onDownload={handleDownload}
-        defaultFilename={event?.title ? event.title.replace(/\s+/g, "_").toLowerCase() : "event_registrations"}
+        isDownloading={isDownloading}
+        defaultFilename={analytics_currentEvent?.title ? analytics_currentEvent.title.replace(/\s+/g, "_").toLowerCase() : "event_registrations"}
       />
 
       {/* Snackbar for notifications */}
@@ -250,5 +322,21 @@ export const Analytics = () => {
       </Snackbar>
     </Container>
   )
+}
+
+const renderCellContentForXls = (content, type) => {
+  if (content === undefined || content === null || content === '') return ""
+
+  if (typeof content === "boolean") return content ? "Yes" : "No"
+
+  if (typeof content === "number") return content
+
+  if (Array.isArray(content)) return content.join(', ')
+
+  if(type === "date") return formatDateForTable(content).split(',').slice(0,2).join(',')
+
+  if(type === "time") return formatDateForTable(content).split(',')[2]
+
+  return content.toString()
 }
 

@@ -135,6 +135,7 @@ export const EventRegistration = () => {
       let res = await axiosInstance.post(`/user/register/${id}`, responseData)
       if(!res.data.success) throw new Error(res.data.message)
       // console.log("res: ", res)
+      toast.success("Successfully registerd")
       setQrCode(res.data.qrCode)
       setRegistrationComplete(true)
       setActiveStep(2)
@@ -191,11 +192,11 @@ export const EventRegistration = () => {
 
       {/* Main Content */}
       <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        {registrationError && (
+        {/* {registrationError && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {registrationError}
           </Alert>
-        )}
+        )} */}
 
         {activeStep === 0 && <EventDetailsToUser />}
 

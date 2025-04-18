@@ -1,3 +1,5 @@
+
+// This is to display the date and time when displaying event details.
 const formatDateTime = (datein, timein) => {
   const date = new Date(datein); 
   const time = new Date(timein); // Ensure startTime is a valid date string or timestamp

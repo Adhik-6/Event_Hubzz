@@ -144,7 +144,7 @@ export const FormBuilder = () => {
   // Handle form field addition
   const handleAddField = (fieldType) => {
     const newField = {
-      id: new Date(),
+      id: new Date().toISOString(),
       type: fieldType,
       label: getDefaultLabelForType(fieldType),
       required: false,

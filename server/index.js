@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import { connectDB } from "./utils/index.utils.js";
 import { errorHandler } from "./middlewares/index.middlewares.js";
-import { authRouter, eventRouter, userRouter } from "./routes/index.routes.js";
+import { authRouter, eventRouter, userRouter, analyticsRouter } from "./routes/index.routes.js";
 
 const app = express();
 dotenv.config();
@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/events', eventRouter)
+app.use('/api/analytics', analyticsRouter)
 
 
 app.use(errorHandler);

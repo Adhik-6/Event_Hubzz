@@ -20,11 +20,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  responses: [
-    {
-      type: mongoose.Schema.Types.Mixed,
-    }
-  ]
+  responses: {
+    type: mongoose.Schema.Types.Mixed,
+  }
 }, 
 {
   strict: false,

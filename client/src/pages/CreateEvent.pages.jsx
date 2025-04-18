@@ -9,21 +9,59 @@ import {
   Info as InfoIcon,
 } from "@mui/icons-material"
 import { EventDetails, RegistrationTypeSelector, FormBuilder, FormPreview } from "./../components/index.components.js";
-import { useNavigate } from 'react-router-dom';
-import { useEventStore } from "../stores/index.stores.js";
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useEventStore, useResponseStore } from "../stores/index.stores.js";
 import { axiosInstance, formatDateTime } from './../utils/index.utils.js'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import placeHolderImage from "./../assets/placeHolderImage.jpeg"
 import toast from "react-hot-toast";
 
-const steps = ["Event Details", "Registration Setup", "Review & Create"]
 
 export const CreateEvent = () => {
   const isMobile = useMediaQuery(useTheme().breakpoints.down("md"))
-  const { isStepValid, registrationType, eventDetails, externalUrl, activeStep, setActiveStep, formFields } = useEventStore()
+  const { isStepValid, registrationType, eventDetails, externalUrl, setEventDetailsAll, activeStep, setActiveStep, formFields, setFormFieldsAll } = useEventStore()
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingEvent, setIsLoadingEvent] = useState(false)
   const navigate = useNavigate()
+  const id = useParams()?.id || false
+
+  const steps = ["Event Details", "Registration Setup", `Review & ${id?"save":"Create"}`]
+
+  // const { currentEvent } = useResponseStore();
+
+  // console.log("currentEvent: ", currentEvent)
+  
+  useEffect(() => {
+    // console.log("useEffect called...")
+    if(!id) return
+    // if(currentEvent && Object.keys(currentEvent).length > 0){
+    //   setEventDetailsAll(currentEvent)
+    //   setFormFieldsAll(currentEvent.formFields)
+    //   console.log("currentEvent: ", currentEvent)
+    //   return
+    // }
+    async function apiCall(){
+      // console.log("API called...")
+      try {
+        setIsLoadingEvent(true)
+        const res = await axiosInstance.get(`events/${id}`)
+        setEventDetailsAll(res.data.eventDetails)
+        setFormFieldsAll(res.data.eventDetails.formFields)
+        console.log("api res: ", res.data.eventDetails)
+      } catch (err) {
+        console.log("error while fetching in updating", err)
+        toast.error(err.message)
+      } finally {
+        setIsLoadingEvent(false)
+      }
+    }
+    apiCall()
+  }, [])
+
+  // const { state } = useLocation();
+  // const isEditMode = useLocation().state?.isEditMode || false;
+  // console.log("isEditMode:", isEditMode);
 
   // Event details state  \\
   // const [eventDetails, setEventDetails] = useState({
@@ -120,10 +158,10 @@ export const CreateEvent = () => {
     // try implementing a circular progress, try-catch, error handling, backend
     setIsLoading(true)
     try {
-      const res = await axiosInstance.post('/events/organiser/create-event', {eventDetails, registrationType, externalUrl, formFields })
+      const res = await axiosInstance.post(`/events/organiser/${id?"update":"create"}-event`, {eventDetails, registrationType, externalUrl, formFields })
       if(res.data.success){
-        toast.success("Event created successfully!")
-        navigate('/events')
+        toast.success(`Event ${id?"edited":"created"} successfully!`)
+        navigate(`${id?`/profile/analytics/${id}`:"/events"}`)
       } else{
         toast.error(res.message)
       }
@@ -134,8 +172,6 @@ export const CreateEvent = () => {
     } finally {
       setIsLoading(false)
     }
-    
-
   }
 
   // Validate current step \\\
@@ -168,9 +204,9 @@ export const CreateEvent = () => {
     switch (step) {
       case 0:
         return (
-          <EventDetails/>
+          <EventDetails />
         )
-      case 1:
+      case 1: 
         return (
           <Box>
             <RegistrationTypeSelector/>
@@ -205,6 +241,8 @@ export const CreateEvent = () => {
       case 2:
         return (
           <Box>
+            {/* { console.log("eventDetails: ", eventDetails) }
+            { console.log("formFields: ", formFields) } */}
             <Typography variant="h6" gutterBottom>
               Review Event Details
             </Typography>
@@ -226,49 +264,6 @@ export const CreateEvent = () => {
               <Typography variant="body2" paragraph>
                 {eventDetails.description || "No description provided."}
               </Typography>
-
-              {/* <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 2 }}>
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    Venue
-                  </Typography>
-                  <Typography variant="body2">{eventDetails.venue || "Not specified"}</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    Date & Time
-                  </Typography>
-                  <Typography variant="body2">
-                    {eventDetails.startTime? formatDateTime(eventDetails.startTime): "Not specified"}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    Category
-                  </Typography>
-                  <Typography variant="body2">{eventDetails.category || "Not specified"}</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="caption" color="text.secondary">
-                    Capacity
-                  </Typography>
-                  <Typography variant="body2">{`${eventDetails.capacity} participants` || "Not specified"}</Typography>
-                </Box>
-
-                <Box sx={{ mt: 4 }}>
-                  <Divider sx={{ mb: 3 }} />
-                  <Box sx={{ display: "flex", alignItems: "flex-start" }}>
-                    <InfoIcon sx={{ mr: 1, mt: 0.5, color: "info.main" }} />
-                    <Typography variant="body1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel, incidunt in inventore iure ipsum voluptas repellendus, maiores fuga dicta sit eveniet nobis perferendis illo. Ea, nam? Ut doloremque voluptas repudiandae.
-                    Dicta, accusamus repudiandae. Adipisci error mollitia unde ad eveniet tempore vero? Veniam in pariatur laboriosam odit est maxime voluptas magni architecto tenetur? Cum voluptate aliquam vero nesciunt enim quia aliquid?
-                    Saepe quia praesentium aspernatur quidem a sequi minima, doloremque pariatur consequatur eaque nisi, facilis sunt dicta vitae nam dolor velit eligendi expedita? Accusamus inventore culpa harum nulla vitae recusandae autem?</Typography>
-                  </Box>
-                </Box>
-
-              </Box> */}
 
               <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 2 }}>
     
@@ -304,7 +299,7 @@ export const CreateEvent = () => {
                 <Box>
                   <PersonIcon sx={{ mr: 1, color: "secondary.main" }} />
                   <Typography variant="caption" color="text.secondary">Organized by</Typography>
-                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{eventDetails.organiser}</Typography>
+                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{eventDetails.organiser.organization}</Typography>
                 </Box>
     
                 {/* registration */}
@@ -334,6 +329,7 @@ export const CreateEvent = () => {
             </Typography>
 
             <Paper elevation={1} sx={{ p: 3 }}>
+              
               <Typography variant="body1">
                 {registrationType === "external"
                   ? `External registration form: ${externalUrl}`
@@ -360,7 +356,8 @@ export const CreateEvent = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4, mt: 7 }}>
       {/* Static heading */}
-      <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom> Create New event
+      {/* {console.log("edit mode: ", isEditMode)} */}
+      <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom> {`${id?"Edit":"Create new"} event`}
       </Typography>
 
       <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }} alternativeLabel={!isMobile}>
@@ -372,15 +369,23 @@ export const CreateEvent = () => {
       </Stepper>
 
       {/*  Main content */}
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        {isMobile && (
-          <Typography variant="h6" gutterBottom>
-            {steps[activeStep]}
-          </Typography>
-        )}
-
-        {getStepContent(activeStep)}
-      </Paper>
+      { isLoadingEvent? (
+        <Container maxWidth="lg" sx={{ py: 8 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+            <CircularProgress />
+          </Box>
+        </Container>
+      ) : (
+        <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+          {isMobile && (
+            <Typography variant="h6" gutterBottom>
+              {steps[activeStep]}
+            </Typography>
+          )}
+  
+          {getStepContent(activeStep)}
+        </Paper>
+      )}
 
       {/* Back and next button */}
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
@@ -390,7 +395,7 @@ export const CreateEvent = () => {
 
         {activeStep === steps.length - 1 ? (
           <Button variant="contained" onClick={handleSubmit} disabled={!isStepValid()} sx={{color: "white"}}>
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : "Create"}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : (id?"Update":"Create") }
           </Button>
         ) : (
             <Button variant="contained" onClick={handleNext} disabled={!isStepValid()} sx={{color: "white"}}>

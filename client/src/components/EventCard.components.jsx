@@ -3,6 +3,7 @@ import { Card, CardContent, CardMedia, Typography, Box, Chip, Button, IconButton
 import { CalendarMonth as CalendarIcon, LocationOn as LocationIcon, MoreVert as MoreVertIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, ContentCopy as DuplicateIcon, QrCode as QrCodeIcon } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import { getStatus } from './../utils/index.utils.js'
+import { useResponseStore } from "../stores/index.stores.js"
 
 // Helper function to format date
 const formatDate = (dateString) => {
@@ -40,6 +41,8 @@ export const EventCard = ({ event, isOrganizer = false }) => {
     capacity = 0,
   } = event
   const [status, setStatus] = useState("")
+
+  // const navigate = useNavigate();
 
   // useEffect(() => {
   //   setStatus( () => {
@@ -107,12 +110,14 @@ export const EventCard = ({ event, isOrganizer = false }) => {
   }
 
   // Handle manage registrations
-  const handleManageRegistrations = () => {
-    handleMenuClose()
-    // In a real app, you would navigate to the registrations page
-    console.log("Managing registrations for event:", id)
-    // alert(`Managing registrations for event: ${id}`)
-  }
+  // const handleManageRegistrations = () => {
+  //   handleMenuClose()
+  //   // setCurrentEvent({event})
+  //   navigate(`/profile/analytics/${id}`)
+  //   // In a real app, you would navigate to the registrations page
+  //   // console.log("Managing registrations for event:", id)
+  //   // alert(`Managing registrations for event: ${id}`)
+  // }
 
   return (
     <Card elevation={2} sx={{ position: "relative" }}>
@@ -217,7 +222,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
       {/* </CardActionArea> */}
       <CardActions>
         {isOrganizer ? (
-          <Button component={Link} to={`/profile/analytics/${id}`} size="small" color="primary" fullWidth onClick={handleManageRegistrations}>
+          <Button component={Link} to={`/profile/analytics/${id}`} size="small" color="primary" fullWidth>
             Manage Event
           </Button>
         ) : (

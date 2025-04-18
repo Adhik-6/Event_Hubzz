@@ -4,7 +4,6 @@
   /* margin: 0;
   padding: 0; */
   box-sizing: border-box;
-  
 }
 
 html{
@@ -41,5 +40,5 @@ button {
 }
 
 abbr{
-  color: #00000088
+  color: #007aff
 }
