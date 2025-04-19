@@ -18,7 +18,7 @@ const backEndUrl = (process.env.NODE_ENV==="production")?process.env.SERVER_URL:
 app.use(express.json({ limit: "50mb" })); 
 app.use(cookieParser())
 app.use(cors({
-    origin: frontEndUrl,
+    origin: "https://event-hubzz.onrender.com",
     credentials: true, // Includes cookies in requests
     methods: "GET, POST, PATCH, DELETE",
   })
