@@ -100,7 +100,7 @@ export const Login = () => {
       let x = await login(formData)
       if(x?.success){
         // console.log("login successful")
-        navigate(-1)
+        navigate("/")
       } else {
         console.log(`Something went wrong: ${x?.message}`)
       }

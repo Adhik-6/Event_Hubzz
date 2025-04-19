@@ -1,7 +1,7 @@
 // import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Organiser } from '../models/index.models.js';
-import { customAPIError, cloudinary, setAuthCookies } from '../utils/index.utils.js';
+import { customAPIError, cloudinary, setAuthCookies, clearAuthCookies } from '../utils/index.utils.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
   console.log("cookies: ", req.cookies)
   req.user = user.toObject();
   delete req.user.password;
-  console.log("After successfull login (req.user): ", req.user)
+  // console.log("After successfull login (req.user): ", req.user)
 
   res.status(200).json({ success: true, message: "Login successfull", user: req.user });
 
@@ -65,7 +65,12 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   if (!req.cookies.token) throw customAPIError(400, "User not logged in", "logout")
   
-  res.clearCookie('token')
+  // res.clearCookie('token',  {
+  //   httpOnly: true,
+  //   secure: process.env.NODE_ENV === 'production',
+  //   sameSite: 'None'
+  // })
+  clearAuthCookies(req, res);
   console.log("after clearing cookies in logout:", req.cookies)
 
   res.status(200).json({ success: true, message: "Logout successful" })
