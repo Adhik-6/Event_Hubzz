@@ -10,7 +10,7 @@ export const setAuthCookies = (req, res, id) => {
     httpOnly: true, 
     secure: process.env.NODE_ENV === 'production',
     maxAge: 15 * 24 * 60 * 60 * 1000,
-    // sameSite: 'none'
+    sameSite: 'Lax'
   })
 
   return token;

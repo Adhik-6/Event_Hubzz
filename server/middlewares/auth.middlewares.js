@@ -7,7 +7,8 @@ dotenv.config();
 export const authMiddleware = async (req, res, next) => {
   if (req.method === 'OPTIONS') return next() // Let preflight request through without auth
   const token = req.cookies.token;
-  if (!token) return res.status(403).json({ success: true,  message: "User not logged in" });
+  console.log("Token:", token)
+  if (!token) return res.status(403).json({ success: false,  message: "User not logged in" });
 
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET);
@@ -17,3 +18,18 @@ export const authMiddleware = async (req, res, next) => {
   }
   next()
 }
+
+// export const checkAuth = async (req, res, next) => {
+//   if (req.method === 'OPTIONS') return next() // Let preflight request through without auth
+//   const token = req.cookies.token;
+//   console.log("Token:", token)
+//   if (!token) return res.status(200).json({ success: false,  message: "User not logged in" });
+
+//   try {
+//     const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = await Organiser.findById(userId).select('-password');
+//   } catch (err) {
+//     return res.status(403).json({success: false, message: "Invalid token at authMiddleware"});
+//   }
+//   next()
+// }
