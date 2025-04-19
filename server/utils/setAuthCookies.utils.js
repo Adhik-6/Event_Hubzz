@@ -4,7 +4,8 @@ dotenv.config();
 
 export const setAuthCookies = (req, res, id) => {
 
-  const token = jwt.sign({ userId: id }, process.env.JWT_SECRET)
+  const token = jwt.sign({ userId: id }, process.env.JWT_SECRET, { expiresIn: '15d' })
+  console.log("token generated: ", token)
 
   res.cookie('token', token, {
     httpOnly: true, 

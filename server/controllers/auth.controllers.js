@@ -7,7 +7,7 @@ dotenv.config();
 
 export const signup = async (req, res) => {
   const { email: mail, password, fullName, userName, organisation: organization, profilePic, phoneNumber, bio, website } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
 
   const existingUser = await Organiser.findOne({ $or: [{ mail }, { userName }] });
 
@@ -50,11 +50,13 @@ export const login = async (req, res) => {
     
   const isMatch = await bcrypt.compare(password, user.password)
   if(!isMatch) throw customAPIError(403, "Invalid password", "login")
-  // console.log("passwords correct")
+  console.log("User should be logged in")
       
   setAuthCookies(req, res, user._id);
+  console.log("cookies: ", req.cookies)
   req.user = user.toObject();
   delete req.user.password;
+  console.log("After successfull login (req.user): ", req.user)
 
   res.status(200).json({ success: true, message: "Login successfull", user: req.user });
 
@@ -64,6 +66,7 @@ export const logout = async (req, res) => {
   if (!req.cookies.token) throw customAPIError(400, "User not logged in", "logout")
   
   res.clearCookie('token')
+  console.log("after clearing cookies in logout:", req.cookies)
 
   res.status(200).json({ success: true, message: "Logout successful" })
 }
