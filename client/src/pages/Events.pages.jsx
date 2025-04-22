@@ -21,7 +21,7 @@ export const Events = () => {
   const [events, setEvents] = useState([])
   const [filteredEvents, setFilteredEvents] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [sortBy, setSortBy] = useState("date-asc")
+  const [sortBy, setSortBy] = useState("date-desc")
   const [filterStatus, setFilterStatus] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
   const [drawerOpen, setDrawerOpen] = useState(false)
