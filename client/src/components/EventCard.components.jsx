@@ -4,6 +4,9 @@ import { CalendarMonth as CalendarIcon, LocationOn as LocationIcon, MoreVert as 
 import { Link } from "react-router-dom"
 import { getStatus } from './../utils/index.utils.js'
 import { useResponseStore } from "../stores/index.stores.js"
+import placeHolderImage from "./../assets/placeHolderImage.jpeg"
+// impor } from "./../ass.jpeg"
+// projects/college_projects/event_management/client/src/assets/
 
 // Helper function to format date
 const formatDate = (dateString) => {
@@ -122,7 +125,7 @@ export const EventCard = ({ event, isOrganizer = false }) => {
   return (
     <Card elevation={2} sx={{ position: "relative" }}>
       {/* <CardActionArea> */}
-        <CardMedia component="img" height="160" image={eventImage || "/placeholder.svg?height=160&width=300"} alt={title} />
+        <CardMedia component="img" height="160" image={eventImage || placeHolderImage} alt={title} />
         <Box sx={{ position: "absolute", top: 9, right: 9 }}>
           <Chip
             label={status.charAt(0).toUpperCase() + status.slice(1)}
