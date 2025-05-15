@@ -20,9 +20,10 @@
 Future Implementation:-
 
 // Storing qrCode in cloudinary or mongoDB (base64 as buffer). So that users can request their qrcode if missed.
-// Check if correct startdate and time is picked when displaying to user and organiser
-// show errors to users when invalid event details are entered
 // Free/cost for event registration, search, sort by this category
+// no duplicate events
+*// Check if correct startdate and time is picked when displaying to user and organiser
+// clear the eventDetails object after updation
 // handle errors safely err.response?.data?.message 
 // toast invalid date input in create event page
 // Download and keep a placeholder image in eventDetaisTouser component
@@ -51,7 +52,7 @@ Future Implementation:-
 // modify the questions section in analytics page to show different answers given by users.
 // when creating an event one after the other (wihtout page reloads) seems to keep the state of the previosuly created event. Same issue when registering for event also. Solution: Clear the state.
 // The backend also seems to provide the formFields when fetching tableData. Remove it if possible
-// Responsiveness: In events page, add a search bar for sm & md screens. keep only the filter option oon side bar.
+// Responsiveness: In events page, add a search bar for sm & md screens. keep only the filter option on side bar.
 // Responsiveness: The navbar should have hamburger menu only on sm. In mobile keep the login button inside the hamburger menu.
 // Responsiveness: If possible merge the hamburger menu with the user avatar menu in sm.
 // Responsiveness: The login & signup page of the sm & md screen should event event hubzz as it's name and the icons should be changed, "welcome back" shouuld be centerd on sm & md screens with '!' added at the end

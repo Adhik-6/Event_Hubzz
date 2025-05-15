@@ -53,7 +53,7 @@ export const login = async (req, res) => {
   console.log("User should be logged in")
       
   setAuthCookies(req, res, user._id);
-  console.log("cookies: ", req.cookies)
+  // console.log("cookies: ", req.cookies)
   req.user = user.toObject();
   delete req.user.password;
   // console.log("After successfull login (req.user): ", req.user)

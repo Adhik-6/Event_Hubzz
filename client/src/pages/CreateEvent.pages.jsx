@@ -299,7 +299,7 @@ export const CreateEvent = () => {
                 <Box>
                   <PersonIcon sx={{ mr: 1, color: "secondary.main" }} />
                   <Typography variant="caption" color="text.secondary">Organized by</Typography>
-                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{eventDetails.organiser.organization}</Typography>
+                  <Typography variant="body2" sx={{mt: 1, ml: 0.5}}>{(typeof eventDetails.organiser === 'object')?eventDetails.organiser.organization:eventDetails.organiser}</Typography>
                 </Box>
     
                 {/* registration */}
@@ -394,7 +394,7 @@ export const CreateEvent = () => {
         </Button>
 
         {activeStep === steps.length - 1 ? (
-          <Button variant="contained" onClick={handleSubmit} disabled={!isStepValid()} sx={{color: "white"}}>
+          <Button variant="contained" onClick={handleSubmit} sx={{color: "white"}}>
             {isLoading ? <CircularProgress size={24} color="inherit" /> : (id?"Update":"Create") }
           </Button>
         ) : (

@@ -7,7 +7,7 @@ dotenv.config();
 export const authMiddleware = async (req, res, next) => {
   if (req.method === 'OPTIONS') return next() // Let preflight request through without auth
   const token = req.cookies.token;
-  console.log("Token in auth middleware:", token)
+  // console.log("Token in auth middleware:", token)
   if (!token) return res.status(403).json({ success: false,  message: "User not logged in" });
 
   try {
