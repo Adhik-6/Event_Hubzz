@@ -39,6 +39,29 @@ attach screenshots of the app & website to the readme
   3. To Run Backend: `npm run dev` at the root level of the project.
   4. To Run Frontend: `cd ./client && npm run dev` at the root level of the project in another terminal.
 
+// retake: table page, analytics page, my events page
+
+1. Event Hubzz
+2. Event Hubzz is a  event management, verification & registraion platform. The users can register for any events and the organizsr can conduct events, view analytics, download the event data as an excel file. The organisers can verify the users via a qr code which will be sent to the users upon registration. The organisers shall scan the qr using the designated Event Hubzz QR scanner app to verify the user. the website was built using MERN stack, the app was built using flutter along with Firebase studio.
+3. ./client/src/assets/event_hubzz_logo.jpg
+4. event registration, analytics dashboard for separate events, build a custom form for yourself or use exteral form url (like google forms), conduct events, download registration details as an excel file.
+5. the screenshots are in ./screenshots folder, display the following files alone: analytics_page.jpg, app_home.jpg, events_page.png, formBuilder_page.png, landing_page.png, profile_page.png , then give a link to the screenshots folder saying where the other pics are at.
+6. client- react + vite, material UI; server - node + express; database - MongoDB
+7. PORT
+VITE_PORT
+CLIENT_URL_DEV=http://localhost:5173
+SERVER_URL_DEV=http://localhost:8000 
+CLIENT_URL
+SERVER_URL
+VITE_SERVER_URL=http://localhost:
+MONGO_URI
+MAIL_ID
+MAIL_PASS
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY 
+CLOUDINARY_API_SECRET
+JWT_SECRET
+
 
 
 <div align="center">
