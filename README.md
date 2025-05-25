@@ -131,6 +131,7 @@ attach screenshots of the app & website to the readme
   - [:star2: About the Project](#star2-about-the-project)
     - [:camera: Screenshots](#camera-screenshots)
     - [:space\_invader: Tech Stack](#space_invader-tech-stack)
+    - [🛠️ Tech Stack](#️-tech-stack)
     - [:dart: Features](#dart-features)
     - [:key: Environment Variables](#key-environment-variables)
   - [:toolbox: Getting Started](#toolbox-getting-started)
@@ -216,6 +217,16 @@ attach screenshots of the app & website to the readme
 * [![Laravel][Laravel.com]][Laravel-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![JQuery][JQuery.com]][JQuery-url]
+
+### 🛠️ Tech Stack
+
+| Platform       | Technologies Used                                |
+|----------------|--------------------------------------------------|
+| Frontend       | React + Vite, Material UI                        |
+| Backend        | Node.js, Express                                 |
+| Database       | MongoDB                                          |
+| Mobile App     | Flutter, Dart                                    |
+| Other Services | Firebase Studio, Cloudinary, Nodemailer, Recharts, v0 (Vercel AI) |
 
 <!-- Features -->
 ### :dart: Features

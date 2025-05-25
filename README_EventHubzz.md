@@ -1,46 +1,46 @@
 
-<div align="center">
+<div id="readme-top" align="center">
 
   <img src="./client/src/assets/event_hubzz_logo.jpg" alt="Event Hubzz Logo" width="200" height="auto" />
   <h1>Event Hubzz</h1>
-  
-  <p>Event Management, Analytics and Verification for you Event! </p>
-  
-  
-   <!-- Badges -->
-   <p>
-   <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
+
+  <p>Event Management, Analytics and Verification for your Event! </p>
+
+  <!-- Badges -->
+  <p>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors" style="text-decoration: none;">
       <img src="https://img.shields.io/github/contributors/Adhik-6/Event_Hubzz" alt="contributors" />
-   </a>
-   <a href="">
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz" style="text-decoration: none;">
       <img src="https://img.shields.io/github/last-commit/Adhik-6/Event_Hubzz" alt="last update" />
-   </a>
-   <a href="https://github.com/Adhik-6/Event_Hubzz/network/members">
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/network/members" style="text-decoration: none;">
       <img src="https://img.shields.io/github/forks/Adhik-6/Event_Hubzz" alt="forks" />
-   </a>
-   <a href="https://github.com/Adhik-6/Event_Hubzz/stargazers">
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/stargazers" style="text-decoration: none;">
       <img src="https://img.shields.io/github/stars/Adhik-6/Event_Hubzz" alt="stars" />
-   </a>
-   <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/" style="text-decoration: none;">
       <img src="https://img.shields.io/github/issues/Adhik-6/Event_Hubzz" alt="open issues" />
-   </a>
-   <a href="https://github.com/Adhik-6/Event_Hubzz/blob/master/LICENSE">
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/blob/master/LICENSE" style="text-decoration: none;">
       <img src="https://img.shields.io/github/license/Adhik-6/Event_Hubzz.svg" alt="license" />
-   </a>
-   </p>
-   
-   <!-- Links -->
-   <h4>
-      <a href="https://github.com/Adhik-6/Event_Hubzz/">View Demo</a>
-  <span> · </span>
-      <a href="https://github.com/Adhik-6/Event_Hubzz">Documentation</a>
-  <span> · </span>
-      <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Report Bug</a>
-  <span> · </span>
-      <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Request Feature</a>
+    </a>
+  </p>
+
+  <!-- Links -->
+  <h4>
+    <a href="https://event-hubzz.onrender.com">View Site</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz">Documentation</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Report Bug</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Request Feature</a>
   </h4>
 
 </div>
+
 
 <br />
 
@@ -56,7 +56,6 @@ Event Hubzz is a powerful event management, verification, and registration platf
     - [:camera: Screenshots](#camera-screenshots)
     - [:space\_invader: Tech Stack](#space_invader-tech-stack)
     - [:dart: Features](#dart-features)
-  - [🛠️ Tech Stack](#️-tech-stack)
     - [:key: Environment Variables](#key-environment-variables)
   - [:toolbox: Getting Started](#toolbox-getting-started)
     - [:bangbang: Prerequisites](#bangbang-prerequisites)
@@ -78,19 +77,39 @@ Event Hubzz is a powerful event management, verification, and registration platf
 <!-- Screenshots -->
 ### :camera: Screenshots
 
-<div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+<div align="center">
 
-  <img src="./screenshots/landing_page.png" alt="Landing Page" width="45%"/>
-  <img src="./screenshots/events_page.png" alt="Events Page" width="45%"/>
+  <div style="margin-bottom: 40px;">
+    <h3>Landing Page</h3>
+    <img src="./screenshots/landing_page.png" alt="Landing Page" width="80%" />
+  </div>
 
-  <img src="./screenshots/analytics_page.png" alt="Analytics Page" width="45%"/>
-  <img src="./screenshots/formBuilder_page.png" alt="Form Builder Page" width="45%"/>
+  <div style="margin-bottom: 40px;">
+    <h3>Events Page</h3>
+    <img src="./screenshots/events_page.png" alt="Events Page" width="80%" />
+  </div>
 
-  <img src="./screenshots/profile_page.png" alt="Profile Page" width="45%"/>
-  <img src="./screenshots/app_home.jpg" alt="App Home screen" width="45%"/>
+  <div style="margin-bottom: 40px;">
+    <h3>Analytics Page</h3>
+    <img src="./screenshots/analytics_page.png" alt="Analytics Page" width="80%" />
+  </div>
+
+  <div style="margin-bottom: 40px;">
+    <h3>Form Builder Page</h3>
+    <img src="./screenshots/formBuilder_page.png" alt="Form Builder Page" width="80%" />
+  </div>
+
+  <div style="margin-bottom: 40px;">
+    <h3>Profile Page</h3>
+    <img src="./screenshots/profile_page.png" alt="Profile Page" width="80%" />
+  </div>
+
+  <div style="margin-bottom: 40px;">
+    <h3>App Home screen</h3>
+    <img src="./screenshots/app_home.jpg" alt="App Home screen" width="80%" />
+  </div>
 
 </div>
-
 
 
 > 📁 More screenshots are available in the [screenshots folder](./screenshots)
@@ -118,19 +137,6 @@ Event Hubzz is a powerful event management, verification, and registration platf
 - QR code-based verification system for participants
 - User profile management
 - Dedicated Flutter app for organizers to scan and verify registrations
-
-
-## 🛠️ Tech Stack
-
-| Platform       | Technologies Used                                |
-|----------------|--------------------------------------------------|
-| Frontend       | React + Vite, Material UI                        |
-| Backend        | Node.js, Express                                 |
-| Database       | MongoDB                                          |
-| Mobile App     | Flutter, Dart                                    |
-| Other Services | Firebase Studio, Cloudinary, Nodemailer, Recharts, v0 (Vercel AI) |
-
-
 
 <!-- Env Variables -->
 ### :key: Environment Variables
@@ -207,14 +213,14 @@ This project uses npm as package manager
   - [ ] Prompt for additional info during event creation.
   - [ ] Prevent duplicate events to be created.
   - [ ] In createEvent page > eventDetails component, let the user know invalid inputs.
-- [ ] Free vs Paid event registration, and filtering based on it.
-- [ ] Public user profile pages to let other users see one's profile.
-- [ ] Bind active step with URL; persist states.
-- [ ] Show different answers give to different questions of type 'multiline' and 'text' in analytics' questions section
 - [ ] In Registration Table
   - [ ] Debounce search 
   - [ ] Also the Date & Time questions are not searchable (though they are searchable in YYYY-MM-DD & HH:MM format)
   - [ ] Add "view only selected column" feature in table
+- [ ] Free vs Paid event registration, and filtering based on it.
+- [ ] Public user profile pages to let other users see one's profile.
+- [ ] Bind active step with URL; persist states.
+- [ ] Show different answers give to different questions of type 'multiline' and 'text' in analytics' questions section
 - [ ] Set up Notifications tab in user profile
 - [ ] Add Forgot password functionality
 - [ ] Implement backend-based sorting by adding queries to the request URL
@@ -268,8 +274,7 @@ Distributed under the no License.
 <!-- Contact -->
 ## :handshake: Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
+Adhik - adhik.m10a@gmail.com
 
 
 ## 📦 External Tools & Libraries
@@ -284,6 +289,9 @@ Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_
  - [Vercel AI](https://v0.dev/)
  - [Firebase Studio](https://studio.firebase.google.com/)
  - [Cloudinary](https://cloudinary.com/)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
