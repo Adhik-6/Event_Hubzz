@@ -46,22 +46,32 @@ attach screenshots of the app & website to the readme
 3. ./client/src/assets/event_hubzz_logo.jpg
 4. event registration, analytics dashboard for separate events, build a custom form for yourself or use exteral form url (like google forms), conduct events, download registration details as an excel file.
 5. the screenshots are in ./screenshots folder, display the following files alone: analytics_page.jpg, app_home.jpg, events_page.png, formBuilder_page.png, landing_page.png, profile_page.png , then give a link to the screenshots folder saying where the other pics are at.
-6. client- react + vite, material UI; server - node + express; database - MongoDB
-7. PORT
-VITE_PORT
-CLIENT_URL_DEV=http://localhost:5173
-SERVER_URL_DEV=http://localhost:8000 
-CLIENT_URL
-SERVER_URL
-VITE_SERVER_URL=http://localhost:
-MONGO_URI
-MAIL_ID
-MAIL_PASS
-CLOUDINARY_CLOUD_NAME
-CLOUDINARY_API_KEY 
-CLOUDINARY_API_SECRET
-JWT_SECRET
-
+6. client- react + vite, material UI; server - node + express; database - MongoDB; app - flutter + Dart 
+7. PORT, VITE_PORT, CLIENT_URL_DEV=http://localhost:5173 , SERVER_URL_DEV=http://localhost:8000 , CLIENT_URL, SERVER_URL, VITE_SERVER_URL=http://localhost: , MONGO_URI, MAIL_ID, MAIL_PASS, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, JWT_SECRET
+8. prerequisites: nodejs, git. Then: Clone the repo, run: npm build:dev
+9. at root level of the project run: `npm run dev` to start the backend, open another terminal instance and run `npm run dev --prefix client`, visit to the url displayed in the second terminal.
+10. none (remove this or you can type this out yourself)
+11. write this yourself or you may also ignore this section if needed
+12. // Storing qrCode in cloudinary or mongoDB (base64 as buffer). So that users can request their qrcode if missed.
+// Free/cost for event registration, search, sort by this category
+// no duplicate events
+// A seperate page to display user profile to other users
+// Also remove events that are one month older
+// When the organiser creates an event asks the organiser if he would like to add any additional information
+// Bind the activeStep with the URL, make states persistent if doing so.
+// modify the questions section in analytics page to show different answers given by users.
+// In RegistrationTable component, use debouncing to make seaching efficient. Also the Date & Time questions are not searchable (though they are searchable in YYYY-MM-DD & HH:MM format).
+// Add a Notifications tab in the profile page.
+// Implement 'forgot password' functionality.
+// Add Sort and "view only selected column" functions in table
+// Give the sorting logics to backend by adding queries in 
+// Scaling options: Create a new mongoDB DB using the EventHubzz mail id, deploy using the eventHubzz mail id.
+// **UX** - In createEvent page > eventDetails component, let the user know invalid inputs.
+13. keep the same as the one in template
+14. as for FAQ, add some question yourself
+15. keep the same as the one in template
+16. an license that allows user to use this but not commericialise it or make money out of it. people can use it freely. recommed a suitable license for this
+17. clooudinary (storing multimedia assets online), nodemailer (npm package) (for sending mail to users), firebase studio (building flutter apps online), v0 (vercel's AI to code app and frontend of website), recharts (creating visually stunning charts)
 
 
 <div align="center">
@@ -166,7 +176,7 @@ JWT_SECRET
 <details>
   <summary>Server</summary>
   <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
+    <li><a href="https://www.typescriptlang.org/">* [![Next][Next.js]][Next-url]</a></li>
     <li><a href="https://expressjs.com/">Express.js</a></li>
     <li><a href="https://go.dev/">Golang</a></li>
     <li><a href="https://nestjs.com/">Nest.js</a></li>
