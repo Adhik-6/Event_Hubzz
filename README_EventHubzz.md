@@ -44,18 +44,32 @@
 
 <br />
 
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
-![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
-![React](https://img.shields.io/badge/React-18-blue)
-![Flutter](https://img.shields.io/badge/Flutter-3.x-blue)
-![MongoDB](https://img.shields.io/badge/MongoDB-6.x-brightgreen)
-![Express](https://img.shields.io/badge/Express.js-4.x-black)
-![Vite](https://img.shields.io/badge/Vite-4.x-purple)
-
 Event Hubzz is a powerful event management, verification, and registration platform. It enables users to register for events and allows organizers to manage events, verify registrations using QR codes, view analytics, and export event data to Excel.
+
+
 
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
+
+- [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
+  - [:star2: About the Project](#star2-about-the-project)
+    - [:camera: Screenshots](#camera-screenshots)
+    - [:space\_invader: Tech Stack](#space_invader-tech-stack)
+    - [:dart: Features](#dart-features)
+  - [🛠️ Tech Stack](#️-tech-stack)
+    - [:key: Environment Variables](#key-environment-variables)
+  - [:toolbox: Getting Started](#toolbox-getting-started)
+    - [:bangbang: Prerequisites](#bangbang-prerequisites)
+    - [:gear: Installation](#gear-installation)
+    - [:running: Run Locally](#running-run-locally)
+  - [🔍 TODOs \& Planned Features](#-todos--planned-features)
+  - [:wave: Contributing](#wave-contributing)
+    - [Top contributors:](#top-contributors)
+  - [:grey\_question: FAQ](#grey_question-faq)
+  - [:warning: License](#warning-license)
+  - [:handshake: Contact](#handshake-contact)
+  - [📦 External Tools \& Libraries](#-external-tools--libraries)
+  - [:gem: Acknowledgements](#gem-acknowledgements)
 
 
 <!-- About the Project -->
@@ -64,24 +78,20 @@ Event Hubzz is a powerful event management, verification, and registration platf
 <!-- Screenshots -->
 ### :camera: Screenshots
 
-<div align="center"> 
-  <img src="./screenshots/landing_page.png" alt="Landing Page"/>
+<div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+
+  <img src="./screenshots/landing_page.png" alt="Landing Page" width="45%"/>
+  <img src="./screenshots/events_page.png" alt="Events Page" width="45%"/>
+
+  <img src="./screenshots/analytics_page.png" alt="Analytics Page" width="45%"/>
+  <img src="./screenshots/formBuilder_page.png" alt="Form Builder Page" width="45%"/>
+
+  <img src="./screenshots/profile_page.png" alt="Profile Page" width="45%"/>
+  <img src="./screenshots/app_home.jpg" alt="App Home screen" width="45%"/>
+
 </div>
-<div align="center"> 
-  <img src="./screenshots/events_page.png" alt="Events Page"/>
-</div>
-<div align="center"> 
-  <img src="./screenshots/analytics_page.png" alt="Analytics Page"/>
-</div>
-<div align="center"> 
-  <img src="./screenshots/formBuilder_page.png" alt="Form Builder Page"/>
-</div>
-<div align="center"> 
-  <img src="./screenshots/profile_page.png" alt="Profile Page"/>
-</div>
-<div align="center"> 
-  <img src="./screenshots/app_home.jpg" alt="App Home screen"/>
-</div>
+
+
 
 > 📁 More screenshots are available in the [screenshots folder](./screenshots)
 
@@ -89,58 +99,14 @@ Event Hubzz is a powerful event management, verification, and registration platf
 <!-- TechStack -->
 ### :space_invader: Tech Stack
 
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://nextjs.org/">Next.js</a></li>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">* [![Next][Next.js]][Next-url]</a></li>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-    <li><a href="https://go.dev/">Golang</a></li>
-    <li><a href="https://nestjs.com/">Nest.js</a></li>
-    <li><a href="https://socket.io/">SocketIO</a></li>
-    <li><a href="https://www.prisma.io/">Prisma</a></li>    
-    <li><a href="https://www.apollographql.com/">Apollo</a></li>
-    <li><a href="https://graphql.org/">GraphQL</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-    <li><a href="https://redis.io/">Redis</a></li>
-    <li><a href="https://neo4j.com/">Neo4j</a></li>
-    <li><a href="https://www.mongodb.com/">MongoDB</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>DevOps</summary>
-  <ul>
-    <li><a href="https://www.docker.com/">Docker</a></li>
-    <li><a href="https://www.jenkins.io/">Jenkins</a></li>
-    <li><a href="https://circleci.com/">CircleCLI</a></li>    
-  </ul>
-</details>
-
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![MUI][MUI]][MUI-url]
+* [![Node.js][Node.js]][Node-url]
+* [![MongoDB][MongoDB]][MongoDB-url]
+* [![Flutter][Flutter]][Flutter-url]
+* [![Firebase][Firebase]][Firebase-url]
+* [![Cloudinary][Cloudinary]][Cloudinary-url]
+* [![V0][V0]][V0-url]
 
 
 ### :dart: Features
@@ -171,20 +137,22 @@ Event Hubzz is a powerful event management, verification, and registration platf
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`PORT=`
-`VITE_PORT=`
-`CLIENT_URL_DEV=http://localhost:5173`
-`SERVER_URL_DEV=http://localhost:8000`
-`CLIENT_URL=`
-`SERVER_URL=`
-`VITE_SERVER_URL=http://localhost:`
-`MONGO_URI=`
-`MAIL_ID=`
-`MAIL_PASS=`
-`CLOUDINARY_CLOUD_NAME=`
-`CLOUDINARY_API_KEY=`
-`CLOUDINARY_API_SECRET=`
-`JWT_SECRET=`
+```env
+PORT
+VITE_PORT
+CLIENT_URL_DEV=http://localhost:5173
+SERVER_URL_DEV=http://localhost:8000
+CLIENT_URL
+SERVER_URL
+VITE_SERVER_URL=http://localhost:
+MONGO_URI
+MAIL_ID
+MAIL_PASS
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+JWT_SECRET
+```
 
 ---
 
@@ -202,28 +170,28 @@ To run this project, you will need to add the following environment variables to
 This project uses npm as package manager
 
 1. Clone the repository:
-```bash
-git clone https://github.com/Adhik-6/Event_Hubzz.git
-cd event-hubzz
-```
+  ```bash
+  git clone https://github.com/Adhik-6/Event_Hubzz.git
+  cd event-hubzz
+  ```
 
 2. Install dependencies and build:
-```bash
-npm run build:dev
-```
+  ```bash
+  npm run build:dev
+  ```
 
 <!-- Run Locally -->
 ### :running: Run Locally
 
 1. Start the backend server:
-```bash
-npm run dev
-```
+  ```bash
+  npm run dev
+  ```
 
-2. Open another terminal and run the frontend:
-```bash
-npm run dev --prefix client
-```
+2. Open another terminal and start the frontend:
+  ```bash
+  npm run dev --prefix client
+  ```
 
 3. Visit the URL shown in the second terminal (usually `http://localhost:5173`).
 
@@ -268,11 +236,9 @@ Don't forget to give the project a star! Thanks again!
 
 ### Top contributors:
 
-<a href="https://github.com/othneildrew/Best-README-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
+<a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Adhik-6/Event_Hubzz" alt="contrib.rocks image" />
 </a>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- FAQ -->
@@ -295,9 +261,9 @@ Absolutely! You can integrate external forms seamlessly. Though some analytics f
 <!-- License -->
 ## :warning: License
 
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license.
+Distributed under the no License.
 
-> You are free to use and share this project **non-commercially**. For full license terms, [click here](https://creativecommons.org/licenses/by-nc/4.0/).
+> Though there is no license I would suggest that you are free to use and share this project **non-commercially**.
 
 <!-- Contact -->
 ## :handshake: Contact
@@ -320,19 +286,26 @@ Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_
  - [Cloudinary](https://cloudinary.com/)
 
 
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+
+[MUI]: https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white
+[MUI-url]: https://mui.com/
+
+[Node.js]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
+[Node-url]: https://nodejs.org/
+
+[MongoDB]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
+[MongoDB-url]: https://www.mongodb.com/
+
+[Flutter]: https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white
+[Flutter-url]: https://flutter.dev/
+
+[Firebase]: https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black
+[Firebase-url]: https://firebase.google.com/
+
+[Cloudinary]: https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white
+[Cloudinary-url]: https://cloudinary.com/
+
+[V0]: https://img.shields.io/badge/V0%20(Vercel%20AI)-000000?style=for-the-badge&logo=vercel&logoColor=white
+[V0-url]: https://v0.dev/

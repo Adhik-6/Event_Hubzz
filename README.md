@@ -40,6 +40,7 @@ attach screenshots of the app & website to the readme
   4. To Run Frontend: `cd ./client && npm run dev` at the root level of the project in another terminal.
 
 // retake: table page, analytics page, my events page
+// chnage license
 
 1. Event Hubzz
 2. Event Hubzz is a  event management, verification & registraion platform. The users can register for any events and the organizsr can conduct events, view analytics, download the event data as an excel file. The organisers can verify the users via a qr code which will be sent to the users upon registration. The organisers shall scan the qr using the designated Event Hubzz QR scanner app to verify the user. the website was built using MERN stack, the app was built using flutter along with Firebase studio.
