@@ -192,6 +192,7 @@ This project uses npm as package manager
 - [ ] Set up Notifications tab in user profile
 - [ ] Add Forgot password functionality
 - [ ] Implement backend-based sorting by adding queries to the request URL
+- [ ] Use some other libraries instead of xlsx(SheetJS)
 
 <!-- CONTRIBUTING -->
 ## :wave: Contributing
