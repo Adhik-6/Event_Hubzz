@@ -16,9 +16,7 @@ import {
 } from "@mui/material"
 import { Download as DownloadIcon, Edit as EditIcon } from "@mui/icons-material"
 import { RegistrationsTable, DownloadModal, AnalyticsSummary } from "./../components/index.components.js"
-import { mockRegistrations } from "./../assets/mockRegistrations.js"
-import { mockEvents } from "./../assets/mockEvents.js"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useAnalyticsStore } from "../stores/index.stores.js"
 import toast from "react-hot-toast"
 import { axiosInstance, formatDateForTable } from './../utils/index.utils.js'
@@ -26,15 +24,11 @@ import * as XLSX from 'xlsx'
 
 export const Analytics = () => {
   const theme = useTheme()
-  const navigate = useNavigate();
-  const { id } = useParams();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const { id } = useParams();
   const [activeTab, setActiveTab] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isDownloading, setIsDownloading] = useState(false)
-  const [event, setEvent] = useState(null)
-  const [registrations, setRegistrations] = useState([])
-  // const [formFields, setFormFields] = useState([])
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false)
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -42,7 +36,7 @@ export const Analytics = () => {
     severity: "success",
   })
 
-  const { analytics_currentEvent, summaryData, setAnalyticsEvent, setSummaryData, filteredRegistrations, setFilteredRegistrations } = useAnalyticsStore();
+  const { analytics_currentEvent, summaryData, setAnalyticsEvent, setSummaryData, filteredRegistrations } = useAnalyticsStore();
 
   useEffect(() => {
     setIsLoading(true)
@@ -68,49 +62,8 @@ export const Analytics = () => {
     getAnalytics()
   }, [])
 
-  // Fetch event data and registrations
-  // useEffect(() => {
-  //   // Simulate API call
-  //   setTimeout(() => {
-  //     // Get the first event from mock data
-  //     const eventData = mockEvents.find((e) => e.id === 1)
-  //     setEvent(eventData)
-
-  //     // Get registrations for this event
-  //     const eventRegistrations = mockRegistrations.filter((reg) => reg.eventId === eventData.id)
-  //     setRegistrations(eventRegistrations)
-
-  //     // Extract form fields from the first registration (assuming all registrations have the same fields)
-  //     if (eventRegistrations.length > 0) {
-  //       const fields = Object.keys(eventRegistrations[0].formResponses).map((key) => ({
-  //         id: key,
-  //         label: key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1"),
-  //       }))
-  //       setFormFields(fields)
-  //     }
-
-  //     setIsLoading(false)
-  //   }, 1000)
-  // }, [])
-
-  // Handle tab change
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue)
-  }
-
-  // Handle download button click
-  const handleDownloadClick = () => {
-    setIsDownloadModalOpen(true)
-  }
-
-  // Handle download modal close
-  const handleDownloadModalClose = () => {
-    setIsDownloadModalOpen(false)
-  }
-
   // Handle download with filename
   const handleDownload = (filename) => {
-    // In a real app, this would generate and download an Excel file
     setIsDownloading(true)
     // console.log(`Downloading registrations as ${filename}.xlsx`)
 
@@ -121,14 +74,14 @@ export const Analytics = () => {
 
     try {
       // 1.prepare headers
-      const staticHeaders = ['#', "Email", "Registration Date"]
+      const staticHeaders = ['#', "Email", "Status", "Registration Date"]
       const dynamicFields = analytics_currentEvent.formFields.filter(field => field.label.toLowerCase() !== "email" && field.label.toLowerCase() !== "mail")
       const dynamicHeaders = dynamicFields.map(field => field.label)
       const headers = [...staticHeaders, ...dynamicHeaders]
 
       // 2. prepare data rows
       const data = filteredRegistrations.map((registration, index) => {
-        const row = [index +1, registration.mail, formatDateForTable(registration.createdAt)]
+        const row = [index +1, registration.mail, registration.checkedIn ? "Present" : "Absent", formatDateForTable(registration.createdAt)]
         dynamicFields.forEach(field => {
           const cellValue = renderCellContentForXls(registration.responses[field.label], field.type);
           row.push(cellValue??'')
@@ -159,15 +112,8 @@ export const Analytics = () => {
     }
   }
 
-  // Handle edit button click
-  // const handleEditClick = () => {
-  //   navigate("/create-event", { state: { isEditMode: true } });
-  // }
-
   // Handle snackbar close
-  const handleSnackbarClose = () => {
-    setSnackbar({ ...snackbar, open: false })
-  }
+  const handleSnackbarClose = () => setSnackbar({ ...snackbar, open: false })
 
   if (isLoading) {
     return (
@@ -252,7 +198,7 @@ export const Analytics = () => {
         <Box sx={{ mb: 4 }}>
           <Tabs
             value={activeTab}
-            onChange={handleTabChange}
+            onChange={(e, newValue) => setActiveTab(newValue)}
             variant={isMobile ? "scrollable" : "standard"}
             scrollButtons={isMobile ? "auto" : false}
             allowScrollButtonsMobile
@@ -272,7 +218,7 @@ export const Analytics = () => {
           {activeTab === 1 && (
             <Box>
               <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-                <Button variant="contained" startIcon={<DownloadIcon />} onClick={handleDownloadClick}>
+                <Button variant="contained" startIcon={<DownloadIcon />} onClick={() => setIsDownloadModalOpen(true)}>
                   Download Excel
                 </Button>
               </Box>
@@ -303,7 +249,7 @@ export const Analytics = () => {
       {/* Download Modal */}
       <DownloadModal
         open={isDownloadModalOpen}
-        onClose={handleDownloadModalClose}
+        onClose={() => setIsDownloadModalOpen(false)}
         onDownload={handleDownload}
         isDownloading={isDownloading}
         defaultFilename={analytics_currentEvent?.title ? analytics_currentEvent.title.replace(/\s+/g, "_").toLowerCase() : "event_registrations"}

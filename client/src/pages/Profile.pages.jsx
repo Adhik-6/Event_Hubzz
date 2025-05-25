@@ -1,41 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { Box, Container, Typography, Tabs, Tab, Fab, useMediaQuery, useTheme, Avatar} from "@mui/material"
 import { Add as AddIcon } from "@mui/icons-material"
-import { ProfileForm, MyEventsList, NotificationsTab, SettingsTab } from "./../components/index.components.js"
-// import { mockEvents } from "../assets/mockEvents.js"
-// import { mockUserProfile } from "../assets/mockUserProfile.js"
+import { ProfileForm, MyEventsList, SettingsTab } from "./../components/index.components.js"
 import  placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
 import { useAuthStore } from "../stores/index.stores.js"
+// import { mockEvents } from "../assets/mockEvents.js"
+// import { mockUserProfile } from "../assets/mockUserProfile.js"
 
 export const Profile = () => {
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   const [activeTab, setActiveTab] = useState(0)
   // const [userProfile, setUserProfile] = useState(mockUserProfile)
   const { user } = useAuthStore()
-
-
-  // Handle tab change
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue)
-  }
-
-  // Handle create event click
-  const handleCreateEventClick = () => {
-    // In a real app, you would use a router to navigate
-    console.log("Navigating to /create-event")
-    alert("Navigating to /create-event")
-    // Example with react-router:
-    // navigate('/create-event');
-  }
 
   // Render tab content
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        return <MyEventsList />
+        return <MyEventsList activeTab={activeTab} />
       case 2:
-        return <NotificationsTab />
+        return <MyEventsList activeTab={activeTab} />
       case 3:
         return <SettingsTab />
       default:
@@ -73,7 +59,7 @@ export const Profile = () => {
         <Container maxWidth="lg">
           <Tabs
             value={activeTab}
-            onChange={handleTabChange}
+            onChange={(e, newValue) => setActiveTab(newValue)}
             variant={isMobile ? "scrollable" : "standard"}
             scrollButtons={isMobile ? "auto" : false}
             allowScrollButtonsMobile
@@ -81,7 +67,7 @@ export const Profile = () => {
           >
             <Tab label="Profile" />
             <Tab label="My Events" />
-            <Tab label="Notifications" />
+            <Tab label="Registered Events" />
             <Tab label="Settings" />
           </Tabs>
         </Container>
@@ -93,12 +79,13 @@ export const Profile = () => {
       </Container>
 
       {/* Floating Create Event Button (Mobile) */}
-      {isMobile && (
+      { (activeTab === 1 || activeTab === 2) && (
         <Fab
+          component={Link}
+          to={activeTab === 1 ? "/create-event" : "/events"}
           color="primary"
           aria-label="create event"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
-          onClick={handleCreateEventClick}
         >
           <AddIcon />
         </Fab>

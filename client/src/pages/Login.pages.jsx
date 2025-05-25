@@ -7,10 +7,7 @@ import {
   InputAdornment,
   IconButton,
   Link,
-  Divider,
   Alert,
-  useTheme,
-  useMediaQuery,
   CircularProgress,
 } from "@mui/material"
 import {
@@ -22,12 +19,8 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { AuthLayout } from "./../components/index.components.js"
 import { useAuthStore } from "../stores/index.stores.js"
-import toast from "react-hot-toast"
 
-// Simplify the form to only include email and password
 export const Login = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -42,28 +35,13 @@ export const Login = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
+    setFormData({...formData, [name]: value})
 
     // Clear error when field is edited
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      })
-    }
+    if (errors[name]) setErrors({...errors, [name]: null })
 
     // Clear login error when any field is edited
-    if (loginError) {
-      setLoginError("")
-    }
-  }
-
-  // Toggle password visibility
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
+    if (loginError) setLoginError("")
   }
 
   // Validate form
@@ -71,16 +49,11 @@ export const Login = () => {
     const newErrors = {}
 
     // Validate email
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
-    }
+    if (!formData.email.trim()) newErrors.email = "Email is required"
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
 
     // Validate password
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    }
+    if (!formData.password) newErrors.password = "Password is required"
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -90,19 +63,16 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!validateForm()) {
-      return
-    }
-
+    if (!validateForm()) return
     setIsLoading(true)
 
     try {
-      let x = await login(formData)
-      if(x?.success){
+      let res = await login(formData)
+      if(res?.success){
         // console.log("login successful")
         navigate("/")
       } else {
-        console.log(`Something went wrong: ${x?.message}`)
+        console.log(`Something went wrong: ${res?.message}`)
       }
     } catch (err) {
       // loginError(err.response.data?.message)
@@ -113,7 +83,7 @@ export const Login = () => {
   }
 
   return (
-    <AuthLayout title="Welcome back">
+    <AuthLayout title="Welcome back!" >
       <Box component="form" onSubmit={handleSubmit} noValidate>
         {loginError && (
           <Alert severity="error" sx={{ mb: 3 }}>
@@ -164,7 +134,7 @@ export const Login = () => {
             ),
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton aria-label="toggle password visibility" onClick={handleTogglePasswordVisibility} edge="end">
+                <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} edge="end">
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
@@ -172,11 +142,11 @@ export const Login = () => {
           }}
         />
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1, mb: 2 }}>
+        {/* <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1, mb: 2 }}>
           <Link component={RouterLink} to="/forgot-password" variant="body2" underline="hover">
             Forgot password?
           </Link>
-        </Box>
+        </Box> */}
 
         <Button
           type="submit"
@@ -186,6 +156,7 @@ export const Login = () => {
           disabled={isLoading}
           sx={{
             py: 1.5,
+            mt: 6,
             position: "relative",
           }}
         >

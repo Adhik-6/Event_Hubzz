@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useParams } from "react-router-dom";
 import { Box, Grid, Paper, Typography, LinearProgress, useTheme, useMediaQuery } from "@mui/material"
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
-import { useAnalyticsStore } from "../stores/index.stores.js";
 import toast from "react-hot-toast";
+import { useAnalyticsStore } from "../stores/index.stores.js";
 import { axiosInstance } from './../utils/index.utils.js'
-import { useParams } from "react-router-dom";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -96,7 +96,7 @@ export const AnalyticsSummary = () => {
   // }, [registrations, formFields])
 
   // COLORS for charts
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"]
+  const COLORS = ["#00C49F", "#FF8042", "#0088FE", "#FFBB28", "#8884d8", "#82ca9d", "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
   const { summaryData, registrationsOverTime, setRegistrationsOverTime, questionSummaries, setQuestionSummaries } = useAnalyticsStore();
   const { id } = useParams();
 
@@ -178,8 +178,9 @@ export const AnalyticsSummary = () => {
       {console.log("questionSummaries", questionSummaries)} */}
 
       <Grid container spacing={3}>
-        {Array.isArray(questionSummaries) && questionSummaries.map((summary, index) => (
-          <Grid item xs={12} md={6} key={summary.field.id}>
+        {/* {console.log("questionSummaries: ", questionSummaries)} */}
+        {Array.isArray(questionSummaries) && questionSummaries.length > 0 ? questionSummaries.map((summary, index) => (
+          <Grid item xs={12} md={6} key={index}>
             <Paper elevation={1} sx={{ p: 3, height: "100%" }}>
               <Typography variant="subtitle1" fontWeight="medium" gutterBottom>
                 {summary.field.label}
@@ -236,7 +237,7 @@ export const AnalyticsSummary = () => {
                             mt: 0.5,
                             height: 6,
                             borderRadius: 3,
-                            bgcolor: "rgba(0,0,0,0.05)",
+                            bgcolor: "rgba(250,250,250,0.1)",
                             "& .MuiLinearProgress-bar": {
                               bgcolor: COLORS[idx % COLORS.length],
                             },
@@ -261,7 +262,14 @@ export const AnalyticsSummary = () => {
               )}
             </Paper>
           </Grid>
-        ))}
+        )
+      ) : (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: 100, mx:"auto", }}>
+          <Typography variant="body2" color="text.secondary">
+            No response data available
+          </Typography>
+        </Box>
+      )}
       </Grid>
     </Box>
   )

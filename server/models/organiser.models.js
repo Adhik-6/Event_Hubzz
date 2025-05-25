@@ -44,7 +44,11 @@ const organiserSchema = new mongoose.Schema({
     twitter: String,
     linkedIn: String,
     instagram: String
-  }
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
 }, 
 {
   timestamps: true

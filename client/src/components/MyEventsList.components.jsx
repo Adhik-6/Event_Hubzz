@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react"
-import { Box, Typography, Grid, TextField, Container, CircularProgress, InputAdornment, FormControl, InputLabel, Select, MenuItem, Button, Tabs, Tab, Divider, useMediaQuery, useTheme } from "@mui/material"
-import { Search as SearchIcon, Add as AddIcon } from "@mui/icons-material"
+import { Box, Typography, Grid, TextField, Container, CircularProgress, InputAdornment, FormControl, InputLabel, Select, MenuItem, Tabs, Tab, Divider, useMediaQuery, useTheme } from "@mui/material"
+import { Search as SearchIcon } from "@mui/icons-material"
 import { EventCard } from "./index.components.js"
 import { axiosInstance, getStatus } from "../utils/index.utils.js"
 import { useAuthStore } from "../stores/index.stores.js"
 import toast from "react-hot-toast"
-import { Link } from "react-router-dom"
 
 
-export const MyEventsList = () => {
+export const MyEventsList = ({ activeTab }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   const [isLoading, setLoding] = useState(false)
@@ -25,7 +24,7 @@ export const MyEventsList = () => {
     async function getCurrentUserEvents(){
       setLoding(true)
       try {
-        const res = await axiosInstance.get("/events/organiser/user-event")
+        const res = await axiosInstance.get(activeTab===1?"/events/organiser/user-event":"/events/organiser/registered-event")
         // const res = await axiosInstance.get("/events")
         if(res.data?.success)
           // toast.success(res.data.message)
@@ -41,7 +40,7 @@ export const MyEventsList = () => {
       }
     }
     getCurrentUserEvents()
-  }, [user._id])
+  }, [user._id, activeTab])
 
   // Handle search
   useEffect(() => {
@@ -118,12 +117,9 @@ export const MyEventsList = () => {
         }}
       >
         <Typography variant="h5" component="h2" fontWeight="bold">
-          My Events
+          {activeTab===1?"My Events":"My Registrations"}
         </Typography>
 
-        <Button component={Link} to="/create-event" variant="contained" startIcon={<AddIcon />}>
-          Create Event
-        </Button>
       </Box>
 
       <Box
@@ -189,7 +185,7 @@ export const MyEventsList = () => {
           <Grid container spacing={3}>
             {filteredEvents.map((event) => (
               <Grid item xs={12} sm={6} md={4} key={event._id}>
-                <EventCard event={event} isOrganizer={true} />
+                <EventCard event={event} isOrganizer={activeTab===1} />
               </Grid>
             ))}
           </Grid>

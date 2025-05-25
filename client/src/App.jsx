@@ -1,6 +1,6 @@
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material'
 import { Routes, Route, Navigate } from "react-router-dom"
-import { Home, EventRegister, Events, CreateEvent, PageNotFound, Profile, Analytics, Login, Signup, EventRegistration} from './pages/index.pages.js'
+import { Home, Events, CreateEvent, PageNotFound, Profile, Analytics, Login, Signup, EventRegistration} from './pages/index.pages.js'
 import { NavBar, Footer } from './components/index.components.js'
 import { useAuthStore } from './stores/index.stores.js' 
 import { Toaster } from 'react-hot-toast'
@@ -76,30 +76,29 @@ function App() {
     },
   })
 
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   
   return (
     <>
     <ThemeProvider theme={darkTheme}>
-    <Toaster position="top-right" reverseOrder={false}/>
-    <CssBaseline />
-    <NavBar/>
-    <Routes>
-      { useScrollToTop() }
-      {/* { console.log("user: ", user) } */}
-      <Route path="/" element={ <Home/> } />
-      <Route path='/login' element={ isAuthenticated?<Navigate to="/"/>:<Login/> } />
-      <Route path='/signup' element={ isAuthenticated?<Navigate to="/"/>:<Signup/> } />
-      <Route path="/events" element={ <Events/> } />
-      <Route path="/event-registrations" element={ <EventRegister/> } />
-      <Route path='/events/:id/register' element={ isAuthenticated?<EventRegistration/>:<Navigate to="/login"/> } />
-      <Route path="/create-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
-      <Route path="/profile" element={ isAuthenticated?<Profile/>:<Navigate to="/login"/> } />
-      <Route path="/profile/analytics/:id" element={ isAuthenticated?<Analytics/>:<Navigate to="/login"/> } />
-      <Route path="/profile/analytics/:id/edit-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
-      <Route path="*" element={ <PageNotFound/> } />
-    </Routes>
-    <Footer/>
+      <CssBaseline />
+      <Toaster position="top-right" reverseOrder={false}/>
+      <NavBar/>
+      <Routes>
+        { useScrollToTop() }
+        {/* { console.log("user: ", user) } */}
+        <Route path="/" element={ <Home/> } />
+        <Route path='/login' element={ isAuthenticated?<Navigate to="/"/>:<Login/> } />
+        <Route path='/signup' element={ isAuthenticated?<Navigate to="/"/>:<Signup/> } />
+        <Route path="/events" element={ <Events/> } />
+        <Route path='/events/:id/register' element={ isAuthenticated?<EventRegistration/>:<Navigate to="/login"/> } />
+        <Route path="/create-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
+        <Route path="/profile" element={ isAuthenticated?<Profile/>:<Navigate to="/login"/> } />
+        <Route path="/profile/analytics/:id" element={ isAuthenticated?<Analytics/>:<Navigate to="/login"/> } />
+        <Route path="/profile/analytics/:id/edit-event" element={ isAuthenticated? <CreateEvent/>:<Navigate to="/login"/> } />
+        <Route path="*" element={ <PageNotFound/> } />
+      </Routes>
+      <Footer/>
     </ThemeProvider>
     </>
   )

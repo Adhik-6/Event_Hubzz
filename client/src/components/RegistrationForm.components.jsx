@@ -5,22 +5,21 @@ import { useResponseStore } from "../stores/index.stores.js"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-// import { DatePicker, LocalizationProvider, AdapterDateFns } from '@mui/x-date-pickers';
-// import toast from "react-hot-toast";
-// import { axiosInstance } from "../utils/index.utils.js";
-
 export const RegistrationForm = () => {
 
   const { responseFormFields, currentEvent, responseData, setResponseData, setRegistrationError, registrationError } = useResponseStore()
 
-  // Check if a conditional field should be shown
-  // const shouldShowField = (field) => {
-  //   if (!field.conditionalField) return true
-  //   return formData[field.conditionalField] === field.conditionalValue
-  // }
-
-  // const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const linkStyle = {
+    textDecoration: "none",
+    color: "#1976d2", // Material-UI primary blue
+    fontWeight: "500",
+    transition: "color 0.3s",
+    "&:hover": {
+      color: "#1565c0", // darker blue on hover
+      textDecoration: "underline",
+    },
+  };
   
 
     // Handle form field change
@@ -29,17 +28,10 @@ export const RegistrationForm = () => {
     setResponseData(fieldName, value)
 
     // Clear error when field is edited
-    if (errors[fieldName]) {
-      setErrors({
-        ...errors,
-        [fieldName]: null,
-      })
-    }
+    if (errors[fieldName]) setErrors({...errors, [fieldName]: null})
 
     // Clear registration error when any field is edited
-    if (registrationError) {
-      setRegistrationError("")
-    }
+    if (registrationError) setRegistrationError("")
   }
   
 
@@ -84,21 +76,25 @@ export const RegistrationForm = () => {
             helperText={errors[field.id]}
             // margin="normal"
             multiline
-            rows={4}
+            minRows={4}
           />
         )
 
       case "dropdown":
         return (
-          <FormControl fullWidth margin="normal" error={!!errors[field.id]} required={field.required}>
-            <InputLabel id={`${field.id}-label`}>{field.label}</InputLabel>
+          <FormControl sx={{ minWidth: 210, maxWidth: 400, width: 'fit-content',}} margin="normal" error={!!errors[field.id]} required={field.required}>
+            <FormLabel sx={{mb: 1.5}} component="legend" id={`${field.id}-label`}>{field.label}</FormLabel>
+            {/* <InputLabel id={`${field.id}-label`}>{field.label}</InputLabel> */}
             <Select
               labelId={`${field.id}-label`}
               name={field.id}
               value={responseData[field.label] || ""}
               onChange={(e) => handleFieldChange(field.label, e.target.value)}
-              label={field.label}
-            >
+              // label={field.label}
+              sx={{minWidth: 180, maxWidth: 400, width: 'fit-content' }}
+              MenuProps={{
+                PaperProps: { style: { maxHeight: 300, width: 'auto' }}
+              }}>
               {field.options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.value}
@@ -165,9 +161,9 @@ export const RegistrationForm = () => {
               onChange={(date) => handleFieldChange(field.label, date.toISOString())}
               placeholderText="DD/MM/YYYY"
               dateFormat="dd/MM/yyyy"
-              customInput={<TextField fullWidth required={field.required} />}
+              customInput={<TextField helperText={field?.placeholder} fullWidth required={field.required} />}
             />
-            {/* <DatePicker selected={eventDetails.startDate} onChange={(date) => setEventDetails("startDate", date)} dateFormat="dd/MM/yyyy" placeholderText="DD/MM/YYYY" customInput={<TextField fullWidth label="Start Date *" helperText="When does your event start?" InputLabelProps={{ shrink: true }} />}/> */}
+            {/* <DatePicker selected={eventDetails.startDate} onChange={(date) => setEventDetails("startDate", date)} dateFormat="dd/MM/yyyy" placeholderText="DD/MM/YYYY" customInput={<TextField helperText={field.placeholder} fullWidth label="Start Date *" helperText="When does your event start?" InputLabelProps={{ shrink: true }} />}/> */}
           </Box>
         )
         
@@ -184,9 +180,9 @@ export const RegistrationForm = () => {
               timeIntervals={15}
               dateFormat="hh:mm aa"
               placeholderText="HH:MM PM"
-              customInput={<TextField fullWidth required={field.required} />}
+              customInput={<TextField helperText={field.placeholder} fullWidth required={field.required} />}
             />
-            {/* <DatePicker selected={eventDetails.startTime} onChange={(date) => setEventDetails('startTime', date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" placeholderText="HH:MM PM"  dateFormat="hh:mm aa" customInput={ <TextField fullWidth label="Start Time *" helperText="What time does your event start?" InputLabelProps={{ shrink: true }} /> }/> */}
+            {/* <DatePicker selected={eventDetails.startTime} onChange={(date) => setEventDetails('startTime', date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" placeholderText="HH:MM PM"  dateFormat="hh:mm aa" customInput={ <TextField helperText={field.placeholder} fullWidth label="Start Time *" helperText="What time does your event start?" InputLabelProps={{ shrink: true }} /> }/> */}
           </Box>
         )
 
@@ -195,20 +191,10 @@ export const RegistrationForm = () => {
     }
   }
 
-  // Group fields by section (optional)
-  // const personalInfoFields = formFields.filter((field) =>
-  //   ["name", "email", "phone", "organization", "jobTitle"].includes(field.id),
-  // )
-
-  // const eventSpecificFields = formFields.filter(
-  //   (field) => !["name", "email", "phone", "organization", "jobTitle"].includes(field.id),
-  // )
-
 
   return (
     <Box>
       {/* { console.log(responseFormFields) } */}
-      {/* change the heading based on external form URL, provide an uneditable field for form URL, if possible create a new compnent itself */}
       <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
         <Typography variant="h5" component="h2" fontWeight="bold" gutterBottom>
           Registration Form
@@ -218,15 +204,15 @@ export const RegistrationForm = () => {
         </Typography>
         <Divider sx={{ mb: 4 }} />
         {currentEvent.externalUrl ?(
-            <>
-              <Typography variant="h6" component={Link} to={`${currentEvent.externalUrl}`} fontWeight="medium" gutterBottom>
-                External Form URL
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              { responseFormFields.map((field) => (
-                <Box key={field._id} sx={{ mb: 3 }}>{renderField(field)}</Box>
-              ))}
-            </>
+          <>
+            <Typography fontWeight="medium" gutterBottom>
+              External registration form URL  -  <Typography component={Link} to={currentEvent.externalUrl} style={linkStyle}>{currentEvent.externalUrl}</Typography>
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
+            { responseFormFields.map((field) => (
+              <Box key={field._id} sx={{ mb: 3 }}>{renderField(field)}</Box>
+            ))}
+          </>
           ): (
             responseFormFields.map((field) => (
               <Box key={field._id} sx={{ mb: 3 }}>{renderField(field)}</Box>
@@ -234,30 +220,6 @@ export const RegistrationForm = () => {
           )
         }
       </Paper>
-
-      {/* Personal Information Section */}
-      {/* <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h6" component="h3" fontWeight="medium" gutterBottom>
-          Registration Information
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-
-        {formFields.map((field) => (
-          <Box key={field._id}>{renderField(field)}</Box>
-        ))}
-      </Paper> */}
-
-      {/* Event Specific Information Section */}
-      {/* <Paper elevation={1} sx={{ p: 3 }}>
-        <Typography variant="h6" component="h3" fontWeight="medium" gutterBottom>
-          Event Information
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-
-        {eventSpecificFields.map((field) => (
-          <Box key={field.id}>{renderField(field)}</Box>
-        ))}
-      </Paper> */}
     </Box>
   )
 }

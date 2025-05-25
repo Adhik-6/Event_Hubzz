@@ -1,21 +1,10 @@
 import { useState, useEffect } from "react"
 import { Box, Container, Typography, Grid, TextField, InputAdornment, FormControl, InputLabel, Select, MenuItem, Tabs, Tab, Chip, Pagination, useMediaQuery, Drawer, IconButton, Divider, Button, CircularProgress } from "@mui/material"
-import { Search as SearchIcon, FilterList as FilterListIcon, Close as CloseIcon, FindInPage } from "@mui/icons-material"
-import { EventCard } from "./../components/index.components.js"
-import { mockEvents } from "../assets/mockEvents.js"
+import { Search as SearchIcon, FilterList as FilterListIcon, Close as CloseIcon } from "@mui/icons-material"
 import toast from 'react-hot-toast'
+import { EventCard } from "./../components/index.components.js"
 import { axiosInstance, getStatus } from "../utils/index.utils.js"
-
-const useMemoizedStatus = (events, getStatus) => {
-  return useMemo(() => {
-    const statusMap = {};
-    events.forEach(event => {
-      const key = `${event._id}-${event.startDate}-${event.startTime}-${event.endDate}-${event.endTime}`;
-      statusMap[event._id] = getStatus(event.startDate, event.startTime, event.endDate, event.endTime);
-    });
-    return statusMap;
-  }, [events]);
-};
+// import { mockEvents } from "../assets/mockEvents.js"
 
 export const Events = () => {
   const [events, setEvents] = useState([])
@@ -37,8 +26,9 @@ export const Events = () => {
       setIsLoading(true);
       try {
         const res = await axiosInstance.get("/events");
-        setEvents(res.data.events);
-        setFilteredEvents(res.data.events);
+        setEvents(res.data?.events);
+        setFilteredEvents(res.data?.events);
+        // console.log(res.data?.events)
       } catch (err) {
         console.error(err);
         toast.error(err.response?.data?.message || "Something went wrong");
@@ -61,8 +51,7 @@ export const Events = () => {
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
-      result = result.filter(
-        (event) =>
+      result = result.filter( (event) =>
           event.title.toLowerCase().includes(query) ||
           event.description.toLowerCase().includes(query) ||
           event.venue.toLowerCase().includes(query),
@@ -75,12 +64,9 @@ export const Events = () => {
         result.sort((a, b) => {
           dateComparison = new Date(a.startDate) - new Date(b.startDate)
           if(dateComparison === 0){
-            if(a.startTime < b.startTime)
-              return -1
-            else if(a.startTime > b.startTime)
-              return 1
-            else
-              return 0
+            if(a.startTime < b.startTime) return -1
+            else if(a.startTime > b.startTime) return 1
+            else return 0
           }
           return dateComparison;
         } )
@@ -89,12 +75,9 @@ export const Events = () => {
         result.sort((a, b) => {
           dateComparison = new Date(b.startDate) - new Date(a.startDate)
           if(dateComparison === 0){
-            if(b.startTime < a.startTime)
-              return -1
-            else if(b.startTime > a.startTime)
-              return 1
-            else
-              return 0
+            if(b.startTime < a.startTime) return -1
+            else if(b.startTime > a.startTime) return 1
+            else return 0
           }
           return dateComparison;
         } )
@@ -114,9 +97,9 @@ export const Events = () => {
   }, [events, filterStatus, searchQuery, sortBy])
 
   // Handle page change
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (e, value) => {
     setCurrentPage(value)
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo(0, 0)
   }
 
   // Calculate pagination
@@ -125,19 +108,8 @@ export const Events = () => {
   const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent)
   const totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
 
-  // Handle event click
-  const handleEventClick = (eventId) => {
-    // In a real app, you would navigate to the registration page
-    console.log(`Navigating to registration page for event ${eventId}`)
-    alert(`Navigating to registration page for event ${eventId}`)
-    // Example with react-router:
-    // navigate(`/events/${eventId}/register`);
-  }
-
   // Toggle filter drawer for mobile
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen)
-  }
+  const toggleDrawer = () => setDrawerOpen(!drawerOpen)
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, mt: 10 }}>
@@ -152,6 +124,14 @@ export const Events = () => {
         )}
       </Box>
 
+      {isMobile && (
+        <Box xs={12} md={6} sx={{ mb: 3 }}>
+          <TextField fullWidth variant="outlined" placeholder="Search events..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} InputProps={{ startAdornment: (
+            <InputAdornment position="start"> <SearchIcon /> </InputAdornment>
+            )}}/>
+        </Box>
+      )}
+
       {/* Filter drawer for mobile */}
       {isMobile && (
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
@@ -164,15 +144,6 @@ export const Events = () => {
               </IconButton>
             </Box>
             <Divider sx={{ mb: 2 }} />
-
-            <Typography variant="subtitle2" sx={{ mb: 1 }}> Search </Typography>
-            <TextField fullWidth variant="outlined" placeholder="Search events..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size="small" sx={{ mb: 3 }} InputProps={{ startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
 
             <Typography variant="subtitle2" sx={{ mb: 1 }}> Sort By </Typography>
 
@@ -192,10 +163,6 @@ export const Events = () => {
               <Button variant={filterStatus === "ongoing" ? "contained" : "outlined"} onClick={() => setFilterStatus("ongoing")} fullWidth> Ongoing </Button>
               <Button variant={filterStatus === "upcoming" ? "contained" : "outlined"} onClick={() => setFilterStatus("upcoming")} fullWidth> Upcoming </Button>
               <Button variant={filterStatus === "past" ? "contained" : "outlined"} onClick={() => setFilterStatus("past")} fullWidth> Past</Button>
-            </Box>
-
-            <Box sx={{ mt: 4 }}>
-              <Button variant="contained" fullWidth onClick={toggleDrawer}>Apply Filters </Button>
             </Box>
 
           </Box>
@@ -260,7 +227,7 @@ export const Events = () => {
           <Grid container spacing={3}>
             {currentEvents.map((event) => (
               <Grid item xs={12} sm={6} md={4} key={event._id}>
-                <EventCard event={event} onClick={() => handleEventClick(event.id)} />
+                <EventCard event={event} />
               </Grid>
             ))}
           </Grid>

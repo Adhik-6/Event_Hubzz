@@ -21,7 +21,6 @@ const useEventStore = create((set, get) => {
       organiser: user.organization || user.fullName
     },
 
-    registrationType: "custom",
     externalUrl: "",
 
     formFields: [
@@ -32,15 +31,7 @@ const useEventStore = create((set, get) => {
         required: true,
         placeholder: "Enter your email address",
         options: [],
-      },
-      {
-        id: "name",
-        type: "text",
-        label: "Full Name",
-        required: true,
-        placeholder: "Enter your full name",
-        options: [],
-      },
+      }
     ],
 
     setEventDetails: (field, value) => {
@@ -56,7 +47,10 @@ const useEventStore = create((set, get) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         set(state => ({
-          eventDetails: { ...state.eventDetails, eventImage: reader.result }
+          eventDetails: { 
+            ...state.eventDetails, 
+            eventImage: reader.result 
+          }
         }));
       };
       reader.readAsDataURL(file);
@@ -66,36 +60,6 @@ const useEventStore = create((set, get) => {
       activeStep: step === "next" ? state.activeStep + 1 : Math.max(0, state.activeStep - 1)
     })),
 
-    // isStepValid: () => {
-    //   const { eventDetails, activeStep, registrationType, externalUrl, formFields } = get()
-    //   let isValid = false;
-
-    //   if (activeStep === 0) {
-    //     isValid = eventDetails.title.trim() !== "" &&
-    //     eventDetails.venue.trim() !== "" &&
-    //     eventDetails.startDate !== null &&
-    //     eventDetails.endDate !== null &&
-    //     eventDetails.startTime !== null &&
-    //     eventDetails.endTime !== null &&
-    //     eventDetails.category.trim() !== "" &&
-    //     new Date(eventDetails.startDate).getTime() > Date.now() &&
-    //     (new Date(eventDetails.startDate).getTime() < new Date(eventDetails.endDate).getTime() || 
-    //     (new Date(eventDetails.startDate).getTime() === new Date(eventDetails.endDate).getTime() && eventDetails.startTime < eventDetails.endTime));
-
-    //     console.log(isValid)
-    //     return isValid
-    //     // isValid always seems to be true
-    //   } else if (activeStep === 1) {
-    //     // Validate registration setup
-    //     if (registrationType === "external") {
-    //       return externalUrl.trim() !== ""
-    //     } else {
-    //       return formFields.length > 0
-    //     }
-    //   }
-
-    //   return true
-    // },
     isStepValid: () => {
       const { eventDetails, activeStep, registrationType, externalUrl, formFields } = get();
     

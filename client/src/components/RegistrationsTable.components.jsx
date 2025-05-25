@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import toast from "react-hot-toast"
 import {
   Box,
   Paper,
@@ -13,24 +15,17 @@ import {
   InputAdornment,
   Typography,
   Chip,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material"
 import { Search as SearchIcon } from "@mui/icons-material"
 import { useAnalyticsStore } from "../stores/index.stores.js"
-import toast from "react-hot-toast"
 import { axiosInstance, formatDateForTable } from "../utils/index.utils.js"
-import { useParams } from "react-router-dom"
 
 export const RegistrationsTable = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [searchQuery, setSearchQuery] = useState("")
   const { id } = useParams();
   const { analytics_currentEvent, tableData, setTableData, filteredRegistrations, setFilteredRegistrations } = useAnalyticsStore();
-  // const [filteredRegistrations, setFilteredRegistrations] = useState([]);
 
   useEffect(() => {
     async function fetchTableData(){
@@ -57,35 +52,31 @@ export const RegistrationsTable = () => {
       // console.log("Registration: ", registration)
       
       // Search in user info
-      if (registration.email?.toLowerCase().includes(searchLower)) return true
+      if (registration.mail?.toLowerCase().includes(searchLower)) return true
       
       // Search in form responses
       for (const key in registration?.responses) {
         const value = registration.responses[key]
-        if (value && typeof value === "string" && value?.toLowerCase().includes(searchLower)) {
-          return true
-        }
+        if (value && typeof value === "string" && value?.toLowerCase().includes(searchLower)) return true
       }
       
       return false
     }))
   }
-  // console.log("Registration: ")
+  // console.log("running: ")
   }, [searchQuery])
 
-  // useEffect(() => {
-
-  // }, [searchQuery])
-
   // Handle page change
-  const handleChangePage = (e, newPage) => {
+  const handlePageChange = (e, newPage) => {
     setPage(newPage)
+    window.scrollTo(0, 0)
   }
 
   // Handle rows per page change
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(Number.parseInt(event.target.value, 10))
     setPage(0)
+    window.scrollTo(0, 0)
   }
 
   // Handle search change
@@ -121,6 +112,7 @@ export const RegistrationsTable = () => {
                 <TableCell sx={{ fontWeight: "bold", minWidth: 60 }}>#</TableCell>
                 {/* <TableCell sx={{ fontWeight: "bold", minWidth: 180 }}>Name</TableCell> */}
                 <TableCell sx={{ fontWeight: "bold", minWidth: 180 }}>Email</TableCell>
+                <TableCell sx={{ fontWeight: "bold", minWidth: 180 }}>Status</TableCell>
                 <TableCell sx={{ fontWeight: "bold", minWidth: 180 }}>Registration Date</TableCell>
                 {analytics_currentEvent.formFields.map((field) => {
                   if(field.label.toLowerCase() === "email" || field.label.toLowerCase() === "mail" ) return null
@@ -136,7 +128,9 @@ export const RegistrationsTable = () => {
                   <TableRow key={registration._id} hover>
                     <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                     {/* <TableCell>{registration.name}</TableCell> */}
+                    {/* {console.log("registration: ", registration)} */}
                     <TableCell>{registration.mail}</TableCell>
+                    <TableCell><Chip label={registration.checkedIn?"Present":"Absent"} size="large" color={registration.checkedIn ? "success" : "error"} /></TableCell>
                     <TableCell>{formatDateForTable(registration.createdAt)}</TableCell>
                     {analytics_currentEvent.formFields.map((field) => {
                       if(field.label.toLowerCase() === "email" || field.label.toLowerCase() === "mail" ) return null
@@ -157,7 +151,7 @@ export const RegistrationsTable = () => {
           </Table>
         </TableContainer>
         
-        { console.log("filteredRegistrations", filteredRegistrations) }
+        {/* { console.log("filteredRegistrations", filteredRegistrations) } */}
         {/* { console.log("analytics_currentEvent", analytics_currentEvent) } */}
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50]}
@@ -165,7 +159,7 @@ export const RegistrationsTable = () => {
           count={filteredRegistrations?.length || 0}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={handleChangePage}
+          onPageChange={handlePageChange}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
@@ -180,20 +174,14 @@ export const RegistrationsTable = () => {
 }
 
 const renderCellContent = (content, type) => {
-  if (content === undefined || content === null || content === '') {
-    return "-"
-  }
+  if (content === undefined || content === null || content === '') return "-"
 
-  if (typeof content === "boolean") {
-    return content ? "Yes" : "No"
-  }
+  if (typeof content === "boolean") return content ? "Yes" : "No"
 
   if (Array.isArray(content)) {
     return (
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-        {content.map((item, index) => (
-          <Chip key={index} label={item} size="small" />
-        ))}
+        {content.map((item, index) => <Chip key={index} label={item} size="small" />)}
       </Box>
     )
   }
@@ -201,6 +189,14 @@ const renderCellContent = (content, type) => {
   if(type === "date") return formatDateForTable(content).split(',').slice(0,2).join(',')
 
   if(type === "time") return formatDateForTable(content).split(',')[2]
+
+  if(content.length > 50) {
+    return (
+      <Box sx={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        {content}
+      </Box>
+    )
+  }
 
   return content.toString()
 }

@@ -9,10 +9,10 @@ import {
   Save as SaveIcon,
   Edit as EditIcon
 } from "@mui/icons-material"
+import toast from "react-hot-toast"
 import placeHolderAvatar from './../assets/placeHolderAvatar.jpeg'
 import { axiosInstance } from "../utils/index.utils.js"
 import { useAuthStore } from "../stores/index.stores.js"
-import toast from "react-hot-toast"
 
 export const ProfileForm = ({ profile }) => {
 
@@ -20,40 +20,51 @@ export const ProfileForm = ({ profile }) => {
 
   const [formData, setFormData] = useState({
     _id: profile._id,
-    name: profile.fullName || "",
-    username: profile.userName || "",
-    email: profile.mail || "",
-    phone: profile.phoneNumber || "",
+    fullName: profile.fullName || "",
+    userName: profile.userName || "",
+    mail: profile.mail || "",
+    phoneNumber: profile.phoneNumber || "",
     organization: profile.organization || "",
     bio: profile.bio || "",
     website: profile.website || "",
-    facebook: profile.socialMedia?.facebook || "",
-    twitter: profile.socialMedia?.twitter || "",
-    instagram: profile.socialMedia?.instagram || "",
-    linkedin: profile.socialMedia?.linkedin || "",
-    profilePicture: profile.profilePic || null,
-    // profilePicturePreview: profile.profilePicture || null,
+    socialMedia: {
+      facebook: profile.socialMedia?.facebook || "",
+      twitter: profile.socialMedia?.twitter || "",
+      instagram: profile.socialMedia?.instagram || "",
+      linkedin: profile.socialMedia?.linkedin || "",
+    },
+    profilePic: profile.profilePic || null,
   })
+
+  const initialFormData = {
+    _id: profile._id,
+    fullName: profile.fullName || "",
+    userName: profile.userName || "",
+    mail: profile.mail || "",
+    phoneNumber: profile.phoneNumber || "",
+    organization: profile.organization || "",
+    bio: profile.bio || "",
+    website: profile.website || "",
+    socialMedia: {
+      facebook: profile.socialMedia?.facebook || "",
+      twitter: profile.socialMedia?.twitter || "",
+      instagram: profile.socialMedia?.instagram || "",
+      linkedin: profile.socialMedia?.linkedin || "",
+    },
+    profilePic: profile.profilePic || null,
+  }
+
   const [isEditing, setEditing] = useState(false)
   const [isLoading, setLoading] = useState(false)
-
   const [errors, setErrors] = useState({})
 
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
+    setFormData({...formData, [name]: value})
 
     // Clear error when field is edited
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      })
-    }
+    if (errors[name]) setErrors({...errors, [name]: null})
   }
 
   // Handle profile picture upload
@@ -76,22 +87,22 @@ export const ProfileForm = ({ profile }) => {
   const validateForm = () => {
 
     // Validate email
-    if (!formData.email.trim()) {
+    if (!formData.mail.trim()) {
       toast.error("Email is required")
       return false
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(formData.mail)) {
       toast.error("Email is invalid")
       return false
     }
 
     // Validate fullName
-    if (!formData.name.trim()) {
+    if (!formData.fullName.trim()) {
       toast.error("Full name is required")
       return false
     }
 
     // Validate userName
-    if (!formData.username.trim()) {
+    if (!formData.userName.trim()) {
       toast.error("Username is required")
       return false
     }
@@ -103,7 +114,7 @@ export const ProfileForm = ({ profile }) => {
     }
 
     // Validate phoneNumber
-    if(formData.phone && !/^\+?[0-9\s-()]{8,}$/.test(formData.phone.trim())) {
+    if(formData.phoneNumber && !/^\+?[0-9\s-()]{8,}$/.test(formData.phoneNumber.trim())) {
       toast.error("Please enter a valid phone number")
       return false
     }
@@ -127,28 +138,10 @@ export const ProfileForm = ({ profile }) => {
       return
     }
 
-    const userProfile = {
-      _id: formData._id,
-      fullName: formData.name,
-      userName: formData.username,
-      mail: formData.email,
-      phoneNumber: formData.phone,
-      organization: formData.organization,
-      bio: formData.bio,
-      website: formData.website,
-      profilePic: formData.profilePicture,
-      socialMedia: {
-        facebook: formData.facebook,
-        twitter: formData.twitter,
-        instagram: formData.instagram,
-        linkedin: formData.linkedin,
-      },
-    }
-
     try {
-      const res = await axiosInstance.patch("/auth/update-profile", { userProfile })
+      const res = await axiosInstance.patch("/auth/update-profile", { formData })
       if(res.data?.success){
-        console.log("is ", res.data.updatedProfile)
+        // console.log("is ", res.data.updatedProfile)
         setUser(res.data.updatedProfile)
         // not assigned right after updating
         toast.success(res.data.message)
@@ -174,7 +167,7 @@ export const ProfileForm = ({ profile }) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Avatar src={formData.profilePicture || placeHolderAvatar} alt={formData.name} sx={{ width: 150, height: 150, mb: 2 }} />
+            <Avatar src={formData.profilePic || placeHolderAvatar} alt={formData.fullName} sx={{ width: 150, height: 150, mb: 2 }} />
 
             <input
               accept="image/*"
@@ -203,7 +196,7 @@ export const ProfileForm = ({ profile }) => {
                   label="Full Name"
                   name="name"
                   disabled={!isEditing}
-                  value={formData.name}
+                  value={formData.fullName}
                   onChange={handleChange}
                   required
                 />
@@ -215,7 +208,7 @@ export const ProfileForm = ({ profile }) => {
                   label="Username"
                   name="username"
                   disabled={!isEditing}
-                  value={formData.username}
+                  value={formData.userName}
                   onChange={handleChange}
                   required
                 />
@@ -228,7 +221,7 @@ export const ProfileForm = ({ profile }) => {
                   name="email"
                   disabled={!isEditing}
                   type="email"
-                  value={formData.email}
+                  value={formData.mail}
                   onChange={handleChange}
                   required
                 />
@@ -240,7 +233,7 @@ export const ProfileForm = ({ profile }) => {
                   disabled={!isEditing} 
                   label="Phone Number" 
                   name="phone" 
-                  value={formData.phone}
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   placeholder="1234567890"
                 />
@@ -302,7 +295,7 @@ export const ProfileForm = ({ profile }) => {
               label="Facebook"
               name="facebook"
               disabled={!isEditing}
-              value={formData.facebook}
+              value={formData.socialMedia?.facebook}
               onChange={handleChange}
               placeholder="Username or profile URL"
               InputProps={{
@@ -321,7 +314,7 @@ export const ProfileForm = ({ profile }) => {
               label="Twitter"
               name="twitter"
               disabled={!isEditing}
-              value={formData.twitter}
+              value={formData.socialMedia?.twitter}
               onChange={handleChange}
               placeholder="Username without @"
               InputProps={{
@@ -340,7 +333,7 @@ export const ProfileForm = ({ profile }) => {
               label="Instagram"
               name="instagram"
               disabled={!isEditing}
-              value={formData.instagram}
+              value={formData.socialMedia?.instagram}
               onChange={handleChange}
               placeholder="Username without @"
               InputProps={{
@@ -359,7 +352,7 @@ export const ProfileForm = ({ profile }) => {
               label="LinkedIn"
               name="linkedin"
               disabled={!isEditing}
-              value={formData.linkedin}
+              value={formData.socialMedia?.linkedin}
               onChange={handleChange}
               placeholder="Username or profile URL"
               InputProps={{
@@ -374,7 +367,15 @@ export const ProfileForm = ({ profile }) => {
         </Grid>
       </Paper>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box sx={{ display: "flex", justifyContent: `${!isEditing ? "flex-end" : "space-between"}` }}>
+        {isEditing && ( 
+          <Button variant="outlined" onClick={() => {
+          setFormData(initialFormData)
+          setEditing(false)
+        }} sx={{ mr: 2 }}>
+          Cancel
+        </Button>
+        )}
         <Button type="submit" variant="contained" onClick={(e) => {
           if(isEditing)
             handleSubmit(e)

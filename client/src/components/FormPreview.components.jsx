@@ -3,7 +3,7 @@ import {
   Typography,
   TextField,
   FormControl,
-  InputLabel,
+  FormLabel,
   Select,
   MenuItem,
   FormControlLabel,
@@ -60,9 +60,27 @@ export const FormPreview = () => {
           )}
 
           {field.type === "dropdown" && (
-            <FormControl sx={{ minWidth: "210px"}} required={field.required}>
-              <InputLabel>{field.label}</InputLabel>
-              <Select value={''} label={field.label} disabled>
+            // <FormControl sx={{ minWidth: "210px"}} required={field.required}>
+            //   <InputLabel>{field.label}</InputLabel>
+            //   <Select value={''} label={field.label} disabled>
+            //     <MenuItem key="0" value="">
+            //       {""}
+            //     </MenuItem>
+            //     {field.options.map((option) => (
+            //       <MenuItem key={option.value} value={option.value}>
+            //         {option.value}
+            //       </MenuItem>
+            //     ))}
+            //   </Select>
+            // </FormControl>
+            <FormControl sx={{ minWidth: 210, maxWidth: 400, width: 'fit-content',}} required={field.required}>
+            <FormLabel sx={{mb: 1.5, mt: 2}} component="legend" id={`${field.id}-label`}>{field.label}</FormLabel>
+              <Select value={''} disabled sx={{minWidth: 180, maxWidth: 400, width: 'fit-content' }}
+                MenuProps={{
+                  PaperProps: {
+                    style: { maxHeight: 300 }
+                  }
+                }}>
                 <MenuItem key="0" value="">
                   {""}
                 </MenuItem>
@@ -74,6 +92,43 @@ export const FormPreview = () => {
               </Select>
             </FormControl>
           )}
+
+          {/* <FormControl
+  sx={{
+    minWidth: 210,
+    maxWidth: 400,         // Limit the max width
+    width: 'fit-content',  // Expand based on label up to maxWidth
+  }}
+  required={field.required}
+>
+  <InputLabel>{field.label}</InputLabel>
+  <Select
+    value={''}
+    label={field.label}
+    disabled
+    sx={{
+      maxWidth: 400,
+      width: 'fit-content', // Ensures it grows with label
+    }}
+    MenuProps={{
+      PaperProps: {
+        style: {
+          maxHeight: 300,   // Height limit to expand dropdown vertically
+        },
+      },
+    }}
+  >
+    <MenuItem key="0" value="">
+      {""}
+    </MenuItem>
+    {field.options.map((option) => (
+      <MenuItem key={option.value} value={option.value}>
+        {option.value}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+ */}
 
           {field.type === "multiple_choice" && (
             <FormControl component="fieldset" required={field.required}>
@@ -116,7 +171,7 @@ export const FormPreview = () => {
                 selected={null}
                 onChange={() => {}}
                 placeholderText="DD/MM/YYYY"
-                customInput={<TextField fullWidth required={field.required} />}
+                customInput={<TextField helperText={field.placeholder} fullWidth required={field.required} />}
                 disabled
               />
             </Box>
@@ -131,7 +186,7 @@ export const FormPreview = () => {
                 selected={null}
                 onChange={() => {}}
                 placeholderText="HH:MM PM"
-                customInput={<TextField fullWidth required={field.required} />}
+                customInput={<TextField helperText={field.placeholder} fullWidth required={field.required} />}
                 disabled
               />
             </Box>

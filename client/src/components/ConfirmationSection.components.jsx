@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, Divider, Grid, Alert, Button, List, ListItem, ListItemText, Card, CardMedia } from "@mui/material"
+import { Box, Typography, Paper, Divider, Grid, Button, List, ListItem, ListItemText, Card, CardMedia } from "@mui/material"
 import { CheckCircle as CheckCircleIcon, Download as DownloadIcon } from "@mui/icons-material"
 import { useResponseStore } from "../stores/index.stores.js"
 import { formatDateTime } from './../utils/index.utils.js'
@@ -21,7 +21,7 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
   }
 
   // Generate a random confirmation number
-  const confirmationNumber = `EVT-${Math.floor(100000 + Math.random() * 900000)}`
+  // const confirmationNumber = `EVT-${Math.floor(100000 + Math.random() * 900000)}`
 
   // Format date
   // const formatDate = (dateString) => {
@@ -76,7 +76,7 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
   };
 
   return (
-    <Box>
+    <Box id="print-section">
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <CheckCircleIcon color="success" sx={{ fontSize: 64, mb: 2 }} />
         <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom>
@@ -219,7 +219,7 @@ export const ConfirmationSection = ({ qrCode, registrationComplete }) => {
           Print Confirmation
         </Button>
 
-        <Button variant="contained" startIcon={<DownloadIcon />} onClick={downloadImage} >
+        <Button variant="contained" startIcon={<DownloadIcon />} onClick={downloadImage} sx={{ my: 2, mr: 2 }}>
           Download QR
         </Button>
       </Box>

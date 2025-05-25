@@ -1,12 +1,8 @@
 import { useState } from "react"
-
 import { Box, Typography, Paper, Button, Divider, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, TextField, FormControlLabel, Checkbox, Tooltip, List, ListItem } from "@mui/material"
-
 import { Add as AddIcon, TextFields as TextFieldsIcon, ArrowDropDown as DropdownIcon, RadioButtonChecked as RadioButtonIcon, CheckBox as CheckBoxIcon, CalendarToday as CalendarIcon, Delete as DeleteIcon, DragIndicator as DragIcon, Edit as EditIcon, Close as CloseIcon, Save as SaveIcon, Subject, AccessTimeOutlined } from "@mui/icons-material"
 import toast from 'react-hot-toast';
-
 import { useEventStore } from './../stores/index.stores.js'
-//  CRUD operations in form builder
 
 export const FormBuilder = () => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -15,14 +11,10 @@ export const FormBuilder = () => {
   const { formFields, setFormFields } = useEventStore();
 
   // Handle add field menu open
-  const handleAddFieldClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleAddFieldClick = (event) => setAnchorEl(event.currentTarget)
 
   // Handle add field menu close
-  const handleAddFieldClose = () => {
-    setAnchorEl(null)
-  }
+  const handleAddFieldClose = () => setAnchorEl(null)
 
   // Handle field type selection
   const handleFieldTypeSelect = (type) => {
@@ -31,47 +23,19 @@ export const FormBuilder = () => {
   }
 
   // Handle edit field
-  const handleEditField = (fieldId) => {
-    setEditingFieldId(fieldId)
-  }
+  const handleEditField = (fieldId) => setEditingFieldId(fieldId)
 
-  // Handle save field
-  // const handleSaveField = () => {
-  //   let isValid = true;
-  //   for (let i = 0; i < formFields.length; i++) {
-  //     const field = formFields[i];
-  //     if (field.label.trim() === "") {
-  //     isValid = false;
-  //     return toast.error(`${field.type} question can't be empty`);
-  //     }
-  //     if (field.options.length !== 0) {
-  //       for (let j = 0; j < field.options.length; j++) {
-  //         if (field.options[j].value.trim() === "") {
-  //           isValid = false;
-  //           return toast.error(`Option ${j + 1} for ${field.type} question can't be empty`);
-  //         }
-  //       }
-  //     }
-  //   }
-    
-  //   if(isValid) setEditingFieldId(null)
-  // }
 
   const handleSaveField = () => {
     for (let i = 0, len = formFields.length; i < len; i++) {
       const field = formFields[i];
-      if (!field.label.trim()) {
-        return toast.error(`${field.type} question can't be empty`);
-      }
+      if (!field.label.trim()) return toast.error(`${field.type} question can't be empty`);
   
       const options = field.options;
       for (let j = 0, optLen = options.length; j < optLen; j++) {
-        if (!options[j].value.trim()) {
-          return toast.error(`Option ${j + 1} for ${field.type} question can't be empty`);
-        }
+        if (!options[j].value.trim()) return toast.error(`Option ${j + 1} for ${field.type} question can't be empty`);
       }
     }
-  
     setEditingFieldId(null);
   };
 
@@ -164,9 +128,7 @@ export const FormBuilder = () => {
   }
 
   // Handle form field deletion
-  const handleDeleteField = (fieldId) => {
-    setFormFields(formFields.filter((field) => field.id !== fieldId))
-  }
+  const handleDeleteField = (fieldId) => setFormFields(formFields.filter((field) => field.id !== fieldId))
 
   // Handle form field reordering
   const handleReorderField = (startIndex, endIndex) => {
@@ -224,14 +186,14 @@ export const FormBuilder = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center", mb: 2 }}>
         <Typography variant="subtitle1" fontWeight="bold">
           Form Builder
         </Typography>
 
-        <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddFieldClick} size="small">
+        {/* <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddFieldClick} size="small">
           Add Field
-        </Button>
+        </Button> */}
 
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleAddFieldClose}>
           <MenuItem onClick={() => handleFieldTypeSelect("text")}>
@@ -346,10 +308,11 @@ export const FormBuilder = () => {
                       onChange={(e) => handleUpdateField(field.id, { label: e.target.value })}
                       size="small"
                       autoFocus
+                      sx={{ pr: 4.5}}
                     />
                   ) : (
                     // Title display when not editing
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" sx={{ pr: 3}}>
                       {field.label}
                       {field.id==="email" && <span style={{ color: "red" }}> *</span>}
                     </Typography>
@@ -366,7 +329,7 @@ export const FormBuilder = () => {
                   </Typography>
 
                   {/* Plaaceholder input */}
-                  {(field.type == "text" || field.type == "multiline" ) && (
+                  {(field.type === "text" || field.type === "multiline" || field.type === "date" || field.type === "time") && (
                     <TextField
                       fullWidth
                       label="Placeholder Text"

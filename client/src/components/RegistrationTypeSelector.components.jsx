@@ -1,25 +1,49 @@
-import { Box, Typography, RadioGroup, FormControlLabel, Radio, TextField, Paper } from "@mui/material"
-import { Link as LinkIcon, Edit as EditIcon } from "@mui/icons-material"
-import { useEventStore } from './../stores/index.stores.js'
+import {
+  Box,
+  Typography,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  TextField,
+  Paper
+} from "@mui/material";
+import { Link as LinkIcon, Edit as EditIcon } from "@mui/icons-material";
+import { useEventStore } from "./../stores/index.stores.js";
 
 export const RegistrationTypeSelector = () => {
-  const { registrationType, setRegistrationType, externalUrl ,setExternalUrl } = useEventStore()
+  const { externalUrl, setExternalUrl } = useEventStore();
+
+  const isExternal = externalUrl !== "";
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (value === "custom") {
+      setExternalUrl("");
+    } else if (value === "external") {
+      setExternalUrl("https://"); // or leave as "" if you want to prompt input
+    }
+  };
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom> Registration Method </Typography>
-      <Typography variant="body2" color="text.secondary" component="p" sx={{mb: 2, mt: 2}}> Choose how participants will register for your event. </Typography>
+      <Typography variant="h5" gutterBottom>
+        Registration Method
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2, mt: 2 }}>
+        Choose how participants will register for your event.
+      </Typography>
 
-      <RadioGroup value={registrationType} onChange={(e) => setRegistrationType(e.target.value)}>
+      <RadioGroup value={isExternal ? "external" : "custom"} onChange={handleChange}>
         <Paper
-          elevation={registrationType === "custom" ? 3 : 1}
+          elevation={!isExternal ? 3 : 1}
           sx={{
             p: 2,
             mb: 2,
-            border: registrationType === "custom" ? 2 : 1,
-            borderColor: registrationType === "custom" ? "primary.main" : "divider",
+            border: !isExternal ? 2 : 1,
+            borderColor: !isExternal ? "primary.main" : "divider",
             borderRadius: 1,
-          }}>
+          }}
+        >
           <FormControlLabel
             value="custom"
             control={<Radio />}
@@ -38,11 +62,11 @@ export const RegistrationTypeSelector = () => {
         </Paper>
 
         <Paper
-          elevation={registrationType === "external" ? 3 : 1}
+          elevation={isExternal ? 3 : 1}
           sx={{
             p: 2,
-            border: registrationType === "external" ? 2 : 1,
-            borderColor: registrationType === "external" ? "primary.main" : "divider",
+            border: isExternal ? 2 : 1,
+            borderColor: isExternal ? "primary.main" : "divider",
             borderRadius: 1,
           }}
         >
@@ -62,7 +86,7 @@ export const RegistrationTypeSelector = () => {
             }
           />
 
-          {registrationType === "external" && (
+          {isExternal && (
             <TextField
               fullWidth
               label="Registration URL"
@@ -77,5 +101,5 @@ export const RegistrationTypeSelector = () => {
         </Paper>
       </RadioGroup>
     </Box>
-  )
-}
+  );
+};

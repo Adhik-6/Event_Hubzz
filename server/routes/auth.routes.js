@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signup, login, logout, updateProfile } from '../controllers/index.controllers.js';
+import { signup, login, logout, updateProfile, changePassword, deleteProfile } from '../controllers/index.controllers.js';
 import { asyncWrapper } from '../utils/index.utils.js';
 import { authMiddleware } from '../middlewares/index.middlewares.js';
 
@@ -19,5 +19,9 @@ authRouter.get('/check-auth', asyncWrapper(authMiddleware), (req, res) => {
 });
 
 authRouter.patch("/update-profile", authMiddleware, asyncWrapper(updateProfile))
+
+authRouter.patch("/update-password", authMiddleware, asyncWrapper(changePassword))
+
+authRouter.delete("/delete-profile", authMiddleware, asyncWrapper(deleteProfile))
 
 export { authRouter }

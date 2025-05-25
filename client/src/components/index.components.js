@@ -9,7 +9,6 @@ import { FormPreview } from "./FormPreview.components.jsx";
 import { RegistrationTypeSelector } from "./RegistrationTypeSelector.components.jsx";
 
 import { MyEventsList } from "./MyEventsList.components.jsx";
-import { NotificationsTab } from "./NotificationsTab.components.jsx";
 import { ProfileForm } from "./ProfileForm.components.jsx";
 import { SettingsTab } from "./SettingsTab.components.jsx";
 
@@ -27,7 +26,7 @@ export {
   Footer, NavBar,
   EventCard,
   EventDetails, FormBuilder, FormPreview, RegistrationTypeSelector ,
-  MyEventsList, NotificationsTab, ProfileForm, SettingsTab,
+  MyEventsList, ProfileForm, SettingsTab,
   RegistrationsTable, AnalyticsSummary, DownloadModal,
   AuthLayout,
   ConfirmationSection, RegistrationForm, EventDetailsToUser

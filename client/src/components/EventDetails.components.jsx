@@ -1,10 +1,8 @@
 import { Box, Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem, Button, InputAdornment, FormHelperText, Tooltip } from "@mui/material"
+import { CloudUpload as CloudUploadIcon } from "@mui/icons-material"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { CloudUpload as CloudUploadIcon } from "@mui/icons-material"
-import { useEffect } from "react"
 import { useEventStore } from "../stores/index.stores.js"
-// import and use Event store. copy paste onTimageUpload function here. inherit other 2 from event store
 
 const categories = [
   "Technology",
@@ -25,19 +23,23 @@ export const EventDetails = () => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom> Event Information </Typography>
-      <Typography variant="body2" color="text.secondary" component="p" sx={{mb: 2, mt: 3}}> Provide the basic details about your event. </Typography>
+      <Typography variant="body2" color="text.secondary" component="p" sx={{mb: 2, mt: -1}}> Provide the basic details about your event. </Typography>
 
       <Grid container spacing={3}>
+
+        {/* Event Title */}
         <Grid item xs={12}>
           <TextField required fullWidth label="Event Title" value={eventDetails.title} onChange={(e) => setEventDetails("title", e.target.value)} placeholder="Enter a descriptive title for your event" helperText="A clear title helps attendees understand what your event is about"/>
         </Grid>
 
+        {/* Event Description */}
         <Grid item xs={12}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <TextField fullWidth multiline rows={3} label="Event Description" value={eventDetails.description} onChange={(e) => setEventDetails("description", e.target.value)} placeholder="Describe your event, what attendees can expect, and why they should attend" helperText="Provide a detailed description to attract potential attendees" />
+            <TextField fullWidth multiline minRows={3} label="Event Description" value={eventDetails.description} onChange={(e) => setEventDetails("description", e.target.value)} placeholder="Describe your event, what attendees can expect, and why they should attend" helperText="Provide a detailed description to attract potential attendees" />
           </Box>
         </Grid>
 
+        {/* Venue */}
         <Grid item xs={12} md={6}>
           <TextField required fullWidth label="Venue" value={eventDetails.venue} onChange={(e) => setEventDetails("venue", e.target.value)} placeholder="Enter the event location" helperText="Physical address or online platform"/>
         </Grid>
@@ -96,6 +98,7 @@ export const EventDetails = () => {
           />
         </Grid>
 
+        {/* Event Image */}
         <Grid item xs={12}>
           <Typography variant="subtitle1" gutterBottom>
             Event Image
@@ -152,6 +155,7 @@ export const EventDetails = () => {
             )}
           </Box>
         </Grid>
+
       </Grid>
     </Box>
   )

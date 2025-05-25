@@ -43,25 +43,22 @@ export const registrationsOverTime = async (req, res) => {
   res.status(200).json({ success: true, message: "Registration data fetched successfully", dbRes })
 }
 
+// changed
 export const getTableData = async (req, res) => {
   const { id } = req.params;
   // console.log("id (getTableData): ", id)
 
-  const allRegistrationsPromise = User.find({ eventId: new mongoose.Types.ObjectId(id) })
-  const formFieldsPromise = Event.findById(new mongoose.Types.ObjectId(id)).select("formFields")
+  const allRegistrations = await User.find({ eventId: new mongoose.Types.ObjectId(id) }, { __v: 0, eventId: 0, userId: 0, updatedAt: 0 }).sort({ createdAt: 1 }).lean();
 
-  const [allRegistrations, formFields] = await Promise.all([allRegistrationsPromise, formFieldsPromise])
   // console.log("allRegistrations: ", allRegistrations)
-  // console.log("formFields: ", formFields)
 
-  res.status(200).json({ success: true, message: "Table values fetched successfully", allRegistrations, formFields })
+  res.status(200).json({ success: true, message: "Table values fetched successfully", allRegistrations })
 }
 
 // 🙏🏻
 export const getPieChartData = async (req, res) => {
   const { id } = req.params;
-  // console.log("id (getPieChartData): ", id)
-
+  
   const dbRes = await Event.aggregate([
     // Step 1: Find the event
     {
@@ -102,7 +99,6 @@ export const getPieChartData = async (req, res) => {
           // Unwind each response key-value pair
           { $unwind: "$responsesArray" },
   
-          // *** MODIFICATION START ***
           // Normalize the value: Replace null/undefined/empty array with placeholder BEFORE unwinding potential arrays
           {
             $project: {
@@ -184,42 +180,96 @@ export const getPieChartData = async (req, res) => {
         as: "questionSummaries"
       }
     },
+    {
+      $lookup: {
+        from: "users",
+        let: { eventId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$eventId", "$$eventId"] }
+            }
+          },
+          {
+            $group: {
+              _id: "$checkedIn",
+              count: { $sum: 1 }
+            }
+          },
+          {
+            $project: {
+              name: {
+                $cond: [
+                  { $eq: ["$_id", true] },
+                  "Present",
+                  "Absent"
+                ]
+              },
+              value: "$count"
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              data: { $push: { name: "$name", value: "$value" } },
+              total: { $sum: "$value" }
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              attendanceSummary: {
+                field: {
+                  id: { $literal: new mongoose.Types.ObjectId() }, // or a fixed ObjectId for "Attendance"
+                  label: "Attendance"
+                },
+                data: "$data",
+                total: "$total"
+              }
+            }
+          }
+        ],
+        as: "attendanceSummaryArr"
+      }
+    },
+
     // Step 4: Merge field meta with response data
     {
       $project: {
         // Map over the original formFields to ensure all relevant fields are included
         questionSummaries: {
-          $map: {
-            input: "$formFields",
-            as: "field",
-            in: {
-              $let: {
-                vars: {
-                  // Find the matching summary data calculated in the $lookup
-                  matchSummary: {
-                    $first: {
-                      $filter: {
-                        input: "$questionSummaries",
-                        as: "summary",
-                        cond: { $eq: ["$$summary._id", "$$field.label"] } // Match by label
+          $concatArrays: [
+            {
+              $map: {
+                input: "$formFields",
+                as: "field",
+                in: {
+                  $let: {
+                    vars: {
+                      matchSummary: {
+                        $first: {
+                          $filter: {
+                            input: "$questionSummaries",
+                            as: "summary",
+                            cond: { $eq: ["$$summary._id", "$$field.label"] }
+                          }
+                        }
                       }
+                    },
+                    in: {
+                      field: {
+                        id: "$$field._id",
+                        label: "$$field.label"
+                      },
+                      data: { $ifNull: ["$$matchSummary.data", []] },
+                      total: { $ifNull: ["$$matchSummary.total", 0] }
                     }
                   }
-                },
-                in: {
-                  // Construct the final output object for each field
-                  field: {
-                    id: "$$field._id",
-                    label: "$$field.label"
-                  },
-                  // Use the data from the summary if found, otherwise default to empty array
-                  data: { $ifNull: ["$$matchSummary.data", [] ] },
-                  // Use the total from the summary if found, otherwise default to 0
-                  total: { $ifNull: ["$$matchSummary.total", 0] }
                 }
               }
-            }
-          }
+            },
+            { $ifNull: ["$attendanceSummaryArr.attendanceSummary", []] } // safely append attendance
+          ]
         }
       }
     },

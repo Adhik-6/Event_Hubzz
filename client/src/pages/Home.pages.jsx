@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Box, Button, Card, CardContent, Container, Grid, Typography, Avatar } from "@mui/material"
 import { QrCodeScanner, EventNote, Analytics, PersonAdd } from "@mui/icons-material"  
 import { Link as RouterLink } from "react-router-dom";

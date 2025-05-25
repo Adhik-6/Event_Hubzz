@@ -5,23 +5,23 @@ import { axiosInstance } from './../utils/index.utils.js'
 
 export const useAuthStore = create( persist( set => ({
   isAuthenticated: false,
-  user: null, // this contains the current user's data. make sure to replace the mockUserProfile with this.
+  user: null,
 
   setUser: (updatedProfile) => set({ user: updatedProfile}),
   signUp: async (userData) => {
     try {
       const res = await axiosInstance.post('/auth/signup', userData);
       if(res.data?.success){
-        set({ isAuthenticated: true, user: res.data.user });
+        set({ isAuthenticated: true, user: res.data?.user });
         toast.success("Signup successful")
-        return res.data
+        return res?.data
       } else {
-        toast.error(res.data.message)
-        return res.data
+        toast.error(res?.data?.message)
+        return res?.data
       }
     } catch (err) {
-      console.log('Signup failed', err.response.data.message);
-      toast.error(`Signup failed ${err.response.data.message}`)
+      console.log('Signup failed', err);
+      toast.error(`Signup failed ${err.response?.data?.message}`)
       return err
     }
   },
@@ -29,16 +29,16 @@ export const useAuthStore = create( persist( set => ({
     try {
       const res = await axiosInstance.post('/auth/login', credentials);
       if(res.data?.success){
-        set({ isAuthenticated: true, user: res.data.user });
-        toast.success(res.data.message)
+        set({ isAuthenticated: true, user: res.data?.user });
+        toast.success(res.data?.message)
         return res.data
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
         return res.data
       }
     } catch (err) {
-      console.log('Login failed', err.response.data.message);
-      toast.error(`Login failed ${err.response.data.message}`)
+      console.log('Login failed', err);
+      toast.error(`Login failed ${err.response?.data?.message}`)
       return err
     }
   },
@@ -48,15 +48,15 @@ export const useAuthStore = create( persist( set => ({
       if(res.data?.success){
       // if(true){
         set({ isAuthenticated: false, user: null });
-        toast.success("Logout successful")
+        // toast.success("Logout successful")
         return res.data
       } else {
-        toast.error(res.data.message)
+        toast.error(res.data?.message)
         return res.data
       }
     } catch (err) {
-      console.log('Logout error', err.response.data.message);
-      toast.error(`Logout error ${err.response.data.message}`)
+      console.log('Logout error', err);
+      toast.error(`Logout error ${err.response?.data?.message}`)
       return err
     }
   },
@@ -64,7 +64,7 @@ export const useAuthStore = create( persist( set => ({
     try {
       const res = await axiosInstance.get('/auth/check-auth');
       if(res.data?.success){
-        set({ isAuthenticated: true, user: res.data.user });
+        set({ isAuthenticated: true, user: res.data?.user });
       } else {
         set({ isAuthenticated: false, user: null });
       }

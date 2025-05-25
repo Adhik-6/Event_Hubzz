@@ -7,12 +7,7 @@ import {
   InputAdornment,
   IconButton,
   Link,
-  Checkbox,
-  FormControlLabel,
-  Divider,
   Alert,
-  useTheme,
-  useMediaQuery,
   CircularProgress,
   Grid,
   Avatar,
@@ -32,11 +27,8 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { AuthLayout } from "./../components/index.components.js"
 import { useAuthStore } from "../stores/index.stores.js"
-import toast from "react-hot-toast"
 
 export const Signup = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -49,7 +41,6 @@ export const Signup = () => {
     bio: "",
     website: "",
     profilePic: null,
-    // profilePicPreview: null,
   })
   const [errors, setErrors] = useState({})
   const [signupError, setSignupError] = useState("")
@@ -60,23 +51,13 @@ export const Signup = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
+    setFormData({...formData, [name]: value})
 
     // Clear error when field is edited
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      })
-    }
+    if (errors[name]) setErrors({...errors, [name]: null})
 
     // Clear signup error when any field is edited
-    if (signupError) {
-      setSignupError("")
-    }
+    if (signupError) setSignupError("")
   }
 
   // Handle profile picture upload
@@ -88,16 +69,10 @@ export const Signup = () => {
         setFormData({
           ...formData,
           profilePic: file,
-          // profilePicPreview: reader.result,
         })
       }
       reader.readAsDataURL(file)
     }
-  }
-
-  // Toggle password visibility
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
   }
 
   // Validate form
@@ -105,45 +80,28 @@ export const Signup = () => {
     const newErrors = {}
 
     // Validate email
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid"
-    }
+    if (!formData.email.trim()) newErrors.email = "Email is required"
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid"
 
     // Validate password
-    if (!formData.password) {
-      newErrors.password = "Password is required"
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters"
-    }
+    if (!formData.password) newErrors.password = "Password is required"
+    else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters"
 
     // Validate fullName
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required"
-    }
+    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required"
 
     // Validate userName
-    if (!formData.userName.trim()) {
-      newErrors.userName = "Username is required"
-    }
+    if (!formData.userName.trim()) newErrors.userName = "Username is required"
 
     // Validate organisation
-    if (!formData.organisation.trim()) {
-      newErrors.organisation = "Organisation is required"
-    }
+    if (!formData.organisation.trim()) newErrors.organisation = "Organisation is required"
 
     // Validate phoneNumber
-    if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = "Phone number is required"
-    } else if (!/^\+?[0-9\s-()]{8,}$/.test(formData.phoneNumber.trim())) {
-      newErrors.phoneNumber = "Please enter a valid phone number"
-    }
+    if (!formData.phoneNumber.trim()) newErrors.phoneNumber = "Phone number is required"
+    else if (!/^\+?[0-9\s-()]{8,}$/.test(formData.phoneNumber.trim())) newErrors.phoneNumber = "Please enter a valid phone number"
 
     // Validate website if provided
-    if (formData.website && !/^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/.test(formData.website)) {
-      newErrors.website = "Please enter a valid website URL"
-    }
+    if (formData.website && !/^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/.test(formData.website)) newErrors.website = "Please enter a valid website URL"
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -153,23 +111,21 @@ export const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!validateForm()) {
-      return
-    }
+    if (!validateForm()) return
 
     setIsLoading(true)
 
     try {
-      let x = await signUp(formData)
-      if(x?.success){
+      let res = await signUp(formData)
+      if(res?.success){
         setSignupSuccess(true)
         // toast.success("Registration successful")
         navigate('/')
       } else {
-        console.log(`Something went wrong: ${x?.message}`)
+        console.log(`Something went wrong: ${res?.message}`)
       }
     } catch (err) {
-      setSignupError(err.response.data.message)
+      setSignupError(err.response?.data?.message)
       console.error("Registration error:", err)
     } finally {
       setIsLoading(false)
@@ -183,10 +139,6 @@ export const Signup = () => {
         <Alert severity="success" sx={{ mb: 3 }}>
           Your account has been created successfully!
         </Alert>
-        <Typography variant="body1" paragraph>
-          We've sent a verification email to <strong>{formData.email}</strong>. Please check your inbox and follow the
-          instructions to verify your account.
-        </Typography>
         <Button component={RouterLink} to="/login" variant="contained" fullWidth size="large" sx={{ mt: 2, py: 1.5 }}>
           Go to Login
         </Button>
@@ -240,6 +192,7 @@ export const Signup = () => {
         </Box>
 
         <Grid container spacing={2}>
+
           {/* Email */}
           <Grid item xs={12}>
             <TextField
@@ -287,7 +240,7 @@ export const Signup = () => {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleTogglePasswordVisibility}
+                      onClick={() => setShowPassword(!showPassword)}
                       edge="end"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -428,18 +381,7 @@ export const Signup = () => {
           </Grid>
         </Grid>
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          size="large"
-          disabled={isLoading}
-          sx={{
-            mt: 3,
-            py: 1.5,
-            position: "relative",
-          }}
-        >
+        <Button type="submit" fullWidth variant="contained" size="large" disabled={isLoading} sx={{mt: 3, py: 1.5, position: "relative"}}>
           {isLoading ? <CircularProgress size={24} color="inherit" /> : "Sign Up"}
         </Button>
 

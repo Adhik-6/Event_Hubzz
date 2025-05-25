@@ -1,39 +1,24 @@
-import { Box, Typography, Grid, Button, Divider, Paper, useTheme, useMediaQuery } from "@mui/material"
-import { formatDateTime } from './../utils/index.utils.js'
+import { Box, Typography, Divider, Paper, useTheme, useMediaQuery } from "@mui/material"
 import {
   CalendarMonth as CalendarIcon,
   PlaceOutlined as PlaceIcon,
-  // AccessTime as TimeIcon,
   Person as PersonIcon,
   PeopleAltOutlined as PeopleIcon,
   CategoryOutlined as CategoryIcon,
   Info as InfoIcon,
 } from "@mui/icons-material"
-// import CategoryIcon from "@mui/icons-material/Category";
-// import CalendarMonth from "@mui/icons-material/CalendarToday";
-// import TimeIcon from "@mui/icons-material/AccessTime";
-// import PlaceIcon from "@mui/icons-material/Place";
 import { useResponseStore } from "../stores/response.stores.js"
+import { formatDateTime } from './../utils/index.utils.js'
+import placeholderImg from "./../assets/placeHolderImage.jpeg"
 
 export const EventDetailsToUser = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
   const { currentEvent } = useResponseStore();
 
   if (!currentEvent) return null
 
-  // Format date
-  const formatDate = (dateString) => {
-    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" }
-    return new Date(dateString).toLocaleDateString("en-US", options)
-  }
-
-  // Calculate remaining spots
-  const remainingSpots = currentEvent.capacity - (currentEvent.registrations || 0)
-  const isFull = remainingSpots <= 0
-
   return (
     <Box>
+
       <Typography variant="h5" component="h2" fontWeight="bold" gutterBottom>
         Event Information
       </Typography>
@@ -43,23 +28,24 @@ export const EventDetailsToUser = () => {
 
       <Box>
         <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
-          <Typography variant="subtitle1" fontWeight="bold">
-            {currentEvent.title || "Event Title"}
-          </Typography>
 
+          {/* Event Title */}
+          <Typography variant="subtitle1" fontWeight="bold">{currentEvent.title || "Event Title"}</Typography>
+
+          {/* Event Image */}
           {currentEvent.eventImage && (
             <Box sx={{ mt: 2, mb: 2, maxHeight: 200, overflow: "hidden", borderRadius: 1 }}>
               <img
-                src={currentEvent.eventImage || "/placeholder.svg"}
+                src={currentEvent.eventImage || placeholderImg}
                 alt="Event"
                 style={{ width: "100%", objectFit: "cover" }}
               />
             </Box>
           )}
 
-          <Typography variant="body2" component="p" sx={{ my: 5 }}>
-            {currentEvent.description || "No description provided."}
-          </Typography>
+          {/* Event Description */}
+          <Typography variant="body2" component="p" sx={{ my: 5, whiteSpace: 'pre-line' }}>{currentEvent.description || "No description provided."}</Typography>
+
 
           <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 2 }}>
 
@@ -119,15 +105,16 @@ export const EventDetailsToUser = () => {
             Saepe quia praesentium aspernatur quidem a sequi minima, doloremque pariatur consequatur eaque nisi, facilis sunt dicta vitae nam dolor velit eligendi expedita? Accusamus inventore culpa harum nulla vitae recusandae autem?</Typography>
           </Box>
         </Box> */}
-      {currentEvent.additionalInfo && (
+      {currentEvent?.additionalInfo && (
         <Box sx={{ mt: 4 }}>
           <Divider sx={{ mb: 3 }} />
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <InfoIcon sx={{ mr: 1, mt: 0.5, color: "info.main" }} />
-            <Typography variant="body1">{currentEvent.additionalInfo}</Typography>
+            <Typography variant="body1">{currentEvent?.additionalInfo}</Typography>
           </Box>
         </Box>
       )}
+
     </Box>
   )
 }

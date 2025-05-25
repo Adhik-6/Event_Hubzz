@@ -1,32 +1,44 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
+import toast from "react-hot-toast";
 import { Box, Container, Typography, Stepper, Step, StepLabel, Button, Paper, Divider, useMediaQuery, useTheme, CircularProgress } from "@mui/material"
 import {
   CalendarMonth as CalendarIcon,
   PlaceOutlined as PlaceIcon,
-  // AccessTime as TimeIcon,
   Person as PersonIcon,
   PeopleAltOutlined as PeopleIcon,
   CategoryOutlined as CategoryIcon,
   Info as InfoIcon,
 } from "@mui/icons-material"
 import { EventDetails, RegistrationTypeSelector, FormBuilder, FormPreview } from "./../components/index.components.js";
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { useEventStore, useResponseStore } from "../stores/index.stores.js";
+import { useEventStore, useAuthStore } from "../stores/index.stores.js";
 import { axiosInstance, formatDateTime } from './../utils/index.utils.js'
-import { useState, useEffect } from "react";
 import placeHolderImage from "./../assets/placeHolderImage.jpeg"
-import toast from "react-hot-toast";
 
 
 export const CreateEvent = () => {
   const isMobile = useMediaQuery(useTheme().breakpoints.down("md"))
-  const { isStepValid, registrationType, eventDetails, externalUrl, setEventDetailsAll, activeStep, setActiveStep, formFields, setFormFieldsAll } = useEventStore()
+  const { isStepValid, eventDetails, externalUrl, setEventDetailsAll, activeStep, setActiveStep, formFields, setFormFieldsAll } = useEventStore()
+  const { user } = useAuthStore()
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isLoadingEvent, setIsLoadingEvent] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const id = useParams()?.id || false
 
   const steps = ["Event Details", "Registration Setup", `Review & ${id?"save":"Create"}`]
+  const linkStyle = {
+    textDecoration: "none",
+    color: "#1976d2", // Material-UI primary blue
+    fontWeight: "500",
+    transition: "color 0.3s",
+    "&:hover": {
+      color: "#1565c0", // darker blue on hover
+      textDecoration: "underline",
+    },
+  };
 
   // const { currentEvent } = useResponseStore();
 
@@ -34,6 +46,20 @@ export const CreateEvent = () => {
   
   useEffect(() => {
     // console.log("useEffect called...")
+    setEventDetailsAll({
+      title: "",
+      description: "",
+      venue: "",
+      startDate: null,
+      endDate: null,
+      startTime: null,
+      endTime: null,
+      capacity: "",
+      category: "",
+      eventImage: null,
+      registrations: 0, // not needed
+      organiser: user.organization || user.fullName
+    })
     if(!id) return
     // if(currentEvent && Object.keys(currentEvent).length > 0){
     //   setEventDetailsAll(currentEvent)
@@ -46,9 +72,9 @@ export const CreateEvent = () => {
       try {
         setIsLoadingEvent(true)
         const res = await axiosInstance.get(`events/${id}`)
-        setEventDetailsAll(res.data.eventDetails)
-        setFormFieldsAll(res.data.eventDetails.formFields)
-        console.log("api res: ", res.data.eventDetails)
+        setEventDetailsAll(res.data?.eventDetails)
+        setFormFieldsAll(res.data?.eventDetails?.formFields)
+        // console.log("api res: ", res.data.eventDetails)
       } catch (err) {
         console.log("error while fetching in updating", err)
         toast.error(err.message)
@@ -57,85 +83,10 @@ export const CreateEvent = () => {
       }
     }
     apiCall()
-  }, [])
+  }, [location, id])
 
-  // const { state } = useLocation();
-  // const isEditMode = useLocation().state?.isEditMode || false;
-  // console.log("isEditMode:", isEditMode);
+  useEffect(() => setActiveStep(0) ,[])
 
-  // Event details state  \\
-  // const [eventDetails, setEventDetails] = useState({
-  //   title: "",
-  //   description: "",
-  //   venue: "",
-  //   startDate: null,
-  //   endDate: null,
-  //   startTime: null,
-  //   endTime: null,
-  //   capacity: "",
-  //   category: "",
-  //   image: null,
-  //   imagePreview: null,
-  // })
-
-  // Registration type state  \\\
-  // const [registrationType, setRegistrationType] = useState("custom")
-  //  \\\
-  // const [externalUrl, setExternalUrl] = useState("")
-
-  // Form builder state \\\
-  // const [formFields, setFormFields] = useState([
-  //   {
-  //     id: "name",
-  //     type: "text",
-  //     label: "Full Name",
-  //     required: true,
-  //     placeholder: "Enter your full name",
-  //     options: [],
-  //   },
-  //   {
-  //     id: "email",
-  //     type: "text",
-  //     label: "Email Address",
-  //     required: true,
-  //     placeholder: "Enter your email address",
-  //     options: [],
-  //   },
-  // ])
-
-
-  // // Handle event details change  \\\
-  // const handleEventDetailsChange = (field, value) => {
-  //   setEventDetails({
-  //     ...eventDetails,
-  //     [field]: value,
-  //   })
-  // }
-
-  // // Handle image upload  -  \\\
-  // const handleImageUpload = (event) => {
-  //   const file = event.target.files[0]
-  //   if (file) {
-  //     const reader = new FileReader()
-  //     reader.onloadend = () => {
-  //       setEventDetails({
-  //         ...eventDetails,
-  //         EventImage: reader.result,
-  //       })
-  //     }
-  //     reader.readAsDataURL(file)
-  //   }
-  // }
-
-  // // Handle registration type change  \\\
-  // const handleRegistrationTypeChange = (type) => {
-  //   setRegistrationType(type)
-  // }
-
-  // // Handle external URL change  \\\
-  // const handleExternalUrlChange = (url) => {
-  //   setExternalUrl(url)
-  // }
 
   // Handle next step
   const handleNext = () => {
@@ -143,75 +94,63 @@ export const CreateEvent = () => {
   }
 
   // // Handle back step
-  const handleBack = () => {
-    setActiveStep("back")
+  const handleBack = async () => {
+    if(!id){
+      setActiveStep("back")
+      return
+    } 
+    setIsDeleteLoading(true)
+
+    try {
+      if (!window.confirm("Are you sure you want to delete this event?")) return;
+
+      const res = await axiosInstance.delete(`/events/organiser/delete-event/${id}`);
+      if (!res.data?.success) throw new Error(res.data?.message);
+      toast.success("Event deleted successfully!");
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data?.message || "Failed to delete the event.");
+    } finally {
+      setIsDeleteLoading(false)
+    }
   }
 
   // Handle form submission
   const handleSubmit = async () => {
-    // In a real application, you would send the data to your backend here
     // console.log("Event Details:", eventDetails)
     // console.log("Registration Type:", registrationType)
     // console.log("External URL:", externalUrl)
     // console.log("Form Fields:", formFields)
 
-    // try implementing a circular progress, try-catch, error handling, backend
     setIsLoading(true)
     try {
-      const res = await axiosInstance.post(`/events/organiser/${id?"update":"create"}-event`, {eventDetails, registrationType, externalUrl, formFields })
-      if(res.data.success){
+      const res = await axiosInstance.post(`/events/organiser/${id?"update":"create"}-event`, {eventDetails, externalUrl, formFields })
+      if(res.data?.success){
         toast.success(`Event ${id?"edited":"created"} successfully!`)
         navigate(`${id?`/profile/analytics/${id}`:"/events"}`)
       } else{
-        toast.error(res.message)
+        toast.error(res.data?.message || "Something went wrong")
       }
     } catch (err) {
-      console.log(err)
-      console.log("Error message", err.message)
-      toast.error(err.message)
+      console.log("Error creating event", err)
+      toast.error(err.response?.data?.message || "Something went wrong.")
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Validate current step \\\
-  // const isStepValidx = () => {
-  //   if (activeStep === 0) {
-  //     // Validate event details
-  //     return (
-  //       eventDetails.title.trim() !== "" &&
-  //       eventDetails.venue.trim() !== "" &&
-  //       eventDetails.startDate !== null &&
-  //       eventDetails.startTime !== null &&
-  //       eventDetails.capacity.trim() !== "" &&
-  //       eventDetails.category.trim() !== ""
-  //     )
-  //   } else if (activeStep === 1) {
-  //     // Validate registration setup
-  //     if (registrationType === "external") {
-  //       return externalUrl.trim() !== ""
-  //     } else {
-  //       return formFields.length > 0
-  //     }
-  //   }
-
-  //   return true
-  // }
-
-
   // Render step content
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (
-          <EventDetails />
-        )
+        return <EventDetails />
       case 1: 
         return (
           <Box>
             <RegistrationTypeSelector/>
 
-            {registrationType === "custom" && (
+            {externalUrl !== "custom" && (
               <Box mt={4}>
                 <Typography variant="h6" gutterBottom>
                   Custom Registration Form
@@ -243,9 +182,6 @@ export const CreateEvent = () => {
           <Box>
             {/* { console.log("eventDetails: ", eventDetails) }
             { console.log("formFields: ", formFields) } */}
-            <Typography variant="h6" gutterBottom>
-              Review Event Details
-            </Typography>
 
             <Paper elevation={1} sx={{ p: 3, mb: 4 }}>
               <Typography variant="subtitle1" fontWeight="bold">
@@ -310,37 +246,36 @@ export const CreateEvent = () => {
                 </Box>
               </Box>
 
-              { eventDetails.additionalInfo &&(
+              { eventDetails?.additionalInfo &&(
                 <Box sx={{ mt: 4 }}>
                   <Divider sx={{ mb: 3 }} />
                   <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                     <InfoIcon sx={{ mr: 1, mt: 0.5, color: "info.main" }} />
-                    <Typography variant="body1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel, incidunt in inventore iure ipsum voluptas repellendus, maiores fuga dicta sit eveniet nobis perferendis illo. Ea, nam? Ut doloremque voluptas repudiandae.
-                    Dicta, accusamus repudiandae. Adipisci error mollitia unde ad eveniet tempore vero? Veniam in pariatur laboriosam odit est maxime voluptas magni architecto tenetur? Cum voluptate aliquam vero nesciunt enim quia aliquid?
-                    Saepe quia praesentium aspernatur quidem a sequi minima, doloremque pariatur consequatur eaque nisi, facilis sunt dicta vitae nam dolor velit eligendi expedita? Accusamus inventore culpa harum nulla vitae recusandae autem?</Typography>
+                    <Typography variant="body1">{eventDetails?.additionalInfo}</Typography>
                   </Box>
                 </Box>
               )}
 
             </Paper>
 
-            <Typography variant="h6" gutterBottom>
-              Registration Method
-            </Typography>
+            <Typography variant="h6" gutterBottom>Registration Method</Typography>
 
             <Paper elevation={1} sx={{ p: 3 }}>
               
               <Typography variant="body1">
-                {registrationType === "external"
-                  ? `External registration form: ${externalUrl}`
-                  : "Custom registration form"}
+                {externalUrl !== "" ? (
+                  <>
+                    External registration form URL - <Typography component={Link} to={externalUrl} style={linkStyle}>{externalUrl}</Typography>
+                  </>
+                ) : (
+                  "Custom registration form"
+                )}
               </Typography>
 
-              {registrationType === "custom" && (
+
+              {externalUrl === "" && (
                 <Box sx={{ mt: 3 }}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Form Preview
-                  </Typography>
+                  <Typography variant="subtitle2" gutterBottom>Form Preview</Typography>
                   <Divider sx={{ mb: 2 }} />
                   <FormPreview />
                 </Box>
@@ -349,7 +284,7 @@ export const CreateEvent = () => {
           </Box>
         )
       default:
-        return "Unknown step"
+        return <EventDetails />
     }
   }
 
@@ -363,7 +298,7 @@ export const CreateEvent = () => {
       <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }} alternativeLabel={!isMobile}>
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel>{!isMobile && label}</StepLabel>
+            <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
@@ -376,21 +311,31 @@ export const CreateEvent = () => {
           </Box>
         </Container>
       ) : (
-        <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-          {isMobile && (
+        <>
+        {isMobile ? (
+          <>
             <Typography variant="h6" gutterBottom>
               {steps[activeStep]}
             </Typography>
-          )}
-  
-          {getStepContent(activeStep)}
-        </Paper>
+            <Typography variant="body2" color="text.secondary" component="p" sx={{mb: 3, mt: 0}}> Provide the basic details about your event. </Typography>
+            {getStepContent(activeStep)}
+          </>
+        ) : (
+          <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                {steps[activeStep]}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" component="p" sx={{mb: 3, mt: 0}}> Provide the basic details about your event. </Typography>
+            {getStepContent(activeStep)}
+          </Paper>
+        )}
+        </>
       )}
 
       {/* Back and next button */}
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-        <Button variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
-          Back
+        <Button variant="outlined" color={id?"error":""} disabled={activeStep === 0 && !id} onClick={handleBack}>
+          {isDeleteLoading ? <CircularProgress size={24} color="inherit" /> : (id ? "Delete Event" : "Back")}
         </Button>
 
         {activeStep === steps.length - 1 ? (

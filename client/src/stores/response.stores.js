@@ -1,17 +1,5 @@
 import { create } from 'zustand';
 
-// export const useResponseStore = create(set => ({
-//   responseFormFields: [],
-//   currentEvent: {},
-//   responseData: {},
-//   registrationError: "",
-
-//   setResFormFields: (fields) => set(({ responseFormFields: fields })),
-//   setCurrentEvent: (eventDetails) => set(({ currentEvent: eventDetails })),
-//   setResponseData: (fieldName, value) => set(state => ({ responseData: ({ ...state.responseData, [fieldName]: value }) })),
-//   setRegistrationError: () => set()
-// }))
-
 export const useResponseStore = create((set) => ({
   responseFormFields: [],
   currentEvent: {},
@@ -21,7 +9,10 @@ export const useResponseStore = create((set) => ({
   setResFormFields: (fields) => set({ responseFormFields: fields }),
   setCurrentEvent: (eventDetails) => set({ currentEvent: eventDetails }),
   setResponseData: (fieldName, value) => set((state) => ({ 
-    responseData: { ...state.responseData, [fieldName]: value },
+    responseData: { 
+      ...state.responseData, 
+      [fieldName]: value 
+    },
   })),
   setRegistrationError: (error) => set({ registrationError: error }),
 }));

@@ -1,5 +1,5 @@
 import { Box, Container, Paper, Typography, useTheme, useMediaQuery } from "@mui/material"
-import { Event as EventIcon } from "@mui/icons-material"
+import eventHubzzLogo from "./../assets/event_hubzz_logo.jpg"
 
 export const AuthLayout = ({ children, title }) => {
   const theme = useTheme()
@@ -59,7 +59,7 @@ export const AuthLayout = ({ children, title }) => {
 
               <Box sx={{ position: "relative", zIndex: 1 }}>
                 <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
-                  <EventIcon sx={{ fontSize: 40, mr: 1 }} />
+                  <Box component="img" src={eventHubzzLogo} alt="EventHub Logo" sx={{ width: 40, height: 40, mr: 2, borderRadius: 1 }} />
                   <Typography variant="h4" component="h1" fontWeight="bold">
                     EventHub
                   </Typography>
@@ -110,14 +110,14 @@ export const AuthLayout = ({ children, title }) => {
             {/* Mobile logo */}
             {isMobile && (
               <Box sx={{ display: "flex", alignItems: "center", mb: 4, justifyContent: "center" }}>
-                <EventIcon sx={{ fontSize: 32, mr: 1, color: "primary.main" }} />
+                <Box component="img" src={eventHubzzLogo} alt="EventHub Logo" sx={{ width: 40, height: 40, mr: 2, borderRadius: 1 }} />
                 <Typography variant="h5" component="h1" fontWeight="bold" color="primary.main">
                   EventHub
                 </Typography>
               </Box>
             )}
 
-            <Typography variant={isSmall ? "h5" : "h4"} component="h2" fontWeight="bold" gutterBottom sx={{ mb: 3 }}>
+            <Typography variant={isSmall ? "h5" : "h4"} component="h2" fontWeight="bold" gutterBottom sx={{ mb: 5, textAlign: "center"}}>
               {title}
             </Typography>
 
