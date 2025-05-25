@@ -41,34 +41,31 @@
 
 </div>
 
+<p align="center">Event Hubzz is a powerful event management, verification, and registration platform. It enables users to register for events and allows organizers to manage events, verify registrations using QR codes, view analytics, and export event data to Excel.</p>
 
 <br />
-
-Event Hubzz is a powerful event management, verification, and registration platform. It enables users to register for events and allows organizers to manage events, verify registrations using QR codes, view analytics, and export event data to Excel.
-
 
 
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
-  - [:star2: About the Project](#star2-about-the-project)
-    - [:camera: Screenshots](#camera-screenshots)
-    - [:space\_invader: Tech Stack](#space_invader-tech-stack)
-    - [:dart: Features](#dart-features)
-    - [:key: Environment Variables](#key-environment-variables)
-  - [:toolbox: Getting Started](#toolbox-getting-started)
-    - [:bangbang: Prerequisites](#bangbang-prerequisites)
-    - [:gear: Installation](#gear-installation)
-    - [:running: Run Locally](#running-run-locally)
-  - [🔍 TODOs \& Planned Features](#-todos--planned-features)
-  - [:wave: Contributing](#wave-contributing)
-    - [Top contributors:](#top-contributors)
-  - [:grey\_question: FAQ](#grey_question-faq)
-  - [:warning: License](#warning-license)
-  - [:handshake: Contact](#handshake-contact)
-  - [📦 External Tools \& Libraries](#-external-tools--libraries)
-  - [:gem: Acknowledgements](#gem-acknowledgements)
+- [About the Project](#star2-about-the-project)
+  - [Screenshots](#camera-screenshots)
+  - [Tech Stack](#space_invader-tech-stack)
+  - [Features](#dart-features)
+  - [Environment Variables](#key-environment-variables)
+- [Getting Started](#toolbox-getting-started)
+  - [Prerequisites](#bangbang-prerequisites)
+  - [Installation](#gear-installation)
+  - [Run Locally](#running-run-locally)
+- [TODOs \& Planned Features](#memo-todos--planned-features)
+- [Contributing](#wave-contributing)
+  - [Top contributors:](#medal_sports-top-contributors)
+- [FAQ](#grey_question-faq)
+- [License](#warning-license)
+- [Contact](#handshake-contact)
+- [External Tools \& Libraries](#package-external-tools--libraries)
+- [Acknowledgements](#gem-acknowledgements)
 
 
 <!-- About the Project -->
@@ -77,38 +74,11 @@ Event Hubzz is a powerful event management, verification, and registration platf
 <!-- Screenshots -->
 ### :camera: Screenshots
 
-<div align="center">
-
+<div align="center" style="margin-bottom: 80px;">
   <div style="margin-bottom: 40px;">
     <h3>Landing Page</h3>
     <img src="./screenshots/landing_page.png" alt="Landing Page" width="80%" />
   </div>
-
-  <div style="margin-bottom: 40px;">
-    <h3>Events Page</h3>
-    <img src="./screenshots/events_page.png" alt="Events Page" width="80%" />
-  </div>
-
-  <div style="margin-bottom: 40px;">
-    <h3>Analytics Page</h3>
-    <img src="./screenshots/analytics_page.png" alt="Analytics Page" width="80%" />
-  </div>
-
-  <div style="margin-bottom: 40px;">
-    <h3>Form Builder Page</h3>
-    <img src="./screenshots/formBuilder_page.png" alt="Form Builder Page" width="80%" />
-  </div>
-
-  <div style="margin-bottom: 40px;">
-    <h3>Profile Page</h3>
-    <img src="./screenshots/profile_page.png" alt="Profile Page" width="80%" />
-  </div>
-
-  <div style="margin-bottom: 40px;">
-    <h3>App Home screen</h3>
-    <img src="./screenshots/app_home.jpg" alt="App Home screen" width="80%" />
-  </div>
-
 </div>
 
 
@@ -160,8 +130,6 @@ CLOUDINARY_API_SECRET
 JWT_SECRET
 ```
 
----
-
 <!-- Getting Started -->
 ##  :toolbox: Getting Started
 
@@ -203,7 +171,7 @@ This project uses npm as package manager
 
 
 
-## 🔍 TODOs & Planned Features
+## :memo: TODOs & Planned Features
 
 - [ ] DB
   - [ ] Store QR code in Cloudinary or MongoDB as buffer/base64 for easy access.
@@ -240,7 +208,7 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 
-### Top contributors:
+### :medal_sports: Top contributors:
 
 <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Adhik-6/Event_Hubzz" alt="contrib.rocks image" />
@@ -269,7 +237,7 @@ Absolutely! You can integrate external forms seamlessly. Though some analytics f
 
 Distributed under the no License.
 
-> Though there is no license I would suggest that you are free to use and share this project **non-commercially**.
+> Though there is no license I would suggest that you don't use this project for  **commercial** purpose.
 
 <!-- Contact -->
 ## :handshake: Contact
@@ -277,7 +245,7 @@ Distributed under the no License.
 Adhik - adhik.m10a@gmail.com
 
 
-## 📦 External Tools & Libraries
+## :package: External Tools & Libraries
 
 - **Cloudinary** – store QR codes and other media
 - **Firebase Studio** – build and manage Flutter apps
