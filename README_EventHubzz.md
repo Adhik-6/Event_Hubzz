@@ -8,22 +8,22 @@
 
   <!-- Badges -->
   <p>
-    <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
       <img src="https://img.shields.io/github/contributors/Adhik-6/Event_Hubzz" alt="contributors" />
     </a>
-    <a href="https://github.com/Adhik-6/Event_Hubzz" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz">
       <img src="https://img.shields.io/github/last-commit/Adhik-6/Event_Hubzz" alt="last update" />
     </a>
-    <a href="https://github.com/Adhik-6/Event_Hubzz/network/members" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz/network/members">
       <img src="https://img.shields.io/github/forks/Adhik-6/Event_Hubzz" alt="forks" />
     </a>
-    <a href="https://github.com/Adhik-6/Event_Hubzz/stargazers" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz/stargazers">
       <img src="https://img.shields.io/github/stars/Adhik-6/Event_Hubzz" alt="stars" />
     </a>
-    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">
       <img src="https://img.shields.io/github/issues/Adhik-6/Event_Hubzz" alt="open issues" />
     </a>
-    <a href="https://github.com/Adhik-6/Event_Hubzz/blob/master/LICENSE" style="text-decoration: none;">
+    <a href="https://github.com/Adhik-6/Event_Hubzz/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/Adhik-6/Event_Hubzz.svg" alt="license" />
     </a>
   </p>
