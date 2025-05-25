@@ -257,6 +257,7 @@ Adhik - adhik.m10a@gmail.com
  - [Vercel AI](https://v0.dev/)
  - [Firebase Studio](https://studio.firebase.google.com/)
  - [Cloudinary](https://cloudinary.com/)
+ - [Render](https://render.com/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
