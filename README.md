@@ -1,122 +1,47 @@
-# Event Hubzz
 
-## Future Implementation
-// Storing qrCode in cloudinary or mongoDB (base64 as buffer). So that users can request their qrcode if missed.
-// Free/cost for event registration, search, sort by this category
-// no duplicate events
-// A seperate page to display user profile to other users
-// Also remove events that are one month older
-// When the organiser creates an event asks the organiser if he would like to add any additional information
-// Bind the activeStep with the URL, make states persistent if doing so.
-// modify the questions section in analytics page to show different answers given by users.
-// In RegistrationTable component, use debouncing to make seaching efficient. Also the Date & Time questions are not searchable (though they are searchable in YYYY-MM-DD & HH:MM format).
-// Add a Notifications tab in the profile page.
-// Implement 'forgot password' functionality.
-// Add Sort and "view only selected column" functions in table
-// Give the sorting logics to backend by adding queries in 
-// Scaling options: Create a new mongoDB DB using the EventHubzz mail id, deploy using the eventHubzz mail id.
-// **UX** - In createEvent page > eventDetails component, let the user know invalid inputs.
+<div id="readme-top" align="center">
 
+  <img src="./client/src/assets/event_hubzz_logo.jpg" alt="Event Hubzz Logo" width="200" height="auto" />
+  <h1>Event Hubzz</h1>
 
-// let the readers know user === response in backend
-attach screenshots of the app & website to the readme
+  <p>Event Management, Analytics and Verification for your Event! </p>
 
-## Steps to Run:
-  1. Add an .env file in the root level of the project with the following variables: 
-     - PORT
-     - VITE_PORT
-     - MONGO_URI
-     - MAIL_ID
-     - MAIL_PASS (Get The APP KEY for your Gmail account)
-     - CLOUDINARY_CLOUD_NAME
-     - CLOUDINARY_API_KEY
-     - CLOUDINARY_API_SECRET
-     - JWT_SECRET
-     - CLIENT_URL (eg: `http://localhost:5173` )
-     - SERVER_URL (eg: `http://localhost:` )
-     - VITE_SERVER_URL ( eg: `http://localhost:` )
-  2. Run: `npm i`
-  3. To Run Backend: `npm run dev` at the root level of the project.
-  4. To Run Frontend: `cd ./client && npm run dev` at the root level of the project in another terminal.
+  <!-- Badges -->
+  <p>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
+      <img src="https://img.shields.io/github/contributors/Adhik-6/Event_Hubzz" alt="contributors" />
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz">
+      <img src="https://img.shields.io/github/last-commit/Adhik-6/Event_Hubzz" alt="last update" />
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/network/members">
+      <img src="https://img.shields.io/github/forks/Adhik-6/Event_Hubzz" alt="forks" />
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/stargazers">
+      <img src="https://img.shields.io/github/stars/Adhik-6/Event_Hubzz" alt="stars" />
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">
+      <img src="https://img.shields.io/github/issues/Adhik-6/Event_Hubzz" alt="open issues" />
+    </a>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/Adhik-6/Event_Hubzz.svg" alt="license" />
+    </a>
+  </p>
 
-// retake: table page, analytics page, my events page
-// chnage license
-
-1. Event Hubzz
-2. Event Hubzz is a  event management, verification & registraion platform. The users can register for any events and the organizsr can conduct events, view analytics, download the event data as an excel file. The organisers can verify the users via a qr code which will be sent to the users upon registration. The organisers shall scan the qr using the designated Event Hubzz QR scanner app to verify the user. the website was built using MERN stack, the app was built using flutter along with Firebase studio.
-3. ./client/src/assets/event_hubzz_logo.jpg
-4. event registration, analytics dashboard for separate events, build a custom form for yourself or use exteral form url (like google forms), conduct events, download registration details as an excel file.
-5. the screenshots are in ./screenshots folder, display the following files alone: analytics_page.jpg, app_home.jpg, events_page.png, formBuilder_page.png, landing_page.png, profile_page.png , then give a link to the screenshots folder saying where the other pics are at.
-6. client- react + vite, material UI; server - node + express; database - MongoDB; app - flutter + Dart 
-7. PORT, VITE_PORT, CLIENT_URL_DEV=http://localhost:5173 , SERVER_URL_DEV=http://localhost:8000 , CLIENT_URL, SERVER_URL, VITE_SERVER_URL=http://localhost: , MONGO_URI, MAIL_ID, MAIL_PASS, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, JWT_SECRET
-8. prerequisites: nodejs, git. Then: Clone the repo, run: npm build:dev
-9. at root level of the project run: `npm run dev` to start the backend, open another terminal instance and run `npm run dev --prefix client`, visit to the url displayed in the second terminal.
-10. none (remove this or you can type this out yourself)
-11. write this yourself or you may also ignore this section if needed
-12. // Storing qrCode in cloudinary or mongoDB (base64 as buffer). So that users can request their qrcode if missed.
-// Free/cost for event registration, search, sort by this category
-// no duplicate events
-// A seperate page to display user profile to other users
-// Also remove events that are one month older
-// When the organiser creates an event asks the organiser if he would like to add any additional information
-// Bind the activeStep with the URL, make states persistent if doing so.
-// modify the questions section in analytics page to show different answers given by users.
-// In RegistrationTable component, use debouncing to make seaching efficient. Also the Date & Time questions are not searchable (though they are searchable in YYYY-MM-DD & HH:MM format).
-// Add a Notifications tab in the profile page.
-// Implement 'forgot password' functionality.
-// Add Sort and "view only selected column" functions in table
-// Give the sorting logics to backend by adding queries in 
-// Scaling options: Create a new mongoDB DB using the EventHubzz mail id, deploy using the eventHubzz mail id.
-// **UX** - In createEvent page > eventDetails component, let the user know invalid inputs.
-13. keep the same as the one in template
-14. as for FAQ, add some question yourself
-15. keep the same as the one in template
-16. an license that allows user to use this but not commericialise it or make money out of it. people can use it freely. recommed a suitable license for this
-17. clooudinary (storing multimedia assets online), nodemailer (npm package) (for sending mail to users), firebase studio (building flutter apps online), v0 (vercel's AI to code app and frontend of website), recharts (creating visually stunning charts)
-
-
-<div align="center">
-
-  <img src="assets/logo.png" alt="logo" width="200" height="auto" />
-  <h1>Awesome Readme Template</h1>
-  
-  <p>An awesome README template for your projects! </p>
-  
-  
-   <!-- Badges -->
-   <p>
-   <a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-      <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" alt="contributors" />
-   </a>
-   <a href="">
-      <img src="https://img.shields.io/github/last-commit/Louis3797/awesome-readme-template" alt="last update" />
-   </a>
-   <a href="https://github.com/Louis3797/awesome-readme-template/network/members">
-      <img src="https://img.shields.io/github/forks/Louis3797/awesome-readme-template" alt="forks" />
-   </a>
-   <a href="https://github.com/Louis3797/awesome-readme-template/stargazers">
-      <img src="https://img.shields.io/github/stars/Louis3797/awesome-readme-template" alt="stars" />
-   </a>
-   <a href="https://github.com/Louis3797/awesome-readme-template/issues/">
-      <img src="https://img.shields.io/github/issues/Louis3797/awesome-readme-template" alt="open issues" />
-   </a>
-   <a href="https://github.com/Louis3797/awesome-readme-template/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/Louis3797/awesome-readme-template.svg" alt="license" />
-   </a>
-   </p>
-   
-   <!-- Links -->
-   <h4>
-      <a href="https://github.com/Louis3797/awesome-readme-template/">View Demo</a>
-  <span> · </span>
-      <a href="https://github.com/Louis3797/awesome-readme-template">Documentation</a>
-  <span> · </span>
-      <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Report Bug</a>
-  <span> · </span>
-      <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Request Feature</a>
+  <!-- Links -->
+  <h4>
+    <a href="https://event-hubzz.onrender.com">View Site</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz">Documentation</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Report Bug</a>
+    <span> · </span>
+    <a href="https://github.com/Adhik-6/Event_Hubzz/issues/">Request Feature</a>
   </h4>
 
 </div>
+
+<p align="center">Event Hubzz is a powerful event management, verification, and registration platform. It enables users to register for events and allows organizers to manage events, verify registrations using QR codes, view analytics, and export event data to Excel.</p>
 
 <br />
 
@@ -124,224 +49,149 @@ attach screenshots of the app & website to the readme
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [Event Hubzz](#event-hubzz)
-  - [Future Implementation](#future-implementation)
-  - [Steps to Run:](#steps-to-run)
-- [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
-  - [:star2: About the Project](#star2-about-the-project)
-    - [:camera: Screenshots](#camera-screenshots)
-    - [:space\_invader: Tech Stack](#space_invader-tech-stack)
-    - [🛠️ Tech Stack](#️-tech-stack)
-    - [:dart: Features](#dart-features)
-    - [:key: Environment Variables](#key-environment-variables)
-  - [:toolbox: Getting Started](#toolbox-getting-started)
-    - [:bangbang: Prerequisites](#bangbang-prerequisites)
-    - [:gear: Installation](#gear-installation)
-    - [:test\_tube: Running Tests](#test_tube-running-tests)
-    - [:running: Run Locally](#running-run-locally)
-    - [:triangular\_flag\_on\_post: Deployment](#triangular_flag_on_post-deployment)
-  - [:eyes: Usage](#eyes-usage)
-  - [:compass: Roadmap](#compass-roadmap)
-  - [:wave: Contributing](#wave-contributing)
-    - [Top contributors:](#top-contributors)
-  - [:grey\_question: FAQ](#grey_question-faq)
-  - [:warning: License](#warning-license)
-  - [:handshake: Contact](#handshake-contact)
-  - [:gem: Acknowledgements](#gem-acknowledgements)
+- [About the Project](#star2-about-the-project)
+  - [Screenshots](#camera-screenshots)
+  - [Tech Stack](#space_invader-tech-stack)
+  - [Features](#dart-features)
+  - [Environment Variables](#key-environment-variables)
+- [Getting Started](#toolbox-getting-started)
+  - [Prerequisites](#bangbang-prerequisites)
+  - [Installation](#gear-installation)
+  - [Run Locally](#running-run-locally)
+- [TODOs \& Planned Features](#memo-todos--planned-features)
+- [Contributing](#wave-contributing)
+  - [Top contributors:](#medal_sports-top-contributors)
+- [FAQ](#grey_question-faq)
+- [License](#warning-license)
+- [Contact](#handshake-contact)
+- [External Tools \& Libraries](#package-external-tools--libraries)
+- [Acknowledgements](#gem-acknowledgements)
 
 
 <!-- About the Project -->
 ## :star2: About the Project
 
-
 <!-- Screenshots -->
 ### :camera: Screenshots
 
-<div align="center"> 
-  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
+<div align="center" style="margin-bottom: 80px;">
+  <div style="margin-bottom: 40px;">
+    <h3>Landing Page</h3>
+    <img src="./screenshots/landing_page.png" alt="Landing Page" width="80%" />
+  </div>
 </div>
+
+
+> 📁 More screenshots are available in the [screenshots folder](./screenshots)
 
 
 <!-- TechStack -->
 ### :space_invader: Tech Stack
 
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://nextjs.org/">Next.js</a></li>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">* [![Next][Next.js]][Next-url]</a></li>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-    <li><a href="https://go.dev/">Golang</a></li>
-    <li><a href="https://nestjs.com/">Nest.js</a></li>
-    <li><a href="https://socket.io/">SocketIO</a></li>
-    <li><a href="https://www.prisma.io/">Prisma</a></li>    
-    <li><a href="https://www.apollographql.com/">Apollo</a></li>
-    <li><a href="https://graphql.org/">GraphQL</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-    <li><a href="https://redis.io/">Redis</a></li>
-    <li><a href="https://neo4j.com/">Neo4j</a></li>
-    <li><a href="https://www.mongodb.com/">MongoDB</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>DevOps</summary>
-  <ul>
-    <li><a href="https://www.docker.com/">Docker</a></li>
-    <li><a href="https://www.jenkins.io/">Jenkins</a></li>
-    <li><a href="https://circleci.com/">CircleCLI</a></li>    
-  </ul>
-</details>
-
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![MUI][MUI]][MUI-url]
+* [![Node.js][Node.js]][Node-url]
+* [![MongoDB][MongoDB]][MongoDB-url]
+* [![Flutter][Flutter]][Flutter-url]
+* [![Firebase][Firebase]][Firebase-url]
+* [![Cloudinary][Cloudinary]][Cloudinary-url]
+* [![V0][V0]][V0-url]
 
-### 🛠️ Tech Stack
 
-| Platform       | Technologies Used                                |
-|----------------|--------------------------------------------------|
-| Frontend       | React + Vite, Material UI                        |
-| Backend        | Node.js, Express                                 |
-| Database       | MongoDB                                          |
-| Mobile App     | Flutter, Dart                                    |
-| Other Services | Firebase Studio, Cloudinary, Nodemailer, Recharts, v0 (Vercel AI) |
-
-<!-- Features -->
 ### :dart: Features
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Event registration system
+- Analytics dashboard per event
+- Build a custom registration form or use an external URL (e.g., Google Forms)
+- Download registration details as Excel
+- QR code-based verification system for participants
+- User profile management
+- Dedicated Flutter app for organizers to scan and verify registrations
 
 <!-- Env Variables -->
 ### :key: Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`API_KEY`
-
-`ANOTHER_API_KEY`
+```env
+PORT
+VITE_PORT
+CLIENT_URL_DEV=http://localhost:5173
+SERVER_URL_DEV=http://localhost:8000
+CLIENT_URL
+SERVER_URL
+VITE_SERVER_URL=http://localhost:
+MONGO_URI
+MAIL_ID
+MAIL_PASS
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+JWT_SECRET
+```
 
 <!-- Getting Started -->
-## 	:toolbox: Getting Started
+##  :toolbox: Getting Started
 
 <!-- Prerequisites -->
 ### :bangbang: Prerequisites
 
-This project uses Yarn as package manager
+- Node.js
+- Git
 
-```bash
- npm install --global yarn
-```
-
-<!-- Installation -->
 ### :gear: Installation
 
-Install my-project with npm
+This project uses npm as package manager
 
-```bash
-  yarn install my-project
-  cd my-project
-```
-   
-<!-- Running Tests -->
-### :test_tube: Running Tests
+1. Clone the repository:
+  ```bash
+  git clone https://github.com/Adhik-6/Event_Hubzz.git
+  cd event-hubzz
+  ```
 
-To run tests, run the following command
-
-```bash
-  yarn test test
-```
+2. Install dependencies and build:
+  ```bash
+  npm run build:dev
+  ```
 
 <!-- Run Locally -->
 ### :running: Run Locally
 
-Clone the project
+1. Start the backend server:
+  ```bash
+  npm run dev
+  ```
 
-```bash
-  git clone https://github.com/Louis3797/awesome-readme-template.git
-```
+2. Open another terminal and start the frontend:
+  ```bash
+  npm run dev --prefix client
+  ```
 
-Go to the project directory
-
-```bash
-  cd my-project
-```
-
-Install dependencies
-
-```bash
-  yarn install
-```
-
-Start the server
-
-```bash
-  yarn start
-```
+3. Visit the URL shown in the second terminal (usually `http://localhost:5173`).
 
 
-<!-- Deployment -->
-### :triangular_flag_on_post: Deployment
 
-To deploy this project run
+## :memo: TODOs & Planned Features
 
-```bash
-  yarn deploy
-```
-
-<!-- Usage -->
-## :eyes: Usage
-
-Use this space to tell a little more about your project and how it can be used. Show additional screenshots, code samples, demos or link to other resources.
-
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
-```
-
-<!-- ROADMAP -->
-## :compass: Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+- [ ] DB
+  - [ ] Store QR code in Cloudinary or MongoDB as buffer/base64 for easy access.
+  - [ ] If possible try renaming the "User" mongoDB model into "Response"
+  - [ ] Auto-remove events older than one month.
+- [ ] Event Creation
+  - [ ] Prompt for additional info during event creation.
+  - [ ] Prevent duplicate events to be created.
+  - [ ] In createEvent page > eventDetails component, let the user know invalid inputs.
+- [ ] In Registration Table
+  - [ ] Debounce search 
+  - [ ] Also the Date & Time questions are not searchable (though they are searchable in YYYY-MM-DD & HH:MM format)
+  - [ ] Add "view only selected column" feature in table
+- [ ] Free vs Paid event registration, and filtering based on it.
+- [ ] Public user profile pages to let other users see one's profile.
+- [ ] Bind active step with URL; persist states.
+- [ ] Show different answers give to different questions of type 'multiline' and 'text' in analytics' questions section
+- [ ] Set up Notifications tab in user profile
+- [ ] Add Forgot password functionality
+- [ ] Implement backend-based sorting by adding queries to the request URL
 
 <!-- CONTRIBUTING -->
 ## :wave: Contributing
@@ -358,64 +208,81 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 
-### Top contributors:
+### :medal_sports: Top contributors:
 
-<a href="https://github.com/othneildrew/Best-README-Template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
+<a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Adhik-6/Event_Hubzz" alt="contrib.rocks image" />
 </a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- FAQ -->
 ## :grey_question: FAQ
 
-- Question 1
+**Q: Can I register for any events?**  
+Yes, Event Hubzz supports registration for all types of events.
 
-  + Answer 1
+**Q: What if I lose my QR code?**  
+The QR will be sent to your mail. So you can get it from there. Also you can contact the support.
 
-- Question 2
+**Q: How do organizers verify users?** 
+Using the official Event Hubzz QR Scanner App built with Flutter.
 
-  + Answer 2
+**Q: Can I use Google Forms instead of the built-in form builder?**  
+Absolutely! You can integrate external forms seamlessly. Though some analytics features will not be shown.
+
 
 
 <!-- License -->
 ## :warning: License
 
-Distributed under the no License. See LICENSE.txt for more information.
+Distributed under the no License.
 
+> Though there is no license I would suggest that you don't use this project for  **commercial** purpose.
 
 <!-- Contact -->
 ## :handshake: Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Adhik - adhik.m10a@gmail.com
 
-Project Link: [https://github.com/Louis3797/awesome-readme-template](https://github.com/Louis3797/awesome-readme-template)
 
+## :package: External Tools & Libraries
+
+- **Cloudinary** – store QR codes and other media
+- **Firebase Studio** – build and manage Flutter apps
+- **v0 by Vercel** – AI-powered frontend generation
 
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
 
-Use this section to mention useful resources and libraries that you have used in your projects.
-
- - [Shields.io](https://shields.io/)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
- - [Readme Template](https://github.com/othneildrew/Best-README-Template)
+ - [Vercel AI](https://v0.dev/)
+ - [Firebase Studio](https://studio.firebase.google.com/)
+ - [Cloudinary](https://cloudinary.com/)
+ - [Render](https://render.com/)
 
 
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+
+[MUI]: https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white
+[MUI-url]: https://mui.com/
+
+[Node.js]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
+[Node-url]: https://nodejs.org/
+
+[MongoDB]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
+[MongoDB-url]: https://www.mongodb.com/
+
+[Flutter]: https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white
+[Flutter-url]: https://flutter.dev/
+
+[Firebase]: https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black
+[Firebase-url]: https://firebase.google.com/
+
+[Cloudinary]: https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white
+[Cloudinary-url]: https://cloudinary.com/
+
+[V0]: https://img.shields.io/badge/V0%20(Vercel%20AI)-000000?style=for-the-badge&logo=vercel&logoColor=white
+[V0-url]: https://v0.dev/
