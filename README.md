@@ -64,7 +64,6 @@
 - [:grey_question: FAQ](#grey_question-faq)
 - [:warning: License](#warning-license)
 - [:handshake: Contact](#handshake-contact)
-- [:package: External Tools & Libraries](#package-external-tools--libraries)
 - [:gem: Acknowledgements](#gem-acknowledgements)
 
 
