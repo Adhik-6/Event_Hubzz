@@ -49,27 +49,34 @@
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [About the Project](#star2-about-the-project)
-  - [Screenshots](#camera-screenshots)
-  - [Tech Stack](#space_invader-tech-stack)
-  - [Features](#dart-features)
-  - [Environment Variables](#key-environment-variables)
-- [Getting Started](#toolbox-getting-started)
-  - [Prerequisites](#bangbang-prerequisites)
-  - [Installation](#gear-installation)
-  - [Run Locally](#running-run-locally)
-- [TODOs \& Planned Features](#memo-todos--planned-features)
-- [Contributing](#wave-contributing)
-  - [Top contributors:](#medal_sports-top-contributors)
-- [FAQ](#grey_question-faq)
-- [License](#warning-license)
-- [Contact](#handshake-contact)
-- [External Tools \& Libraries](#package-external-tools--libraries)
-- [Acknowledgements](#gem-acknowledgements)
+- [:star2: About the Project](#star2-about-the-project)
+  - [:camera: Screenshots](#camera-screenshots)
+  - [:space_invader: Tech Stack](#space_invader-tech-stack)
+  - [:dart: Features](#dart-features)
+  - [:key: Environment Variables](#key-environment-variables)
+- [:toolbox: Getting Started](#toolbox-getting-started)
+  - [:bangbang: Prerequisites](#bangbang-prerequisites)
+  - [:gear: Installation](#gear-installation)
+  - [:running: Run Locally](#running-run-locally)
+- [:memo: TODOs & Planned Features](#memo-todos--planned-features)
+- [:wave: Contributing](#wave-contributing)
+  - [:medal_sports: Top contributors](#medal_sports-top-contributors)
+- [:grey_question: FAQ](#grey_question-faq)
+- [:warning: License](#warning-license)
+- [:handshake: Contact](#handshake-contact)
+- [:package: External Tools & Libraries](#package-external-tools--libraries)
+- [:gem: Acknowledgements](#gem-acknowledgements)
+
 
 
 <!-- About the Project -->
 ## :star2: About the Project
+
+Event Hubzz is a full-featured event management and analytics platform designed to simplify the way events are organized, managed, and attended. It provides organizers with powerful tools to create events, build custom registration forms (or integrate external ones like Google Forms), and track participation with real-time analytics.
+
+Participants can seamlessly register for events and receive QR codes for verification, while organizers can quickly validate entries using the dedicated Flutter-based scanner app. With features like Excel export, profile management, and a secure backend, Event Hubzz ensures both flexibility and reliability.
+
+Whether you're hosting small workshops or large conferences, Event Hubzz streamlines the entire process—from registration to verification—making event management effortless and efficient.
 
 <!-- Screenshots -->
 ### :camera: Screenshots
@@ -108,6 +115,15 @@
 - User profile management
 - Dedicated Flutter app for organizers to scan and verify registrations
 
+<!-- Getting Started -->
+##  :toolbox: Getting Started
+
+<!-- Prerequisites -->
+### :bangbang: Prerequisites
+
+- Node.js
+- Git
+
 <!-- Env Variables -->
 ### :key: Environment Variables
 
@@ -129,15 +145,6 @@ CLOUDINARY_API_KEY
 CLOUDINARY_API_SECRET
 JWT_SECRET
 ```
-
-<!-- Getting Started -->
-##  :toolbox: Getting Started
-
-<!-- Prerequisites -->
-### :bangbang: Prerequisites
-
-- Node.js
-- Git
 
 ### :gear: Installation
 
@@ -245,20 +252,13 @@ Distributed under the no License.
 
 Adhik - adhik.m10a@gmail.com
 
-
-## :package: External Tools & Libraries
-
-- **Cloudinary** – store QR codes and other media
-- **Firebase Studio** – build and manage Flutter apps
-- **v0 by Vercel** – AI-powered frontend generation
-
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
 
- - [Vercel AI](https://v0.dev/)
- - [Firebase Studio](https://studio.firebase.google.com/)
- - [Cloudinary](https://cloudinary.com/)
- - [Render](https://render.com/)
+ - [Vercel AI (v0)](https://v0.dev/)
+ - [Firebase Studio (App)](https://studio.firebase.google.com/)
+ - [ChatGPT](https://chatgpt.com/)
+ - [Gemini](https://https://gemini.google.com/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
