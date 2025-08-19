@@ -250,7 +250,8 @@ Distributed under the no License.
 <!-- Contact -->
 ## :handshake: Contact
 
-Adhik - adhik.m10a@gmail.com
+Email - <a href="mailto:adhik.m10a@gmail.com">adhik.m10a@gmail.com</a>
+LinkedIn - [adhik-igthishaam](https://linkedin.com/in/adhik-igthishaam)
 
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
@@ -259,6 +260,10 @@ Adhik - adhik.m10a@gmail.com
  - [Firebase Studio (App)](https://studio.firebase.google.com/)
  - [ChatGPT](https://chatgpt.com/)
  - [Gemini](https://https://gemini.google.com/)
+ - [Shields.io](https://shields.io/)
+ - [Awesome README](https://github.com/matiassingers/awesome-readme)
+ - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
+ - [Readme Template](https://github.com/othneildrew/Best-README-Template)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
