@@ -175,6 +175,8 @@ This project uses npm as package manager
 
 3. Visit the URL shown in the second terminal (usually `http://localhost:5173`).
 
+4. Download the app from the [drive](https://drive.google.com/file/d/14b4Z7y22eBFwOnAlGD0GwaXKnfcgR4jP/view?usp=sharing)
+
 
 
 ## :memo: TODOs & Planned Features
